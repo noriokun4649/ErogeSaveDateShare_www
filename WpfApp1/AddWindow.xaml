@@ -24,8 +24,8 @@
         <Button Content="フォルダ参照" Margin="455,493,10,0" Click="Button_Click_4" RenderTransformOrigin="0.413,0.35" HorizontalContentAlignment="Center" Height="20" VerticalContentAlignment="Stretch" VerticalAlignment="Top"/>
         <Button Content="DropBox上のセーブデータ" HorizontalAlignment="Left" Margin="268,19,0,0" VerticalAlignment="Top" Width="196" Height="32" Click="Button_Click_6" FontSize="18"/>
         <Button Content="全削除" HorizontalAlignment="Left" Margin="471,19,0,0" VerticalAlignment="Top" Width="59" Height="32" Click="Button_Click_7"/>
-        <TextBlock HorizontalAlignment="Left" Margin="42,392,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="511" Grid.ColumnSpan="2"><Run Text="※"/><Run Text=""/><Run Text="セーブデータはゲームタイトルで区別され、同名のゲームタイトルのものが複数コンピュータ間で共有されます"/></TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="42,488,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="318"><Run Text="※"/><Run Text=""/><Run Text="セーブデータ"/><Run Text="が複数ファイルで構成されている場合はフォルダ参照を"/><LineBreak/><Run Text="　一つのファイルで構成されてる場合はファイル参照を選んでください"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="42,392,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="511" Grid.ColumnSpan="2" Foreground="Red"><Run Text="※"/><Run Text=""/><Run Text="セーブデータはゲームタイトルで区別され、同名のゲームタイトルのものが複数コンピュータ間で共有されます"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="42,488,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="318" Foreground="Red"><Run Text="※"/><Run Text=""/><Run Text="セーブデータ"/><Run Text="が複数ファイルで構成されている場合はフォルダ参照を"/><LineBreak/><Run Text="　一つのファイルで構成されてる場合はファイル参照を選んでください"/></TextBlock>
         <ListView x:Name="game_view" HorizontalAlignment="Left" Height="246" Margin="24,82,0,0" VerticalAlignment="Top" Width="529" Grid.ColumnSpan="2" DragEnter="game_view_DragEnter" SelectionChanged="game_view_SelectionChanged" AllowDrop="True" Drop="game_view_Drop">
             <ListView.View>
                 <GridView>

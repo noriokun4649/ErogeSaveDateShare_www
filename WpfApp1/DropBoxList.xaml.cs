@@ -40,11 +40,11 @@ namespace WpfApp1
 
                 if (size_fol > counts_fol) 
                 {
-                    ListBox_drop.Items.Add("フォルダ ├" + item.Name);
+                    listview.Items.Add(new string[] { "フォルダ","├"+item.Name,"情報なし"});
                 }
                 else
                 {
-                    ListBox_drop.Items.Add("フォルダ └" + item.Name);
+                    listview.Items.Add(new string[] { "フォルダ", "└" + item.Name, "情報なし" });
                 }
 
                 foreach (var item_file in list2.Entries.Where(i => i.IsFile))
@@ -62,10 +62,10 @@ namespace WpfApp1
                     Console.WriteLine("C"+counts + " S"+size);
                     */
                     if (size > counts ) {
-                        ListBox_drop.Items.Add("ファイル 　" + "├" + item_file.Name + " - 更新日:" + now_jst.ToString());
+                        listview.Items.Add(new string[] { "ファイル", "　├" + item_file.Name, now_jst.ToString() });
                     }
                     else {
-                        ListBox_drop.Items.Add("ファイル 　" + "└" + item_file.Name + " - 更新日:" + now_jst.ToString());
+                        listview.Items.Add(new string[] { "ファイル", "　└" + item_file.Name, now_jst.ToString() });
                     }
                     counts++;
                 }
@@ -86,7 +86,7 @@ namespace WpfApp1
             if (list.HasMore)
             {
                 Console.WriteLine("   ...");
-                ListBox_drop.Items.Add("DropBoxAPIの制限でこれ以上の読み込みができません");
+                listview.Items.Add(new string[] { "ERROR", "DropBoxAPIの制限でこれ以上の読み込みができません","" });
 
             }
             return list;

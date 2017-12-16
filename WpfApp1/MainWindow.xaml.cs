@@ -18,7 +18,6 @@ namespace WpfApp1
         public static String folder_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/エロゲのセーブデータ共有したったｗｗｗ";
         static String users = "";
         bool isAcces = false;
-        string[] rest;
 
         public MainWindow()
         {
@@ -62,6 +61,7 @@ namespace WpfApp1
             }
 
         }
+
 
         public static async Task Run()
         {
@@ -171,52 +171,12 @@ namespace WpfApp1
             "DropBoxへアップロード",
             MessageBoxButton.YesNo,
             MessageBoxImage.Information);
-
+            DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
             if (result == MessageBoxResult.Yes)
             {
-                DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
-                try
-                {
-                    StreamReader stream = new StreamReader(MainWindow.file_path);
-                    string line;
-                    // Read and display lines from the file until the end of 
-                    // the file is reached.
-                    while ((line = stream.ReadLine()) != null)
-                    {
-                        String[] lins = line.Split(',');
-                        CreateFolder(client, "/" + lins[0]);
-                        if (lins.Length > 1)
-                        {
-                            if (File.Exists(lins[1]))//ファイル
-                            {
-                                string names = Path.GetFileName(lins[1]);
-                                Upload(client, lins[0], names, lins[1]);
-                            }
-                            else if (Directory.Exists(lins[1]))//フォルダ
-                            {
-                                string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
-                                foreach (String f in files)
-                                {
-                                    string names = Path.GetFileName(f);
-                                    Upload(client, lins[0], names, f);
-                                }
-                                string fors = Path.GetDirectoryName(lins[1]);
-                                //MessageBox.Show(fors+"のアップロードを完了しました");
-                            }
-
-                        }
-                    }
-                    stream.Close();
-                }
-                catch (Exception es)
-                {
-                    MessageBox.Show("ファイルろーーどえらぁ" + es,
-                "エラー",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-                }
-
-                //
+                
+                var window = new LogWindow(client,1);
+                window.Show();
             }
             else if (result == MessageBoxResult.No)
             {
@@ -251,55 +211,8 @@ namespace WpfApp1
 
             }
         }
-        private async Task<string[]> ListFolder(DropboxClient client, string path)
-        {
-            Console.WriteLine("--- Files ---");
-            var list = await client.Files.ListFolderAsync(path);
-            string datase = "";
-            // show folders then files
-            foreach (var item in list.Entries.Where(i => i.IsFile))
-            {
-                Console.WriteLine("F  {0}/", item.Name);
-                datase = datase + "," + item.Name;
-            }
-            rest = datase.Split(',');
 
-            
-            if (list.HasMore)
-            {
-                Console.WriteLine("   ...");
-            }
-            return rest;
-        }
-
-
-        private async Task Download(DropboxClient client, string folder, string file,string out_path)
-        {
-            Console.WriteLine("Download file...");
-            //MessageBox.Show(file + "のダウンロードを開始しました", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
-            try
-            {
-                using (var response = await client.Files.DownloadAsync("/" + folder + "/" + file))
-                {
-                    Console.WriteLine("Downloaded {0} Rev {1}", response.Response.Name, response.Response.Rev);
-                    Stream x = await response.GetContentAsStreamAsync();
-                    FileStream fileStream = new FileStream(out_path,FileMode.Create);
-                    await x.CopyToAsync(fileStream);
-                    fileStream.Close();
-                    x.Close();
-                    //MessageBox.Show(file + "のダウンロードが完了しました", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                }
-            }
-            catch (ApiException<DownloadError> ex)
-            {
-                MessageBox.Show(ex.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            catch (Exception ex2)
-            {
-                MessageBox.Show(ex2.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+        
         private async Task Download_setting(DropboxClient client, string folder, string file)
         {
             Console.WriteLine("Download file...");
@@ -326,31 +239,8 @@ namespace WpfApp1
                 MessageBox.Show(ex2.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private async Task<FolderMetadata> CreateFolder(DropboxClient client, string path)
-        {
-            var folder = new FolderMetadata();
-            try
-            {
-                Console.WriteLine("--- Creating Folder ---");
-                var folderArg = new CreateFolderArg(path);
-                folder = await client.Files.CreateFolderAsync(folderArg);
-                Console.WriteLine("Folder: " + path + " created!");
-                //MessageBox.Show(path + "を作成しました",
-                //"メッセージ",
-                //MessageBoxButton.OK,
-                //MessageBoxImage.Information);
-            }
-            catch (ApiException<CreateFolderError> ex)
-            {
-                MessageBox.Show(path + "の作成に問題が発生しました\n\nすでにフォルダが存在している可能性があります",
-                "エラー",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-            }
-            return folder;
-        }
 
-        private async void Button_Click_3(object sender, RoutedEventArgs e)
+        private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("PCにDropBox上のセーブデータをダウンロードします。\n\nPC上のセーブデータは上書きされます。続行しますか？",
             "PCへダウンロード",
@@ -360,54 +250,8 @@ namespace WpfApp1
 
             if (result == MessageBoxResult.Yes)
             {
-                try
-                {
-                    StreamReader stream = new StreamReader(MainWindow.file_path);
-                    string line;
-                    // Read and display lines from the file until the end of 
-                    // the file is reached.
-                    while ((line = stream.ReadLine()) != null)
-                    {
-                        String[] lins = line.Split(',');
-                        if (lins.Length > 1)
-                        {
-                            if (File.Exists(lins[1]))//ファイル
-                            {
-                                string names = Path.GetFileName(lins[1]);
-                                Console.WriteLine(lins[0] + " " + names + " " + lins[1]);
-                                Download(client, lins[0], names, lins[1]);
-                            }
-
-
-                            else if (Directory.Exists(lins[1]))//フォルダ
-                            {
-                                var s = await ListFolder(client, "/"+lins[0]);
-
-                                //string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
-                                foreach (String f in s)
-                                {
-                                    string names = Path.GetFileName(f);
-                                    string dire_names = Path.GetFileName( Path.GetDirectoryName(lins[1]));
-                                    Console.WriteLine(lins[0] + " "+ names+" " + lins[1] + @"\" + f);
-                                    if(names != "")
-                                    {
-                                        Download(client, lins[0], names, lins[1] + @"\" + f);
-                                    }
-                                }
-                                string fors = Path.GetDirectoryName(lins[1]);
-                                //MessageBox.Show(fors + "のダウンロードを完了しました");
-                            }
-                        }
-                    }
-                    stream.Close();
-                }
-                catch (Exception es)
-                {
-                    MessageBox.Show("ファイルろーーどえらぁ" + es,
-                "エラー",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-                }
+                var window = new LogWindow(client,0);
+                window.Show();
             }
             else if (result == MessageBoxResult.No)
             {

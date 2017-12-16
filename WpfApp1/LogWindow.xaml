@@ -1,0 +1,22 @@
+﻿<Window x:Class="WpfApp1.LogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="LogWindow" Height="392.388" Width="470.242" Closing="Window_Closing">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="457*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="297*"/>
+            <RowDefinition Height="42*"/>
+            <RowDefinition Height="22*"/>
+        </Grid.RowDefinitions>
+        <ListBox x:Name="log_box" Margin="15,15,10,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+        <Button x:Name="close_button" Content="完了" Margin="372,10,10,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Height="22" Click="close_button_Click"/>
+    </Grid>
+</Window>

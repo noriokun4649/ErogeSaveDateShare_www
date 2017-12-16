@@ -22,14 +22,14 @@ namespace WpfApp1
 
         private async Task<ListFolderResult> ListFolder(DropboxClient client, string path)
         {
-            Console.WriteLine("--- Files ---");
+            //Console.WriteLine("--- Files ---");
             var list = await client.Files.ListFolderAsync(path);
             int size_fol = list.Entries.Count;
             int counts_fol = 1;
             // show folders then files
             foreach (var item in list.Entries.Where(i => i.IsFolder))
             {
-                Console.WriteLine("D  {0}/", item.Name);
+                //Console.WriteLine("D  {0}/", item.Name);
                 //ListBox_drop.Items.Add("フォルダ "+ item.Name+"/");
 
                 var list2 = await client.Files.ListFolderAsync("/"+item.Name);
@@ -56,10 +56,11 @@ namespace WpfApp1
                     DateTime now_jst = TimeZoneInfo.ConvertTime(file.ServerModified, jst);
                     
 
-                    Console.WriteLine("F{0,8} {1}",
+                    /*Console.WriteLine("F{0,8} {1}",
                         file.Size,
                         item_file.Name);
                     Console.WriteLine("C"+counts + " S"+size);
+                    */
                     if (size > counts ) {
                         ListBox_drop.Items.Add("ファイル 　" + "├" + item_file.Name + " - 更新日:" + now_jst.ToString());
                     }

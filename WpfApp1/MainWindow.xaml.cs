@@ -184,7 +184,7 @@ namespace WpfApp1
             }
 
         }
-        private async Task Upload(DropboxClient client, string folder, string fileName, string fileContent)
+        private async Task Upload(DropboxClient client,string fileName, string fileContent)
         {
             //MessageBox.Show(fileName + "のアップロードを開始しました",
                 //"メッセージ",
@@ -194,7 +194,7 @@ namespace WpfApp1
             {
                 Console.WriteLine("Upload file...");
                 FileStream fileStream = new FileStream(fileContent, FileMode.Open);
-                var response = await client.Files.UploadAsync("/" + folder + "/" + fileName, WriteMode.Overwrite.Instance, body: fileStream);
+                var response = await client.Files.UploadAsync("/" + fileName, WriteMode.Overwrite.Instance, body: fileStream);
                 Console.WriteLine("Uploaded Id {0} Rev {1}", response.Id, response.Rev);
                 //MessageBox.Show(fileName + "のアップロードを完了しました",
                 //"メッセージ",
@@ -213,13 +213,13 @@ namespace WpfApp1
         }
 
         
-        private async Task Download_setting(DropboxClient client, string folder, string file)
+        private async Task Download_setting(DropboxClient client, string file)
         {
             Console.WriteLine("Download file...");
             //MessageBox.Show(file + "のダウンロードを開始しました", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
             try
             {
-                using (var response = await client.Files.DownloadAsync("/" + folder + "/" + file))
+                using (var response = await client.Files.DownloadAsync("/" + file))
                 {
                     FileStream fileStream = new FileStream(file_path, FileMode.Create);
                     StreamWriter sw = new StreamWriter(fileStream);
@@ -271,7 +271,7 @@ namespace WpfApp1
             {
                 DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
                 Console.WriteLine(Path.GetPathRoot(file_path) + Path.GetFileName(file_path) + file_path);
-                Upload(client, "setings", Path.GetFileName(file_path), file_path);
+                Upload(client, Path.GetFileName(file_path), file_path);
 
 
             }
@@ -296,7 +296,7 @@ namespace WpfApp1
                 DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
                 FileMetadata fileMetadata = new FileMetadata();
 
-                Download_setting(client, "setings", Path.GetFileName(file_path));
+                Download_setting(client, Path.GetFileName(file_path));
             }
             else if (result == MessageBoxResult.No)
             {

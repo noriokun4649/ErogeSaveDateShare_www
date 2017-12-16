@@ -40,11 +40,11 @@ namespace WpfApp1
 
                 if (size_fol > counts_fol) 
                 {
-                    listview.Items.Add(new string[] { "フォルダ","├"+item.Name,"情報なし"});
+                    listview.Items.Add(new string[] { "ゲームタイトル","├"+item.Name,"情報なし"});
                 }
                 else
                 {
-                    listview.Items.Add(new string[] { "フォルダ", "└" + item.Name, "情報なし" });
+                    listview.Items.Add(new string[] { "ゲームタイトル", "└" + item.Name, "情報なし" });
                 }
 
                 foreach (var item_file in list2.Entries.Where(i => i.IsFile))

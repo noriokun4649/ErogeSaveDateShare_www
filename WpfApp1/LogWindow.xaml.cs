@@ -130,6 +130,10 @@ namespace WpfApp1
                             log_box.Items.Add(fors + "のダウンロードを完了しました");
                             log_box.ScrollIntoView(fors + "のダウンロードを完了しました");
                         }
+                        else
+                        {
+                            log_box.Items.Add("保存先ディレクトリ("+lins[1]+")が見つからないためダウンロード処理を中断しました");
+                        }
                     }
                 }
                 log_box.Items.Add("すべてのダウンロードが完了しました");
@@ -184,8 +188,8 @@ namespace WpfApp1
                 //"メッセージ",
                 //MessageBoxButton.OK,
                 //MessageBoxImage.Information);
-                log_box.Items.Add(path + "を作成しました");
-                log_box.ScrollIntoView(path + "を作成しました");
+                log_box.Items.Add("フォルダ" + path + "を作成しました");
+                log_box.ScrollIntoView("フォルダ" + path + "を作成しました");
             }
             catch (ApiException<CreateFolderError> ex)
             {

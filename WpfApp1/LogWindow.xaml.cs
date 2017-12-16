@@ -63,11 +63,14 @@ namespace WpfApp1
                             string fors = Path.GetDirectoryName(lins[1]);
                             //MessageBox.Show(fors+"のアップロードを完了しました");
                             log_box.Items.Add(fors + "のアップロードを完了しました");
+                            log_box.ScrollIntoView(fors + "のアップロードを完了しました");
+
                         }
 
                     }
                 }
                 log_box.Items.Add("すべてのアップロードが完了しました");
+                log_box.ScrollIntoView("すべてのアップロードが完了しました");
                 stream.Close();
                 close_button.IsEnabled = true;
             }
@@ -125,10 +128,12 @@ namespace WpfApp1
                             string fors = Path.GetDirectoryName(lins[1]);
                             //MessageBox.Show(fors + "のダウンロードを完了しました");
                             log_box.Items.Add(fors + "のダウンロードを完了しました");
+                            log_box.ScrollIntoView(fors + "のダウンロードを完了しました");
                         }
                     }
                 }
                 log_box.Items.Add("すべてのダウンロードが完了しました");
+                log_box.ScrollIntoView("すべてのダウンロードが完了しました");
                 stream.Close();
                 close_button.IsEnabled = true;
             }
@@ -139,6 +144,7 @@ namespace WpfApp1
             MessageBoxButton.OK,
             MessageBoxImage.Error);
                 log_box.Items.Add("ファイルろーーどえらぁ" + es);
+                log_box.ScrollIntoView("ファイルろーーどえらぁ" + es);
                 close_button.IsEnabled = true;
             }
         }
@@ -179,11 +185,13 @@ namespace WpfApp1
                 //MessageBoxButton.OK,
                 //MessageBoxImage.Information);
                 log_box.Items.Add(path + "を作成しました");
+                log_box.ScrollIntoView(path + "を作成しました");
             }
             catch (ApiException<CreateFolderError> ex)
             {
                 close_button.IsEnabled = true;
                 log_box.Items.Add(path + "の作成に問題が発生しました\n\nすでにフォルダが存在している可能性があります");
+                log_box.ScrollIntoView(path + "の作成に問題が発生しました\n\nすでにフォルダが存在している可能性があります");
                 MessageBox.Show(path + "の作成に問題が発生しました\n\nすでにフォルダが存在している可能性があります",
                 "エラー",
                 MessageBoxButton.OK,
@@ -200,6 +208,7 @@ namespace WpfApp1
             //MessageBoxButton.OK,
             //MessageBoxImage.Information);
             log_box.Items.Add(fileName + "のアップロードを開始しました");
+            log_box.ScrollIntoView(fileName + "のアップロードを開始しました");
             try
             {
                 Console.WriteLine("Upload file...");
@@ -211,12 +220,14 @@ namespace WpfApp1
                 //MessageBoxButton.OK,
                 //MessageBoxImage.Information);
                 log_box.Items.Add(fileName + "のアップロードを完了しました");
+                log_box.ScrollIntoView(fileName + "のアップロードを完了しました");
                 fileStream.Close();
             }
             catch (Exception ex2)
             {
                 close_button.IsEnabled = true;
                 log_box.Items.Add(fileName + "のアップロードに問題が発生しました\n\n" + ex2.Message);
+                log_box.ScrollIntoView(log_box.Items.Count - 1);
                 MessageBox.Show(fileName + "のアップロードに問題が発生しました\n\n" + ex2.Message,
                 "エラー",
                 MessageBoxButton.OK,
@@ -232,6 +243,7 @@ namespace WpfApp1
             Console.WriteLine("Download file...");
             //MessageBox.Show(file + "のダウンロードを開始しました", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
             log_box.Items.Add(file + "のダウンロードを開始しました");
+            log_box.ScrollIntoView(file + "のダウンロードを開始しました");
 
             try
             {
@@ -245,7 +257,8 @@ namespace WpfApp1
                     x.Close();
                     //MessageBox.Show(file + "のダウンロードが完了しました", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
                     log_box.Items.Add(file + "のダウンロードが完了しました");
-
+                    log_box.ScrollIntoView(file + "のダウンロードが完了しました");
+                    
                 }
             }
             catch (ApiException<DownloadError> ex)
@@ -253,12 +266,15 @@ namespace WpfApp1
                 close_button.IsEnabled = true;
                 MessageBox.Show(ex.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                 log_box.Items.Add(ex.ToString());
+                log_box.ScrollIntoView(log_box.Items.Count - 1);
             }
             catch (Exception ex2)
             {
                 close_button.IsEnabled = true;
                 MessageBox.Show(ex2.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                 log_box.Items.Add(ex2.ToString());
+                log_box.ScrollIntoView(log_box.Items.Count - 1);
+                
             }
         }
 

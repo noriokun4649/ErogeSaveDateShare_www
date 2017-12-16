@@ -16,25 +16,14 @@ namespace WpfApp1
     public partial class LogWindow : Window
     {
 
+        int types;//0 はダウンロード 1はアップロード
+        DropboxClient client;
 
         public LogWindow(DropboxClient client, int type)//0 はダウンロード 1はアップロード
         {
             InitializeComponent();
-            if (type == 0)
-            {
-                this.Title = "ダウンロードタスクのログView";
-                Downloadse(client);
-            }
-            else
-            {
-                this.Title = "アップロードタスクのログView";
-                Uploades(client);
-            }
-        }
-        private async Task Uploades (DropboxClient client)
-        {
-            close_button.IsEnabled = false;
-
+            this.client = client;
+            this.types = type;
             try
             {
                 StreamReader stream = new StreamReader(MainWindow.file_path);
@@ -43,36 +32,111 @@ namespace WpfApp1
                 // the file is reached.
                 while ((line = stream.ReadLine()) != null)
                 {
-                    String[] lins = line.Split(',');
-                    await CreateFolder(client, "/" + lins[0]);
-                    if (lins.Length > 1)
+                    game_list.Items.Add(line.Split(','));
+                }
+                stream.Close();
+            }
+            catch (Exception es)
+            {
+                MessageBox.Show(es.Message,
+                "エラー",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            }
+            if (types == 0)
+            {
+                this.Title = "ダウンロードタスクのログView";
+                titletext.Text = "ダウンロード";
+                type_text.Text = "ダウンロードの実行方法";
+            }
+            else
+            {
+                this.Title = "アップロードタスクのログView";
+                titletext.Text = "アップロード";
+                type_text.Text = "アップロードの実行方法";
+            }
+        }
+        private async Task Uploades(DropboxClient client, string[] input_data)
+        {
+            close_button.IsEnabled = false;
+
+            try
+            {
+
+                if (input_data == null)
+                {
+                    StreamReader stream = new StreamReader(MainWindow.file_path);
+                    string line;
+                    // Read and display lines from the file until the end of 
+                    // the file is reached.
+                    while ((line = stream.ReadLine()) != null)
                     {
-                        if (File.Exists(lins[1]))//ファイル
+                        String[] lins = line.Split(',');
+                        log_box.Items.Add("ゲームタイトル→" + lins[0] + "のアップロードを開始しました");
+                        log_box.ScrollIntoView("ゲームタイトル→" + lins[0] + "のアップロードを開始しました");
+                        await CreateFolder(client, "/" + lins[0]);
+                        if (lins.Length > 1)
                         {
-                            string names = Path.GetFileName(lins[1]);
-                            await Upload(client, lins[0], names, lins[1]);
+                            if (File.Exists(lins[1]))//ファイル
+                            {
+                                string names = Path.GetFileName(lins[1]);
+                                await Upload(client, lins[0], names, lins[1]);
+                            }
+                            else if (Directory.Exists(lins[1]))//フォルダ
+                            {
+                                string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
+                                foreach (String f in files)
+                                {
+                                    string names = Path.GetFileName(f);
+                                    await Upload(client, lins[0], names, f);
+                                }
+                                string fors = Path.GetDirectoryName(lins[1]);
+                                //MessageBox.Show(fors+"のアップロードを完了しました");
+                                log_box.Items.Add(fors + "のアップロードを完了しました");
+                                log_box.ScrollIntoView(fors + "のアップロードを完了しました");
+
+                            }
+
                         }
-                        else if (Directory.Exists(lins[1]))//フォルダ
+                    }
+                    log_box.Items.Add("すべてのアップロードが完了しました");
+                    log_box.ScrollIntoView("すべてのアップロードが完了しました");
+                    stream.Close();
+                    close_button.IsEnabled = true;
+                }
+                else
+                {
+                    log_box.Items.Add("ゲームタイトル→" + input_data[0] + "のアップロードを開始しました");
+                    log_box.ScrollIntoView("ゲームタイトル→" + input_data[0] + "のアップロードを開始しました");
+                    await CreateFolder(client, "/" + input_data[0]);
+                    if (input_data.Length > 1)
+                    {
+                        if (File.Exists(input_data[1]))//ファイル
                         {
-                            string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
+                            string names = Path.GetFileName(input_data[1]);
+                            await Upload(client, input_data[0], names, input_data[1]);
+                        }
+                        else if (Directory.Exists(input_data[1]))//フォルダ
+                        {
+                            string[] files = System.IO.Directory.GetFiles(input_data[1], "*", System.IO.SearchOption.AllDirectories);
                             foreach (String f in files)
                             {
                                 string names = Path.GetFileName(f);
-                                await Upload(client, lins[0], names, f);
+                                await Upload(client, input_data[0], names, f);
                             }
-                            string fors = Path.GetDirectoryName(lins[1]);
+                            string fors = Path.GetDirectoryName(input_data[1]);
                             //MessageBox.Show(fors+"のアップロードを完了しました");
                             log_box.Items.Add(fors + "のアップロードを完了しました");
                             log_box.ScrollIntoView(fors + "のアップロードを完了しました");
 
                         }
 
+
                     }
+                    log_box.Items.Add("すべてのアップロードが完了しました");
+                    log_box.ScrollIntoView("すべてのアップロードが完了しました");
+                    close_button.IsEnabled = true;
                 }
-                log_box.Items.Add("すべてのアップロードが完了しました");
-                log_box.ScrollIntoView("すべてのアップロードが完了しました");
-                stream.Close();
-                close_button.IsEnabled = true;
             }
             catch (Exception es)
             {
@@ -88,19 +152,25 @@ namespace WpfApp1
         }
 
 
-        private async Task Downloadse(DropboxClient client)
+        private async Task Downloadse(DropboxClient client,string[] input_data)
         {
             close_button.IsEnabled = false;
             try
             {
+                if (input_data == null) { 
                 StreamReader stream = new StreamReader(MainWindow.file_path);
                 string line;
-                // Read and display lines from the file until the end of 
-                // the file is reached.
+                    // Read and display lines from the file until the end of 
+                    // the file is reached.
+
                 while ((line = stream.ReadLine()) != null)
                 {
                     String[] lins = line.Split(',');
-                    if (lins.Length > 1)
+
+                        log_box.Items.Add("ゲームタイトル→"+lins[0]+"のダウンロードを開始しました");
+                        log_box.ScrollIntoView("ゲームタイトル→" + lins[0] + "のダウンロードを開始しました");
+
+                        if (lins.Length > 1)
                     {
                         if (File.Exists(lins[1]))//ファイル
                         {
@@ -140,6 +210,51 @@ namespace WpfApp1
                 log_box.ScrollIntoView("すべてのダウンロードが完了しました");
                 stream.Close();
                 close_button.IsEnabled = true;
+                }
+                else
+                {
+                    if (input_data.Length > 1)
+                    {
+
+                        log_box.Items.Add("ゲームタイトル→" + input_data[0]+"のダウンロードを開始しました");
+                        log_box.ScrollIntoView("ゲームタイトル→" + input_data[0]+"のダウンロードを開始しました");
+                        if (File.Exists(input_data[1]))//ファイル
+                        {
+                            string names = Path.GetFileName(input_data[1]);
+                            Console.WriteLine(input_data[0] + " " + names + " " + input_data[1]);
+                            await Download(client, input_data[0], names, input_data[1]);
+                        }
+
+
+                        else if (Directory.Exists(input_data[1]))//フォルダ
+                        {
+                            var s = await ListFolder(client, "/" + input_data[0]);
+
+                            //string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
+                            foreach (String f in s)
+                            {
+                                string names = Path.GetFileName(f);
+                                string dire_names = Path.GetFileName(Path.GetDirectoryName(input_data[1]));
+                                Console.WriteLine(input_data[0] + " " + names + " " + input_data[1] + @"\" + f);
+                                if (names != "")
+                                {
+                                    await Download(client, input_data[0], names, input_data[1] + @"\" + f);
+                                }
+                            }
+                            string fors = Path.GetDirectoryName(input_data[1]);
+                            //MessageBox.Show(fors + "のダウンロードを完了しました");
+                            log_box.Items.Add(fors + "のダウンロードを完了しました");
+                            log_box.ScrollIntoView(fors + "のダウンロードを完了しました");
+                        }
+                        else
+                        {
+                            log_box.Items.Add("保存先ディレクトリ(" + input_data[1] + ")が見つからないためダウンロード処理を中断しました");
+                        }
+                        log_box.Items.Add("すべてのダウンロードが完了しました");
+                        log_box.ScrollIntoView("すべてのダウンロードが完了しました");
+                        close_button.IsEnabled = true;
+                    }
+                }
             }
             catch (Exception es)
             {
@@ -290,6 +405,72 @@ namespace WpfApp1
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //選択中
+
+            int indexs = game_list.SelectedIndex;
+            if (indexs >= 0)
+            {
+                string[] texts = (string[])game_list.Items.GetItemAt(indexs);
+                if (texts.Length > 1)
+                {
+                    //se^bubasyo aru baa i
+                    if (types == 0)
+                    {
+                        Downloadse(client, texts);
+                    }
+                    else
+                    {
+                        Uploades(client,texts);
+                    }
+                    
+                }
+                else
+                {
+                    MessageBox.Show("選択中のゲームタイトルが不正です\n\n処理を中断します");
+                }
+            }
+            else
+            {
+                MessageBox.Show("選択中のゲームタイトルが不正です\n\n処理を中断します");
+            }
+            
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            //一括
+            if (types == 0)
+            {
+                Downloadse(client,null);
+            }
+            else
+            {
+                Uploades(client,null);
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var win = new DropBoxList();
+            win.Owner = this;
+            win.ShowDialog();
+        }
+
+        private void game_list_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int indexs = game_list.SelectedIndex;
+            if (indexs >= 0)
+            {
+                selct_button.IsEnabled = true;
+            }
+            else
+            {
+                selct_button.IsEnabled = false;
+            }
         }
     }
 }

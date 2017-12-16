@@ -176,6 +176,7 @@ namespace WpfApp1
             {
                 
                 var window = new LogWindow(client,1);
+                window.Owner = this;
                 window.Show();
             }
             else if (result == MessageBoxResult.No)
@@ -251,6 +252,7 @@ namespace WpfApp1
             if (result == MessageBoxResult.Yes)
             {
                 var window = new LogWindow(client,0);
+                window.Owner = this;
                 window.Show();
             }
             else if (result == MessageBoxResult.No)

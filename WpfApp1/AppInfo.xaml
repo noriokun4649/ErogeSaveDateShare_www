@@ -28,7 +28,7 @@
             <ColumnDefinition Width="185*"/>
             <ColumnDefinition Width="223*"/>
         </Grid.ColumnDefinitions>
-        <Image Source="icon.png" IsHitTestVisible="True" Margin="10" Grid.RowSpan="8"/>
+        <Image Source="image\icon.png" IsHitTestVisible="True" Margin="10" Grid.RowSpan="8"/>
         <TextBlock Margin="8,17,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="227" Text="エロゲのセーブデータ共有したったｗｗｗ" HorizontalAlignment="Left" TextAlignment="Center" FontWeight="Bold" Height="16" Grid.Column="1"/>
         <TextBlock x:Name="version" HorizontalAlignment="Left" Margin="120,34,0,0" TextWrapping="Wrap" Text="Version V.x.x.x" VerticalAlignment="Top" Width="101" TextAlignment="Right" Grid.Column="1" Height="16"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,50,0,0" TextWrapping="Wrap" Text="Copyright © 2017 noriokun4649" VerticalAlignment="Top" Width="225" Grid.Column="1" Height="16"/>

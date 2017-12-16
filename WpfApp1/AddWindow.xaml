@@ -12,7 +12,6 @@
             <ColumnDefinition Width="25*"/>
         </Grid.ColumnDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="ゲーム管理" VerticalAlignment="Top" Height="49" Width="554" FontSize="36" Grid.ColumnSpan="2"/>
-        <ListBox x:Name="ListBox1"  Height="246" Margin="24,82,0,0" VerticalAlignment="Top" AllowDrop="True" SelectionChanged="ListBox1_SelectionChanged" Drop="ListBox1_DragEnter" HorizontalContentAlignment="Stretch"  />
         <TextBox x:Name="game_title" Height="23" Margin="127,354,0,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
         <TextBlock HorizontalAlignment="Left" Margin="42,355,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="22"><Run Text="ゲームタイトル"/><LineBreak/><Run/></TextBlock>
         <Button x:Name="add" Content="追加" HorizontalAlignment="Left" Margin="108,530,0,0" VerticalAlignment="Top" Width="105" RenderTransformOrigin="0.9,0.4" Height="50" Click="Button_Click_5"/>
@@ -27,6 +26,14 @@
         <Button Content="全削除" HorizontalAlignment="Left" Margin="471,19,0,0" VerticalAlignment="Top" Width="59" Height="32" Click="Button_Click_7"/>
         <TextBlock HorizontalAlignment="Left" Margin="42,392,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="511" Grid.ColumnSpan="2"><Run Text="※"/><Run Text=""/><Run Text="セーブデータはゲームタイトルで区別され、同名のゲームタイトルのものが複数コンピュータ間で共有されます"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="42,488,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="318"><Run Text="※"/><Run Text=""/><Run Text="セーブデータ"/><Run Text="が複数ファイルで構成されている場合はフォルダ参照を"/><LineBreak/><Run Text="　一つのファイルで構成されてる場合はファイル参照を選んでください"/></TextBlock>
+        <ListView x:Name="game_view" HorizontalAlignment="Left" Height="246" Margin="24,82,0,0" VerticalAlignment="Top" Width="529" Grid.ColumnSpan="2" DragEnter="game_view_DragEnter" SelectionChanged="game_view_SelectionChanged" AllowDrop="True" Drop="game_view_Drop">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ゲームタイトル" DisplayMemberBinding="{Binding [0]}"/>
+                    <GridViewColumn Header="セーブデータ場所" DisplayMemberBinding="{Binding [1]}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 
 </Window>

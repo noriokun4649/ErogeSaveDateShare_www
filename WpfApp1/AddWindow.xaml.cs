@@ -27,8 +27,8 @@ namespace WpfApp1
                 // Read and display lines from the file until the end of 
                 // the file is reached.
                 while ((line = stream.ReadLine()) != null)
-                {
-                    ListBox1.Items.Add(line);
+                {   
+                    game_view.Items.Add(line.Split(','));
                 }
                 stream.Close();
             }
@@ -45,23 +45,23 @@ namespace WpfApp1
         {
             /// 項目を削除します
             // 選択項目がない場合は処理をしない
-            if (ListBox1.SelectedItems.Count == 0)
+            if (game_view.SelectedItems.Count == 0)
                 return;
 
             // 選択された項目を削除
 
-            ListBox1.Items.RemoveAt(ListBox1.SelectedIndex);
+            game_view.Items.RemoveAt(game_view.SelectedIndex);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            int indexs = ListBox1.SelectedIndex;
+            int indexs = game_view.SelectedIndex;
             if (indexs >= 0)
             {
                 if (!game_title.Text.Contains(","))
                 {
-                    ListBox1.Items.RemoveAt(indexs);
-                    ListBox1.Items.Insert(indexs, game_title.Text + "," + file_box.Text);
+                    game_view.Items.RemoveAt(indexs);
+                    game_view.Items.Insert(indexs, new string[] { game_title.Text, file_box.Text });
                 }
                 else
                 {
@@ -75,7 +75,7 @@ namespace WpfApp1
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            int counts = ListBox1.Items.Count;
+            int counts = game_view.Items.Count;
             if (counts > 0)
             {
                 try
@@ -84,7 +84,7 @@ namespace WpfApp1
 
                     for (int i = 0; i < counts; i++)
                     {
-                        stream.WriteLine(ListBox1.Items.GetItemAt(i));
+                        stream.WriteLine(game_view.Items.GetItemAt(i));
                     }
                     stream.Close();
                 }
@@ -141,7 +141,7 @@ namespace WpfApp1
             {
                 if (!game_title.Text.Contains(","))
                 {
-                    ListBox1.Items.Add(game_title.Text + "," + file_box.Text);
+                    game_view.Items.Add(new string[] { game_title.Text, file_box.Text });
                     game_title.Text = "";
                     file_box.Text = "";
                 }
@@ -154,35 +154,10 @@ namespace WpfApp1
                 }
             }
         }
-
-        private void ListBox1_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-
-            int indexs = ListBox1.SelectedIndex;
-            if (indexs >= 0)
-            {
-                save.IsEnabled = true;
-                delete.IsEnabled = true;
-                file_box.Text = "";
-                game_title.Text = "";
-                string text = (string)ListBox1.Items.GetItemAt(indexs);
-                string[] texts = text.Split(',');
-                game_title.Text = texts[0];
-                if (texts.Length > 1)
-                {
-                    file_box.Text = texts[1];
-                }
-            }
-            else
-            {
-                save.IsEnabled = false;
-                delete.IsEnabled = false;
-            }
-        }
-
+        
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            int counts = ListBox1.Items.Count;
+            int counts = game_view.Items.Count;
             if (counts > 0)
             {
                 try
@@ -191,7 +166,8 @@ namespace WpfApp1
 
                     for (int i = 0; i < counts; i++)
                     {
-                        stream.WriteLine(ListBox1.Items.GetItemAt(i));
+                        string[] texts = (string[])game_view.Items.GetItemAt(i);
+                        stream.WriteLine(texts[0]+","+texts[1]);
                     }
                     stream.Close();
 
@@ -221,26 +197,7 @@ namespace WpfApp1
 
             }
         }
-
-        private void ListBox1_DragEnter(object sender, DragEventArgs e)
-        {
-
-            string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
-            if (files != null)
-            {
-                foreach (var s in files)
-                {
-                    ListBox1.Items.Add(Path.GetFileNameWithoutExtension(s));
-
-                }
-            }
-
-            if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
-                e.Effects = DragDropEffects.Copy;
-            else
-                e.Effects = DragDropEffects.None;
-            e.Handled = true;
-        }
+        
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
@@ -251,7 +208,57 @@ namespace WpfApp1
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
-            ListBox1.Items.Clear();
+            game_view.Items.Clear();
+        }
+
+        private void game_view_DragEnter(object sender, DragEventArgs e)
+        {
+
+
+
+        }
+        
+
+        private void game_view_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            int indexs = game_view.SelectedIndex;
+            if (indexs >= 0)
+            {
+                save.IsEnabled = true;
+                delete.IsEnabled = true;
+                file_box.Text = "";
+                game_title.Text = "";
+                string[] texts = (string[])game_view.Items.GetItemAt(indexs);
+                game_title.Text = texts[0];
+                if (texts.Length > 1)
+                {
+                    file_box.Text = texts[1];
+                }
+            }
+            else
+            {
+                save.IsEnabled = false;
+                delete.IsEnabled = false;
+            }
+
+        }
+
+        private void game_view_Drop(object sender, DragEventArgs e)
+        {
+            string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
+            if (files != null)
+            {
+                foreach (var s in files)
+                {
+                    game_view.Items.Add(new string[] { Path.GetFileNameWithoutExtension(s), "" });
+                }
+            }
+
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
+                e.Effects = DragDropEffects.Copy;
+            else
+                e.Effects = DragDropEffects.None;
+            e.Handled = true;
         }
     }
 }

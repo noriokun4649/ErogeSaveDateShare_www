@@ -3,21 +3,50 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp1"
+        xmlns:src="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="AddWindow" Height="443.425" Width="581.199">
+        Title="ゲーム管理" Height="624.872" Width="583.012" Closing="Window_Closing" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="ゲーム管理" VerticalAlignment="Top" Height="49" Width="554" FontSize="36"/>
-        <ListBox HorizontalAlignment="Left" Height="192" Margin="33,64,0,0" VerticalAlignment="Top" Width="507"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="118,276,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="422"/>
-        <TextBlock HorizontalAlignment="Left" Margin="33,277,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="22"><Run Text="ゲームタイトル"/><LineBreak/><Run/></TextBlock>
-        <Button Content="追加" HorizontalAlignment="Left" Margin="118,352,0,0" VerticalAlignment="Top" Width="105" RenderTransformOrigin="0.9,0.4" Height="50"/>
-        <Button Content="削除" HorizontalAlignment="Left" Margin="364,352,0,0" VerticalAlignment="Top" Width="104" RenderTransformOrigin="0.342,0.475" Click="Button_Click" Height="50"/>
-        <Button Content="保存" HorizontalAlignment="Left" Margin="240,352,0,0" VerticalAlignment="Top" Width="106" Click="Button_Click_1" RenderTransformOrigin="0.053,0.625" Height="50"/>
-        <Button Content="戻る" HorizontalAlignment="Left" Margin="493,352,0,0" VerticalAlignment="Top" Width="70" Height="50" Click="Button_Click_2"/>
-        <TextBlock HorizontalAlignment="Left" Margin="33,312,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="セーブ"/><Run Text="データ"/><Run Text="場所"/></TextBlock>
-        <TextBox x:Name="file_box" HorizontalAlignment="Left" Height="23" Margin="118,310,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="228"/>
-        <Button Content="参照" HorizontalAlignment="Left" Margin="364,310,0,0" VerticalAlignment="Top" Width="76" RenderTransformOrigin="-0.053,1.334" Click="Button_Click_3"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="465,310,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_4"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="552*"/>
+            <ColumnDefinition Width="25*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="ゲーム管理" VerticalAlignment="Top" Height="49" Width="554" FontSize="36" Grid.ColumnSpan="2"/>
+        <ListBox x:Name="ListBox1"  Height="246" Margin="24,82,0,0" VerticalAlignment="Top" AllowDrop="True" SelectionChanged="ListBox1_SelectionChanged" Drop="ListBox1_DragEnter" HorizontalContentAlignment="Stretch"  />
+        <TextBox x:Name="game_title" Height="23" Margin="127,354,0,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+        <TextBlock HorizontalAlignment="Left" Margin="42,355,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="22"><Run Text="ゲームタイトル"/><LineBreak/><Run/></TextBlock>
+        <Button x:Name="add" Content="追加" HorizontalAlignment="Left" Margin="108,530,0,0" VerticalAlignment="Top" Width="105" RenderTransformOrigin="0.9,0.4" Height="50" Click="Button_Click_5"/>
+        <Button x:Name="delete" Content="削除" HorizontalAlignment="Left" Margin="354,530,0,0" VerticalAlignment="Top" Width="104" RenderTransformOrigin="0.342,0.475" Click="Button_Click" Height="50"/>
+        <Button x:Name="save" Content="保存" HorizontalAlignment="Left" Margin="230,530,0,0" VerticalAlignment="Top" Width="106" Click="Button_Click_1" RenderTransformOrigin="0.053,0.625" Height="50"/>
+        <Button Content="戻る" HorizontalAlignment="Left" Margin="472,530,0,0" VerticalAlignment="Top" Width="70" Height="50" Click="Button_Click_2" RenderTransformOrigin="0.257,0.54"/>
+        <TextBlock HorizontalAlignment="Left" Margin="42,443,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="セーブ"/><Run Text="データ"/><Run Text="場所"/></TextBlock>
+        <TextBox x:Name="file_box" Height="54" Margin="127,424,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
+        <Button Content="ファイル参照" HorizontalAlignment="Left" Margin="365,493,0,0" VerticalAlignment="Top" Width="76" RenderTransformOrigin="-0.053,1.334" Click="Button_Click_3"/>
+        <Button Content="フォルダ参照" Margin="455,493,10,0" Click="Button_Click_4" RenderTransformOrigin="0.413,0.35" HorizontalContentAlignment="Center" Height="20" VerticalContentAlignment="Stretch" VerticalAlignment="Top"/>
+        <Button Content="DropBox上のセーブデータ" HorizontalAlignment="Left" Margin="268,19,0,0" VerticalAlignment="Top" Width="196" Height="32" Click="Button_Click_6" FontSize="18"/>
+        <Button Content="全削除" HorizontalAlignment="Left" Margin="471,19,0,0" VerticalAlignment="Top" Width="59" Height="32" Click="Button_Click_7"/>
+        <TextBlock HorizontalAlignment="Left" Margin="42,392,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="511" Grid.ColumnSpan="2"><Run Text="※"/><Run Text=""/><Run Text="セーブデータはゲームタイトルで区別され、同名のゲームタイトルのものが複数コンピュータ間で共有されます"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="42,488,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="318"><Run Text="※"/><Run Text=""/><Run Text="セーブデータ"/><Run Text="が複数ファイルで構成されている場合はフォルダ参照を"/><LineBreak/><Run Text="　一つのファイルで構成されてる場合はファイル参照を選んでください"/></TextBlock>
     </Grid>
+
 </Window>
+
+<!--
+        
+        
+    <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="ゲーム管理" VerticalAlignment="Top" Height="49" Width="554" FontSize="36"/>
+    <ListBox x:Name="ListBox1" HorizontalAlignment="Left"  Height="246" Margin="33,82,0,0" VerticalAlignment="Top" AllowDrop="True" Width="497" SelectionChanged="ListBox1_SelectionChanged" Drop="ListBox1_DragEnter"  />
+    <TextBox x:Name="game_title" HorizontalAlignment="Left" Height="23" Margin="127,349,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="422"/>
+    <TextBlock HorizontalAlignment="Left" Margin="42,350,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="22"><Run Text="ゲームタイトル"/><LineBreak/><Run/></TextBlock>
+    <Button Content="追加" HorizontalAlignment="Left" Margin="108,496,0,0" VerticalAlignment="Top" Width="105" RenderTransformOrigin="0.9,0.4" Height="50" Click="Button_Click_5"/>
+    <Button Content="削除" HorizontalAlignment="Left" Margin="354,496,0,0" VerticalAlignment="Top" Width="104" RenderTransformOrigin="0.342,0.475" Click="Button_Click" Height="50"/>
+    <Button Content="保存" HorizontalAlignment="Left" Margin="230,496,0,0" VerticalAlignment="Top" Width="106" Click="Button_Click_1" RenderTransformOrigin="0.053,0.625" Height="50"/>
+    <Button Content="戻る" HorizontalAlignment="Left" Margin="483,496,0,0" VerticalAlignment="Top" Width="70" Height="50" Click="Button_Click_2"/>
+    <TextBlock HorizontalAlignment="Left" Margin="42,409,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="セーブ"/><Run Text="データ"/><Run Text="場所"/></TextBlock>
+    <TextBox x:Name="file_box" HorizontalAlignment="Left" Height="54" Margin="127,390,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="422"/>
+    <Button Content="ファイル参照" HorizontalAlignment="Left" Margin="363,459,0,0" VerticalAlignment="Top" Width="76" RenderTransformOrigin="-0.053,1.334" Click="Button_Click_3"/>
+    <Button Content="フォルダ参照" HorizontalAlignment="Left" Margin="465,459,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_4"/>
+    <Button Content="共有済みリスト" HorizontalAlignment="Left" Margin="377,19,0,0" VerticalAlignment="Top" Width="161" Height="32" Click="Button_Click_6" FontSize="18"/>
+
+
+    -->

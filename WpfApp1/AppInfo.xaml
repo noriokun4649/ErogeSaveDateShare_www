@@ -1,0 +1,44 @@
+﻿<Window x:Class="WpfApp1.AppInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="このアプリケーションについて" Height="349.855" Width="444.629" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" WindowStyle="None">
+    <Grid MouseDown="Grid_MouseDown">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                <GradientStop Color="White" Offset="0.285"/>
+                <GradientStop Color="#FF14BFFF"/>
+                <GradientStop Color="#FF0BBCFF" Offset="1"/>
+                <GradientStop Color="White" Offset="0.754"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="76*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="33*"/>
+            <RowDefinition Height="33*"/>
+            <RowDefinition Height="32*"/>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="56*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="185*"/>
+            <ColumnDefinition Width="223*"/>
+        </Grid.ColumnDefinitions>
+        <Image Source="icon.png" IsHitTestVisible="True" Margin="10" Grid.RowSpan="8"/>
+        <TextBlock Margin="8,17,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="227" Text="エロゲのセーブデータ共有したったｗｗｗ" HorizontalAlignment="Left" TextAlignment="Center" FontWeight="Bold" Height="16" Grid.Column="1"/>
+        <TextBlock x:Name="version" HorizontalAlignment="Left" Margin="120,34,0,0" TextWrapping="Wrap" Text="Version V.x.x.x" VerticalAlignment="Top" Width="101" TextAlignment="Right" Grid.Column="1" Height="16"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,50,0,0" TextWrapping="Wrap" Text="Copyright © 2017 noriokun4649" VerticalAlignment="Top" Width="225" Grid.Column="1" Height="16"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" TextAlignment="Center" Height="16" Grid.Column="1" Grid.Row="4"><Run Text="～"/><Run Text="～"/><Run Text="～"/><Run Text="オープンソースライブラリ"/><Run Text="～～～"/></TextBlock>
+        <TextBlock TextWrapping="Wrap" Margin="10,1" Grid.Column="1" Grid.Row="5"><Run Text="RestSharp"/><Run Text=" - "/><Run FontStyle="Italic" Text="Apache License 2.0"/><LineBreak/><Run/><Hyperlink><Run Text="http://restsharp.org"/></Hyperlink></TextBlock>
+        <TextBlock TextWrapping="Wrap" Margin="10,4" Grid.Column="1" Grid.Row="6"><Run Text="Dropbox.NET"/><LineBreak/><Hyperlink Click="Hyperlink_Click_1"><Run Text="https://github.com/dropbox/dropbox-sdk-dotnet"/></Hyperlink></TextBlock>
+        <TextBlock TextWrapping="Wrap" Grid.Column="1" Margin="10,0,8,0" Grid.Row="1"><Run Text="Blog"/> <Hyperlink Click="Hyperlink_Click_2"><Run Text="https://noriokun4649.blog.fc2.com"/></Hyperlink></TextBlock>
+        <TextBlock TextWrapping="Wrap" Grid.Column="1" Margin="10,0,8,0" Height="33" VerticalAlignment="Center" Grid.Row="2"><Run Text="Twitter"/> <Hyperlink Click="Hyperlink_Click_3"><Run Text="@noriokun_blog"/></Hyperlink></TextBlock>
+        <TextBox HorizontalAlignment="Left" Height="31" Margin="10,0,0,0" TextWrapping="Wrap" Text="✉noriokun.official.mail@gmail.com" VerticalAlignment="Top" Width="211" IsReadOnly="True" Grid.Column="1" VerticalContentAlignment="Center" Grid.Row="3"/>
+
+
+    </Grid>
+</Window>

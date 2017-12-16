@@ -58,5 +58,53 @@ namespace WpfApp1.Properties {
                 this["dropbox_snyc"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string dropbox_user_token {
+            get {
+                return ((string)(this["dropbox_user_token"]));
+            }
+            set {
+                this["dropbox_user_token"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string dropbox_user_secret {
+            get {
+                return ((string)(this["dropbox_user_secret"]));
+            }
+            set {
+                this["dropbox_user_secret"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AccessToken {
+            get {
+                return ((string)(this["AccessToken"]));
+            }
+            set {
+                this["AccessToken"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Uid {
+            get {
+                return ((string)(this["Uid"]));
+            }
+            set {
+                this["Uid"] = value;
+            }
+        }
     }
 }

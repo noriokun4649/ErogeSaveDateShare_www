@@ -54,7 +54,8 @@ namespace WpfApp1
                     TimeZoneInfo jst = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
                     // 変換元DateTimeのKindプロパティが指すタイムゾーンから、指定したタイムゾーンに変換
                     DateTime now_jst = TimeZoneInfo.ConvertTime(file.ServerModified, jst);
-                    
+
+                    //client.Files.
 
                     /*Console.WriteLine("F{0,8} {1}",
                         file.Size,

@@ -15,7 +15,7 @@
             <RowDefinition Height="233*"/>
             <RowDefinition Height="36*"/>
         </Grid.RowDefinitions>
-        <Button Content="閉じる" Margin="434,6,10,0" VerticalAlignment="Top" Width="75" Click="Button_Click" RenderTransformOrigin="0.889,0.378" Grid.Row="1" Height="20" HorizontalContentAlignment="Center"/>
+        <Button Content="閉じる" Margin="434,6,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" RenderTransformOrigin="0.889,0.378" Grid.Row="1" Height="20" HorizontalContentAlignment="Center" HorizontalAlignment="Left"/>
         <ListView x:Name="listview" Margin="20,10,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
             <ListView.View>
                 <GridView>

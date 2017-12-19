@@ -68,5 +68,14 @@ namespace WpfApp1
         {
             this.Close();
         }
+
+        private void Hyperlink_Click_4(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("https://sites.google.com/view/eroge-save-date-share-www/");
+            }
+            catch { }
+        }
     }
 }

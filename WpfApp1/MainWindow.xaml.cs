@@ -193,16 +193,22 @@ namespace WpfApp1
                 //MessageBoxImage.Information);
             try
             {
-                Console.WriteLine("Upload file...");
+                //Console.WriteLine("Upload file...");
                 FileStream fileStream = new FileStream(fileContent, FileMode.Open);
                 var response = await client.Files.UploadAsync("/" + fileName, WriteMode.Overwrite.Instance, body: fileStream);
-                Console.WriteLine("Uploaded Id {0} Rev {1}", response.Id, response.Rev);
-                //MessageBox.Show(fileName + "のアップロードを完了しました",
-                //"メッセージ",
-                //MessageBoxButton.OK,
-                //MessageBoxImage.Information);
+                //Console.WriteLine("Uploaded Id {0} Rev {1}", response.Id, response.Rev);
+                MessageBox.Show("設定のアップロードが完了しました。\n\nこの設定を引継ぎたいコンピュータで「設定のダウンロード」を押し、表示されるメッセージに従ってください。", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
                 fileStream.Close();
             }
+            catch (BadInputException exs)
+            {
+                string masssge = exs.Message.Replace("Invalid authorization value in HTTP header", "HTTPヘッダーの認証項目が無効です。").Replace("Error in call to API function", "API 関数の呼び出しでエラーが発生しました").Replace("oauth2-access-token", "DropBoxの連携が正常に完了してない可能性があります。確認してください。");
+                MessageBox.Show("無効なHTTPリクエストです。\n" + masssge,
+                "無効なHTTPリクエスト",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            }
+            
             catch (Exception ex2)
             {
                 MessageBox.Show(fileName + "のアップロードに問題が発生しました\n\n" + ex2.Message,
@@ -216,7 +222,7 @@ namespace WpfApp1
         
         private async Task Download_setting(DropboxClient client, string file)
         {
-            Console.WriteLine("Download file...");
+            //Console.WriteLine("Download file...");
             //MessageBox.Show(file + "のダウンロードを開始しました", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
             try
             {
@@ -227,9 +233,17 @@ namespace WpfApp1
                     sw.Write(await response.GetContentAsStringAsync());
                     sw.Close();
                     fileStream.Close();
-                    //MessageBox.Show(file + "のダウンロードが完了しました", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("設定のダウンロードが完了しました。\n\nゲーム追加・管理にてこのコンピュータに合わせたセーブデータ場所を設定しなおしてください。", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 }
+            }
+            catch (BadInputException exs)
+            {
+                string masssge = exs.Message.Replace("Invalid authorization value in HTTP header", "HTTPヘッダーの認証項目が無効です。").Replace("Error in call to API function", "API 関数の呼び出しでエラーが発生しました").Replace("oauth2-access-token", "DropBoxの連携が正常に完了してない可能性があります。確認してください。");
+                MessageBox.Show("無効なHTTPリクエストです。\n" + masssge,
+ "無効なHTTPリクエスト",
+ MessageBoxButton.OK,
+ MessageBoxImage.Error);
             }
             catch (ApiException<DownloadError> ex)
             {

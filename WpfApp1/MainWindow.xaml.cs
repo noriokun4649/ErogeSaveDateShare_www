@@ -14,9 +14,9 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static String file_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/エロゲのセーブデータ共有したったｗｗｗ/eroge_game_lists.csv";
-        public static String folder_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/エロゲのセーブデータ共有したったｗｗｗ";
-        static String users = "";
+        public static string file_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/エロゲのセーブデータ共有したったｗｗｗ/eroge_game_lists.csv";
+        public static string folder_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/エロゲのセーブデータ共有したったｗｗｗ";
+        static string users = "";
         bool isAcces = false;
 
         public MainWindow()
@@ -24,7 +24,7 @@ namespace WpfApp1
             InitializeComponent();
             checkbox_drop.IsChecked = Properties.Settings.Default.dropbox_snyc;
             checkbox_pc.IsChecked = Properties.Settings.Default.pc_snyc;
-            String ac = Properties.Settings.Default.AccessToken;
+            string ac = Properties.Settings.Default.AccessToken;
             if (ac != "")
             {
                 isAcces = true;

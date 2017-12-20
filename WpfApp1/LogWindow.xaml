@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="LogWindow" Height="539.337" Width="470.242" Closing="Window_Closing" WindowStartupLocation="CenterOwner" SizeToContent="Width" ResizeMode="NoResize">
+        Title="LogWindow" Height="539.337" Width="470.242" WindowStartupLocation="CenterOwner" SizeToContent="Width" ResizeMode="NoResize">
     <Grid Margin="0,0,2,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="457*"/>
@@ -19,9 +19,9 @@
             <RowDefinition Height="49*"/>
         </Grid.RowDefinitions>
         <ListBox x:Name="log_box" Margin="10,10,10,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="3" Height="133" VerticalAlignment="Top"/>
-        <Button x:Name="close_button" Content="完了" Margin="372,10,10,0" Grid.Row="4" VerticalAlignment="Top" Height="22" Click="close_button_Click"/>
+        <Button x:Name="close_button" Content="完了" Margin="372,10,10,0" Grid.Row="4" VerticalAlignment="Top" Height="22" Click="Close_button_Click"/>
         <TextBlock x:Name="titletext" HorizontalAlignment="Left" Margin="15,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="45" Width="432" FontSize="36"/>
-        <ListView x:Name="game_list" Margin="10,0,10,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" SelectionChanged="game_list_SelectionChanged" Height="188" VerticalAlignment="Bottom" Grid.Row="1">
+        <ListView x:Name="game_list" Margin="10,0,10,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" SelectionChanged="Game_list_SelectionChanged" Height="188" VerticalAlignment="Bottom" Grid.Row="1">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ゲームタイトル" DisplayMemberBinding="{Binding [0]}"/>

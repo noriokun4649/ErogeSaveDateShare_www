@@ -16,9 +16,13 @@ namespace WpfApp1
         {
             InitializeComponent();
             DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
-            ListFolder(client, "");
+            Lists(client, "");
         }
-       
+         
+        private async void Lists(DropboxClient client, string path)
+        {
+            await ListFolder(client, path);
+        }
 
         private async Task<ListFolderResult> ListFolder(DropboxClient client, string path)
         {

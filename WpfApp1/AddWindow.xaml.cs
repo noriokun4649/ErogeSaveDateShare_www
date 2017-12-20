@@ -210,16 +210,10 @@ namespace WpfApp1
         {
             game_view.Items.Clear();
         }
-
-        private void game_view_DragEnter(object sender, DragEventArgs e)
-        {
-
-
-
-        }
+        
         
 
-        private void game_view_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void Game_view_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             int indexs = game_view.SelectedIndex;
             if (indexs >= 0)
@@ -243,7 +237,7 @@ namespace WpfApp1
 
         }
 
-        private void game_view_Drop(object sender, DragEventArgs e)
+        private void Game_view_Drop(object sender, DragEventArgs e)
         {
             string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
             if (files != null)
@@ -259,6 +253,11 @@ namespace WpfApp1
             else
                 e.Effects = DragDropEffects.None;
             e.Handled = true;
+        }
+
+        private void Game_view_DragEnter(object sender, DragEventArgs e)
+        {
+
         }
     }
 }

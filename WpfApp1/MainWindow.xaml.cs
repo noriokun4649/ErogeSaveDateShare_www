@@ -160,8 +160,10 @@ namespace WpfApp1
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var win = new AddWindow();
-            win.Owner = this;
+            var win = new AddWindow
+            {
+                Owner = this
+            };
             win.ShowDialog();
         }
 
@@ -174,9 +176,11 @@ namespace WpfApp1
             DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
             if (result == MessageBoxResult.Yes)
             {
-                
-                var window = new LogWindow(client,1);
-                window.Owner = this;
+
+                var window = new LogWindow(client, 1)
+                {
+                    Owner = this
+                };
                 window.Show();
             }
             else if (result == MessageBoxResult.No)
@@ -265,8 +269,10 @@ namespace WpfApp1
 
             if (result == MessageBoxResult.Yes)
             {
-                var window = new LogWindow(client,0);
-                window.Owner = this;
+                var window = new LogWindow(client, 0)
+                {
+                    Owner = this
+                };
                 window.Show();
             }
             else if (result == MessageBoxResult.No)
@@ -276,7 +282,7 @@ namespace WpfApp1
         
 
 
-        private void Button_Click_4(object sender, RoutedEventArgs e)
+        private async void Button_Click_4(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("DropBox上に現在のPCの設定をアップロードします。\n\nDropBox上の設定は上書きされます。続行しますか？",
                 "DropBoxへアップロード",
@@ -287,7 +293,7 @@ namespace WpfApp1
             {
                 DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
                 Console.WriteLine(Path.GetPathRoot(file_path) + Path.GetFileName(file_path) + file_path);
-                Upload(client, Path.GetFileName(file_path), file_path);
+                await Upload(client, Path.GetFileName(file_path), file_path);
 
 
             }
@@ -299,7 +305,7 @@ namespace WpfApp1
 
         }
 
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+        private async void Button_Click_5(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("PCにDropBox上の設定をダウンロードします。\n\nPC上にある現在の設定は上書きされます。続行しますか？",
             "PCへダウンロード",
@@ -312,7 +318,7 @@ namespace WpfApp1
                 DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
                 FileMetadata fileMetadata = new FileMetadata();
 
-                Download_setting(client, Path.GetFileName(file_path));
+               await Download_setting(client, Path.GetFileName(file_path));
             }
             else if (result == MessageBoxResult.No)
             {
@@ -322,8 +328,10 @@ namespace WpfApp1
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            Window win = new AppInfo();
-            win.Owner = this;
+            Window win = new AppInfo
+            {
+                Owner = this
+            };
             win.ShowDialog();
         }
     }

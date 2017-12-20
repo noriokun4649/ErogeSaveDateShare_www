@@ -435,14 +435,14 @@ namespace WpfApp1
             return rest;
         }
 
-        private async Task<FolderMetadata> CreateFolder(DropboxClient client, string path)
+        private async Task<CreateFolderResult> CreateFolder(DropboxClient client, string path)
         {
-            var folder = new FolderMetadata();
+            var folder = new CreateFolderResult();
             try
             {
                 Console.WriteLine("--- Creating Folder ---");
                 var folderArg = new CreateFolderArg(path);
-                folder = await client.Files.CreateFolderAsync(folderArg);
+                folder = await client.Files.CreateFolderV2Async(folderArg);
                 Console.WriteLine("Folder: " + path + " created!");
                 //MessageBox.Show(path + "を作成しました",
                 //"メッセージ",
@@ -453,6 +453,7 @@ namespace WpfApp1
             }
             catch (ApiException<CreateFolderError> ex)
             {
+                string a = ex.Message;
                 log_box.Items.Add(path + "の作成に問題が発生しました。すでにフォルダが存在している可能性があります");
                 /*
                 log_box.ScrollIntoView(path + "の作成に問題が発生しました。すでにフォルダが存在している可能性があります");
@@ -543,17 +544,11 @@ namespace WpfApp1
             }
         }
 
-        private void close_button_Click(object sender, RoutedEventArgs e)
+        private void Close_button_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void  Button_Click(object sender, RoutedEventArgs e)
         {
             //選択中
 
@@ -566,11 +561,11 @@ namespace WpfApp1
                     //se^bubasyo aru baa i
                     if (types == 0)
                     {
-                        Downloadse(client, texts);
+                        await Downloadse(client, texts);
                     }
                     else
                     {
-                        Uploades(client, texts);
+                        await Uploades(client, texts);
                     }
 
                 }
@@ -586,27 +581,29 @@ namespace WpfApp1
 
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
             //一括
             if (types == 0)
             {
-                Downloadse(client, null);
+                await Downloadse(client, null);
             }
             else
             {
-                Uploades(client, null);
+                await Uploades(client, null);
             }
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            var win = new DropBoxList();
-            win.Owner = this;
+            var win = new DropBoxList
+            {
+                Owner = this
+            };
             win.ShowDialog();
         }
 
-        private void game_list_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Game_list_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int indexs = game_list.SelectedIndex;
             if (indexs >= 0)

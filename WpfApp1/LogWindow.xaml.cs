@@ -85,12 +85,71 @@ namespace WpfApp1
                             }
                             else if (Directory.Exists(lins[1]))//フォルダ
                             {
+                                var s = await ListFolder(client, "/" + input_data[0]);
+
+
+
+                                System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ja-JP");
+
                                 string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
+
+
                                 foreach (String f in files)
                                 {
                                     string names = Path.GetFileName(f);
-                                    await Upload(client, lins[0], names, f);
+                                    int index1 = Array.IndexOf(s[0], names);
+                                    if (0 <= index1)
+                                    {
+
+                                        DateTime time_local = File.GetLastWriteTime(f);
+                                        DateTime times_dro = DateTime.Parse(s[1][index1]);
+                                        int time_if = time_local.CompareTo(times_dro);//PC上のデータはドロップボックスのデータよりも
+
+                                        Console.WriteLine("ファイル名" + f + " ローカル更新日:" + time_local + " 泥更新日:" + times_dro + "判定" + time_if);
+
+                                        MessageBoxResult result;
+                                        if (time_if == 0)
+                                        {
+                                            result = MessageBoxResult.No;
+                                            log_box.Items.Add("ファイルは更新されてません＾u＾");
+                                        }
+                                        else if (time_if > 0)
+                                        {
+                                            //MessageBox.Show(f + " はPC上のセーブデータがDropBox上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？", "DropBoxにアップロード");
+                                            result = MessageBoxResult.Yes;
+                                        }
+                                        else
+                                        {
+                                            if (Properties.Settings.Default.dropbox_snyc)
+                                            {
+                                                result = MessageBox.Show(f + " はDropBox上のセーブデータがPC上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？", "DropBoxにアップロード",
+                                                MessageBoxButton.YesNo,
+                                                MessageBoxImage.Information);
+                                            }
+                                            else
+                                            {
+
+                                                result = MessageBoxResult.Yes;
+                                            }
+                                        }
+
+                                        if (result == MessageBoxResult.Yes)
+                                        {
+                                            log_box.Items.Add(f + " をPC上のデータで上書きします");
+                                            await Upload(client, lins[0], names, f);
+                                        }
+                                        else
+                                        {
+                                            log_box.Items.Add(f + " の上書きはスキップされました");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("クラウドにはこのデータないですね");
+                                        await Upload(client, lins[0], names, f);
+                                    }
                                 }
+
                                 string fors = Path.GetDirectoryName(lins[1]);
                                 //MessageBox.Show(fors+"のアップロードを完了しました");
                                 log_box.Items.Add("ゲームタイトル→" + lins[0] + "のアップロードを完了しました");
@@ -119,12 +178,70 @@ namespace WpfApp1
                         }
                         else if (Directory.Exists(input_data[1]))//フォルダ
                         {
+                            var s = await ListFolder(client, "/" + input_data[0]);
+
+
+
+                            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ja-JP");
+
                             string[] files = System.IO.Directory.GetFiles(input_data[1], "*", System.IO.SearchOption.AllDirectories);
+
+
                             foreach (String f in files)
                             {
                                 string names = Path.GetFileName(f);
-                                await Upload(client, input_data[0], names, f);
+                                int index1 = Array.IndexOf(s[0], names);
+                                if (0 <= index1)
+                                {
+
+                                    DateTime time_local = File.GetLastWriteTime(f);
+                                    DateTime times_dro = DateTime.Parse(s[1][index1]);
+                                    int time_if = time_local.CompareTo(times_dro);//PC上のデータはドロップボックスのデータよりも
+
+                                    Console.WriteLine("ファイル名"+f+" ローカル更新日:"+time_local+ " 泥更新日:"+times_dro+ "判定"+time_if);
+
+                                    MessageBoxResult result;
+                                    if (time_if == 0)
+                                    {
+                                        result = MessageBoxResult.No;
+                                        log_box.Items.Add("ファイルは更新されてません＾u＾");
+                                    }else if (time_if > 0)
+                                    {
+                                            //MessageBox.Show(f + " はPC上のセーブデータがDropBox上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？", "DropBoxにアップロード");
+                                            result = MessageBoxResult.Yes;
+                                    }
+                                    else
+                                    {
+                                        if (Properties.Settings.Default.dropbox_snyc)
+                                        {
+                                            result = MessageBox.Show(f + " はDropBox上のセーブデータがPC上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？", "DropBoxにアップロード",
+                                            MessageBoxButton.YesNo,
+                                            MessageBoxImage.Information);
+                                        }
+                                        else
+                                        {
+
+                                            result = MessageBoxResult.Yes;
+                                        }
+                                    }
+
+                                    if (result == MessageBoxResult.Yes)
+                                    {
+                                        log_box.Items.Add(f+" をPC上のデータで上書きします");
+                                        await Upload(client, input_data[0], names, f);
+                                    }
+                                    else
+                                    {
+                                        log_box.Items.Add(f + " の上書きはスキップされました");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("クラウドにはこのデータないですね");
+                                    await Upload(client, input_data[0], names, f);
+                                }
                             }
+
                             string fors = Path.GetDirectoryName(input_data[1]);
                             //MessageBox.Show(fors+"のアップロードを完了しました");
                             log_box.Items.Add("ゲームタイトル→" + input_data[0] + "のアップロードを完了しました");
@@ -238,7 +355,7 @@ namespace WpfApp1
                                     else
                                     {
                                         result = MessageBoxResult.Yes;
-                                        MessageBox.Show("DropBox上のセーブデータがPC上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？");
+                                        //MessageBox.Show("DropBox上のセーブデータがPC上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？");
                                     }
 
                                     if (result == MessageBoxResult.Yes)

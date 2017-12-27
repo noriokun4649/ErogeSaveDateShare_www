@@ -105,7 +105,7 @@ namespace WpfApp1
                                         DateTime times_dro = DateTime.Parse(s[1][index1]);
                                         int time_if = time_local.CompareTo(times_dro);//PC上のデータはドロップボックスのデータよりも
 
-                                        Console.WriteLine("ファイル名" + f + " ローカル更新日:" + time_local + " 泥更新日:" + times_dro + "判定" + time_if);
+                                        //Console.WriteLine("ファイル名" + f + " ローカル更新日:" + time_local + " 泥更新日:" + times_dro + "判定" + time_if);
 
                                         MessageBoxResult result;
                                         if (time_if == 0)
@@ -145,7 +145,7 @@ namespace WpfApp1
                                     }
                                     else
                                     {
-                                        Console.WriteLine("クラウドにはこのデータないですね");
+                                        //Console.WriteLine("クラウドにはこのデータないですね");
                                         await Upload(client, lins[0], names, f);
                                     }
                                 }
@@ -198,7 +198,7 @@ namespace WpfApp1
                                     DateTime times_dro = DateTime.Parse(s[1][index1]);
                                     int time_if = time_local.CompareTo(times_dro);//PC上のデータはドロップボックスのデータよりも
 
-                                    Console.WriteLine("ファイル名"+f+" ローカル更新日:"+time_local+ " 泥更新日:"+times_dro+ "判定"+time_if);
+                                    //Console.WriteLine("ファイル名"+f+" ローカル更新日:"+time_local+ " 泥更新日:"+times_dro+ "判定"+time_if);
 
                                     MessageBoxResult result;
                                     if (time_if == 0)
@@ -237,7 +237,7 @@ namespace WpfApp1
                                 }
                                 else
                                 {
-                                    Console.WriteLine("クラウドにはこのデータないですね");
+                                    //Console.WriteLine("クラウドにはこのデータないですね");
                                     await Upload(client, input_data[0], names, f);
                                 }
                             }

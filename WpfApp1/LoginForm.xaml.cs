@@ -93,7 +93,6 @@ namespace WpfApp1
                 var full = await dbx.Users.GetCurrentAccountAsync();
                 MessageBox.Show("連携が正常に完了しました。\n\nアカウント：" + full.Name.DisplayName, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Information);
                 usernameis = full.Name.DisplayName;
-
             }
         }
 

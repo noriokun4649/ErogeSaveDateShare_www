@@ -16,7 +16,6 @@ namespace WpfApp1
     /// </summary>
     public partial class LogWindow : Window
     {
-
         int types;//0 はダウンロード 1はアップロード
         DropboxClient client;
 
@@ -29,8 +28,6 @@ namespace WpfApp1
             {
                 StreamReader stream = new StreamReader(MainWindow.file_path);
                 string line;
-                // Read and display lines from the file until the end of 
-                // the file is reached.
                 while ((line = stream.ReadLine()) != null)
                 {
                     game_list.Items.Add(line.Split(','));
@@ -57,19 +54,17 @@ namespace WpfApp1
                 type_text.Text = "アップロードの実行方法";
             }
         }
+
         private async Task Uploades(DropboxClient client, string[] input_data)
         {
             close_button.IsEnabled = false;
 
             try
             {
-
                 if (input_data == null)
                 {
                     StreamReader stream = new StreamReader(MainWindow.file_path);
                     string line;
-                    // Read and display lines from the file until the end of 
-                    // the file is reached.
                     while ((line = stream.ReadLine()) != null)
                     {
                         String[] lins = line.Split(',');
@@ -86,21 +81,14 @@ namespace WpfApp1
                             else if (Directory.Exists(lins[1]))//フォルダ
                             {
                                 var s = await ListFolder(client, "/" + input_data[0]);
-
-
-
                                 System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ja-JP");
-
                                 string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
-
-
                                 foreach (String f in files)
                                 {
                                     string names = Path.GetFileName(f);
                                     int index1 = Array.IndexOf(s[0], names);
                                     if (0 <= index1)
                                     {
-
                                         DateTime time_local = File.GetLastWriteTime(f);
                                         DateTime times_dro = DateTime.Parse(s[1][index1]);
                                         int time_if = time_local.CompareTo(times_dro);//PC上のデータはドロップボックスのデータよりも
@@ -128,7 +116,6 @@ namespace WpfApp1
                                             }
                                             else
                                             {
-
                                                 result = MessageBoxResult.Yes;
                                             }
                                         }
@@ -149,14 +136,11 @@ namespace WpfApp1
                                         await Upload(client, lins[0], names, f);
                                     }
                                 }
-
                                 string fors = Path.GetDirectoryName(lins[1]);
                                 //MessageBox.Show(fors+"のアップロードを完了しました");
                                 log_box.Items.Add("ゲームタイトル→" + lins[0] + "のアップロードを完了しました");
                                 log_box.ScrollIntoView("ゲームタイトル→" + lins[0] + "のアップロードを完了しました");
-
                             }
-
                         }
                     }
                     log_box.Items.Add("すべてのアップロードが完了しました");
@@ -298,9 +282,6 @@ namespace WpfApp1
                 {
                     StreamReader stream = new StreamReader(MainWindow.file_path);
                     string line;
-                    // Read and display lines from the file until the end of 
-                    // the file is reached.
-
                     while ((line = stream.ReadLine()) != null)
                     {
                         String[] lins = line.Split(',');
@@ -316,7 +297,6 @@ namespace WpfApp1
                                 Console.WriteLine(lins[0] + " " + names + " " + lins[1]);
                                 await Download(client, lins[0], names, lins[1]);
                             }
-
 
                             else if (Directory.Exists(lins[1]))//フォルダ
                             {
@@ -397,7 +377,6 @@ namespace WpfApp1
                 {
                     if (input_data.Length > 1)
                     {
-
                         log_box.Items.Add("ゲームタイトル→" + input_data[0] + "のダウンロードを開始しました");
                         log_box.ScrollIntoView("ゲームタイトル→" + input_data[0] + "のダウンロードを開始しました");
                         if (File.Exists(input_data[1]))//ファイル
@@ -406,14 +385,12 @@ namespace WpfApp1
                             Console.WriteLine(input_data[0] + " " + names + " " + input_data[1]);
                             await Download(client, input_data[0], names, input_data[1]);
                         }
-
-
+                        
                         else if (Directory.Exists(input_data[1]))//フォルダ
                         {
                             string[][] s = await ListFolder(client, "/" + input_data[0]);
 
                             //string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
-                            
 
                             for (int i = 1;s[0].Length > i;i++)//s の二次配列
                             {
@@ -535,9 +512,7 @@ namespace WpfApp1
                 //Console.WriteLine("F  {0}/", item.Name);
                 datase = datase + "," + item.Name;
 
-                // Asia/Tokyo タイムゾーンの情報を取得
                 TimeZoneInfo jst = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
-                // 変換元DateTimeのKindプロパティが指すタイムゾーンから、指定したタイムゾーンに変換
                 DateTime now_jst = TimeZoneInfo.ConvertTime(item.AsFile.ServerModified, jst);
 
                 datase_time = datase_time + ","+ now_jst.ToString();

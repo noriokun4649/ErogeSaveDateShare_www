@@ -17,7 +17,7 @@ namespace WpfApp1
         public static string file_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/エロゲのセーブデータ共有したったｗｗｗ/eroge_game_lists.csv";
         public static string folder_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/エロゲのセーブデータ共有したったｗｗｗ";
         static string users = "";
-        bool isAcces = false;
+        static bool isAcces = false;
 
         public MainWindow()
         {
@@ -69,6 +69,7 @@ namespace WpfApp1
             {
                 var full = await dbx.Users.GetCurrentAccountAsync();
                 users = full.Name.DisplayName;
+                isAcces = true;
                 //dbx.FileRequests.
             }
         }

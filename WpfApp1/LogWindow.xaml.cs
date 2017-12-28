@@ -191,8 +191,8 @@ namespace WpfApp1
                                         log_box.Items.Add("ファイルは更新されてません＾u＾");
                                     }else if (time_if > 0)
                                     {
-                                            //MessageBox.Show(f + " はPC上のセーブデータがDropBox上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？", "DropBoxにアップロード");
-                                            result = MessageBoxResult.Yes;
+                                        //MessageBox.Show(f + " はPC上のセーブデータがDropBox上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？", "DropBoxにアップロード");
+                                        result = MessageBoxResult.Yes;
                                     }
                                     else
                                     {
@@ -385,7 +385,7 @@ namespace WpfApp1
                             Console.WriteLine(input_data[0] + " " + names + " " + input_data[1]);
                             await Download(client, input_data[0], names, input_data[1]);
                         }
-                        
+
                         else if (Directory.Exists(input_data[1]))//フォルダ
                         {
                             string[][] s = await ListFolder(client, "/" + input_data[0]);
@@ -396,7 +396,7 @@ namespace WpfApp1
                             {
                                 Console.WriteLine(s[0][i] + "更新日：" +s[1][i]);
                                 System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ja-JP");
-                                
+
                                 String file_location = input_data[1] + @"\" + s[0][i];
 
                                 DateTime time_local = File.GetLastWriteTime(file_location);
@@ -593,7 +593,7 @@ namespace WpfApp1
 
             }
         }
-
+        
 
 
         private async Task Download(DropboxClient client, string folder, string file, string out_path)

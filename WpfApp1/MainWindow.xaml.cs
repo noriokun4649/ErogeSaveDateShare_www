@@ -87,11 +87,12 @@ namespace WpfApp1
                     Properties.Settings.Default.AccessToken = "";
                     Properties.Settings.Default.Uid = "";
                     Properties.Settings.Default.Save();
-
+                    /*
                     var win_log = new LoginForm("y56r29wopnmikhs")
                     {
                         Title = "DropBoxと連携する"
                     };
+                    */
                     MessageBox.Show("連携を解除しました", "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Information);
                     if (Properties.Settings.Default.AccessToken == "")
                     {
@@ -344,7 +345,7 @@ namespace WpfApp1
 
             if (c.IsChecked == true)
             {
-                MessageBox.Show("PC上のファイルは更新日時を、DropBox上のファイルはアップロードされた日時をもとに判断するため、ゲーム内でのセーブ日時と噛み合わない場合がありますがご了承ください。", "注意事項");
+                MessageBox.Show("PC上のファイルは更新日時を、DropBox上のファイルはアップロードされた日時をもとに判断するため、ゲーム内でのセーブ日時と噛み合わない場合がありますがご了承ください。", "注意事項",MessageBoxButton.OK,MessageBoxImage.Information);
             }
         }
 
@@ -354,7 +355,7 @@ namespace WpfApp1
 
             if (c.IsChecked == true)
             {
-                MessageBox.Show("PC上のファイルは更新日時を、DropBox上のファイルはアップロードされた日時をもとに判断するため、ゲーム内でのセーブ日時と噛み合わない場合がありますがご了承ください。","注意事項");
+                MessageBox.Show("PC上のファイルは更新日時を、DropBox上のファイルはアップロードされた日時をもとに判断するため、ゲーム内でのセーブ日時と噛み合わない場合がありますがご了承ください。","注意事項", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }

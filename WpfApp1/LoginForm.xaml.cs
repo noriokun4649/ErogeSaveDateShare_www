@@ -74,9 +74,10 @@ namespace WpfApp1
                 task2.Wait();
                 this.RefreshEvent(this, new EventArgs());
             }
-            catch (ArgumentException)
+            catch (ArgumentException ers)
             {
                 // There was an error in the URI passed to ParseTokenFragment
+                MessageBox.Show("òAågÇ…ñ‚ëËÇ™î≠ê∂ÇµÇ‹ÇµÇΩÅB\n\n"+ers.Message,"DropBoxòAåg",MessageBoxButton.OK,MessageBoxImage.Error);
             }
             finally
             {

@@ -201,8 +201,10 @@ namespace WpfApp1
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            var win = new DropBoxList();
-            win.Owner = this;
+            var win = new DropBoxList
+            {
+                Owner = this
+            };
             win.ShowDialog();
         }
 
@@ -239,8 +241,7 @@ namespace WpfApp1
 
         private void Game_view_Drop(object sender, DragEventArgs e)
         {
-            string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
-            if (files != null)
+            if (e.Data.GetData(DataFormats.FileDrop) is string[] files)
             {
                 foreach (var s in files)
                 {

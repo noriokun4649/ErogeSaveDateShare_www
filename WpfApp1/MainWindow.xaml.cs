@@ -33,10 +33,6 @@ namespace WpfApp1
                 task.Wait();
                 text_now.Text = users;
                 connect.Content = "連携を解除する";
-                Setting_up_button.IsEnabled = true;
-                Setting_Down_button.IsEnabled = true;
-                Download_button.IsEnabled = true;
-                Upload_button.IsEnabled = true;
                 isAcces = true;
             }
             else
@@ -44,11 +40,6 @@ namespace WpfApp1
                 isAcces = false;
                 text_now.Text = "連携されていません";
                 connect.Content = "DropBoxと連携する";
-
-                Setting_up_button.IsEnabled = false;
-                Setting_Down_button.IsEnabled = false;
-                Download_button.IsEnabled = false;
-                Upload_button.IsEnabled = false;
             }
             try
             {

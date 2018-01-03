@@ -88,27 +88,27 @@ namespace WpfApp1
                 catch (WebException exs)
                 {
                     MessageBox.Show("ネットワークエラーが発生しました。\n\n" + exs.Message, "エロゲのセーブデータ共有したったｗｗｗ", MessageBoxButton.OK, MessageBoxImage.Error);
-                    users = "接続エラー";
+                    users = "DropBox接続エラー";
                 }
                 catch (HttpRequestException exx)
                 {
                     MessageBox.Show("HTTPリクエストに問題が発生しました。コンピュータがインターネットに接続されているか確認してください。\n\n" + exx.Message, "エロゲのセーブデータ共有したったｗｗｗ", MessageBoxButton.OK, MessageBoxImage.Error);
-                    users = "接続エラー";
+                    users = "DropBox接続エラー";
                 }
                 catch (InvalidOperationException exss)
                 {
                     MessageBox.Show("無効な呼び出しが発生しました。\n\n" + exss.Message, "エロゲのセーブデータ共有したったｗｗｗ", MessageBoxButton.OK, MessageBoxImage.Error);
-                    users = "接続エラー";
+                    users = "DropBox接続エラー";
                 }
                 catch (ArgumentException ers)
                 {
                     MessageBox.Show("問題が発生しました。\n\n" + ers.Message, "エロゲのセーブデータ共有したったｗｗｗ", MessageBoxButton.OK, MessageBoxImage.Error);
-                    users = "接続エラー";
+                    users = "DropBox接続エラー";
                 }
                 catch (Exception ext)
                 {
                     MessageBox.Show("エラーが発生しました。\n\n" + ext.Message, "エロゲのセーブデータ共有したったｗｗｗ", MessageBoxButton.OK, MessageBoxImage.Error);
-                    users = "接続エラー";
+                    users = "DropBox接続エラー";
                 }
             }
         }
@@ -288,17 +288,17 @@ namespace WpfApp1
             {
                 string masssge = exs.Message.Replace("Invalid authorization value in HTTP header", "HTTPヘッダーの認証項目が無効です。").Replace("Error in call to API function", "API 関数の呼び出しでエラーが発生しました").Replace("oauth2-access-token", "DropBoxの連携が正常に完了してない可能性があります。確認してください。");
                 MessageBox.Show("無効なHTTPリクエストです。\n" + masssge,
- "無効なHTTPリクエスト",
- MessageBoxButton.OK,
- MessageBoxImage.Error);
+                "無効なHTTPリクエスト",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
             }
             catch (ApiException<DownloadError> ex)
             {
-                MessageBox.Show(ex.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex2)
             {
-                MessageBox.Show(ex2.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex2.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

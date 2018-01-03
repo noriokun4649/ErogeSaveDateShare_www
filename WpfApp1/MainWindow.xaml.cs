@@ -3,6 +3,8 @@ using Dropbox.Api.Files;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,17 +29,26 @@ namespace WpfApp1
             string ac = Properties.Settings.Default.AccessToken;
             if (ac != "")
             {
-                isAcces = true;
                 var task = Task.Run((Func<Task>)MainWindow.Run);
                 task.Wait();
                 text_now.Text = users;
                 connect.Content = "連携を解除する";
+                Setting_up_button.IsEnabled = true;
+                Setting_Down_button.IsEnabled = true;
+                Download_button.IsEnabled = true;
+                Upload_button.IsEnabled = true;
+                isAcces = true;
             }
             else
             {
                 isAcces = false;
                 text_now.Text = "連携されていません";
                 connect.Content = "DropBoxと連携する";
+
+                Setting_up_button.IsEnabled = false;
+                Setting_Down_button.IsEnabled = false;
+                Download_button.IsEnabled = false;
+                Upload_button.IsEnabled = false;
             }
             try
             {
@@ -67,10 +78,38 @@ namespace WpfApp1
         {
             using (var dbx = new DropboxClient(Properties.Settings.Default.AccessToken))
             {
-                var full = await dbx.Users.GetCurrentAccountAsync();
-                users = full.Name.DisplayName;
-                isAcces = true;
-                //dbx.FileRequests.
+                try
+                {
+                    var full = await dbx.Users.GetCurrentAccountAsync();
+                    users = full.Name.DisplayName;
+                    isAcces = true;
+                    //dbx.FileRequests.
+                }
+                catch (WebException exs)
+                {
+                    MessageBox.Show("ネットワークエラーが発生しました。\n\n" + exs.Message, "エロゲのセーブデータ共有したったｗｗｗ", MessageBoxButton.OK, MessageBoxImage.Error);
+                    users = "接続エラー";
+                }
+                catch (HttpRequestException exx)
+                {
+                    MessageBox.Show("HTTPリクエストに問題が発生しました。コンピュータがインターネットに接続されているか確認してください。\n\n" + exx.Message, "エロゲのセーブデータ共有したったｗｗｗ", MessageBoxButton.OK, MessageBoxImage.Error);
+                    users = "接続エラー";
+                }
+                catch (InvalidOperationException exss)
+                {
+                    MessageBox.Show("無効な呼び出しが発生しました。\n\n" + exss.Message, "エロゲのセーブデータ共有したったｗｗｗ", MessageBoxButton.OK, MessageBoxImage.Error);
+                    users = "接続エラー";
+                }
+                catch (ArgumentException ers)
+                {
+                    MessageBox.Show("問題が発生しました。\n\n" + ers.Message, "エロゲのセーブデータ共有したったｗｗｗ", MessageBoxButton.OK, MessageBoxImage.Error);
+                    users = "接続エラー";
+                }
+                catch (Exception ext)
+                {
+                    MessageBox.Show("エラーが発生しました。\n\n" + ext.Message, "エロゲのセーブデータ共有したったｗｗｗ", MessageBoxButton.OK, MessageBoxImage.Error);
+                    users = "接続エラー";
+                }
             }
         }
         private void Button_Click(object sender, RoutedEventArgs e)

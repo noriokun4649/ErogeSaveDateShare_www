@@ -1,5 +1,7 @@
 using Dropbox.Api;
 using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Navigation;
@@ -91,9 +93,37 @@ namespace WpfApp1
         {
             using (var dbx = new DropboxClient(Settings.Default.AccessToken))
             {
-                var full = await dbx.Users.GetCurrentAccountAsync();
-                MessageBox.Show("連携が正常に完了しました。\n\nアカウント：" + full.Name.DisplayName, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Information);
-                usernameis = full.Name.DisplayName;
+                try
+                {
+                    var full = await dbx.Users.GetCurrentAccountAsync();
+                    MessageBox.Show("連携が正常に完了しました。\n\nアカウント：" + full.Name.DisplayName, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Information);
+                    usernameis = full.Name.DisplayName;
+                }
+                catch (WebException exs)
+                {
+                    MessageBox.Show("ネットワークエラーが発生しました。\n\n" + exs.Message, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Error);
+                    usernameis = "接続エラー";
+                }
+                catch (HttpRequestException exx)
+                {
+                    MessageBox.Show("HTTPリクエストに問題が発生しました。コンピュータがインターネットに接続されているか確認してください。\n\n" + exx.Message, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Error);
+                    usernameis = "接続エラー";
+                }
+                catch (InvalidOperationException exss)
+                {
+                    MessageBox.Show("無効な呼び出しが発生しました。\n\n" + exss.Message, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Error);
+                    usernameis = "接続エラー";
+                }
+                catch (ArgumentException ers)
+                {
+                    MessageBox.Show("問題が発生しました。\n\n" + ers.Message, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Error);
+                    usernameis = "接続エラー";
+                }
+                catch (Exception ext)
+                {
+                    MessageBox.Show("エラーが発生しました。\n\n" + ext.Message, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Error);
+                    usernameis = "接続エラー";
+                }
             }
         }
 

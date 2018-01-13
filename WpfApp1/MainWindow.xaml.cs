@@ -173,24 +173,6 @@ namespace WpfApp1
                 }
             }
         }
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            CheckBox c = (CheckBox)sender;
-
-            Properties.Settings.Default.pc_snyc = (bool)c.IsChecked;
-            Properties.Settings.Default.Save();
-
-
-        }
-
-        private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
-        {
-            CheckBox c = (CheckBox)sender;
-
-            Properties.Settings.Default.dropbox_snyc = (bool)c.IsChecked;
-            Properties.Settings.Default.Save();
-
-        }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -368,11 +350,13 @@ namespace WpfApp1
             };
             win.ShowDialog();
         }
-
+        
         private void Checkbox_drop_Click(object sender, RoutedEventArgs e)
         {
             CheckBox c = (CheckBox)sender;
 
+            Properties.Settings.Default.dropbox_snyc = (bool)c.IsChecked;
+            Properties.Settings.Default.Save();
             if (c.IsChecked == true)
             {
                 MessageBox.Show("PC上のファイルは更新日時を、DropBox上のファイルはアップロードされた日時をもとに判断するため、ゲーム内でのセーブ日時と噛み合わない場合がありますがご了承ください。", "注意事項",MessageBoxButton.OK,MessageBoxImage.Information);
@@ -383,6 +367,8 @@ namespace WpfApp1
         {
             CheckBox c = (CheckBox)sender;
 
+            Properties.Settings.Default.pc_snyc = (bool)c.IsChecked;
+            Properties.Settings.Default.Save();
             if (c.IsChecked == true)
             {
                 MessageBox.Show("PC上のファイルは更新日時を、DropBox上のファイルはアップロードされた日時をもとに判断するため、ゲーム内でのセーブ日時と噛み合わない場合がありますがご了承ください。","注意事項", MessageBoxButton.OK, MessageBoxImage.Information);

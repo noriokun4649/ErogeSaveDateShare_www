@@ -1,23 +1,27 @@
 ﻿using Dropbox.Api;
 using Dropbox.Api.Files;
 using System;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Data;
 
 namespace WpfApp1
 {
+    //<ListBox x:Name="log_box" Margin="10,10,10,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="3" Height="133" VerticalAlignment="Top"/>
     /// <summary>
     /// LogWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class LogWindow : Window
+    public partial class LogWindow : Window , IDisposable
     {
         int types;//0 はダウンロード 1はアップロード
         DropboxClient client;
+        private CancellationTokenSource cts;
 
         public LogWindow(DropboxClient client, int type)//0 はダウンロード 1はアップロード
         {
@@ -53,9 +57,9 @@ namespace WpfApp1
                 titletext.Text = "アップロード";
                 type_text.Text = "アップロードの実行方法";
             }
-        }
+    }
 
-        private async Task Uploades(DropboxClient client, string[] input_data)
+        private async Task Uploades(DropboxClient client, string[] input_data, CancellationToken token)
         {
             close_button.IsEnabled = false;
 
@@ -69,12 +73,12 @@ namespace WpfApp1
                     {
                         String[] lins = line.Split(',');
                         log_box.Items.Add("ゲームタイトル→" + lins[0] + "のアップロードを開始しました");
-                        log_box.ScrollIntoView("ゲームタイトル→" + lins[0] + "のアップロードを開始しました");
                         await CreateFolder(client, "/" + lins[0]);
                         if (lins.Length > 1)
                         {
                             if (File.Exists(lins[1]))//ファイル
                             {
+                                token.ThrowIfCancellationRequested();
                                 string names = Path.GetFileName(lins[1]);
                                 await Upload(client, lins[0], names, lins[1]);
                             }
@@ -85,6 +89,7 @@ namespace WpfApp1
                                 string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
                                 foreach (String f in files)
                                 {
+                                    token.ThrowIfCancellationRequested();
                                     string names = Path.GetFileName(f);
                                     int index1 = Array.IndexOf(s[0], names);
                                     if (0 <= index1)
@@ -139,24 +144,22 @@ namespace WpfApp1
                                 string fors = Path.GetDirectoryName(lins[1]);
                                 //MessageBox.Show(fors+"のアップロードを完了しました");
                                 log_box.Items.Add("ゲームタイトル→" + lins[0] + "のアップロードを完了しました");
-                                log_box.ScrollIntoView("ゲームタイトル→" + lins[0] + "のアップロードを完了しました");
                             }
                         }
                     }
                     log_box.Items.Add("すべてのアップロードが完了しました");
-                    log_box.ScrollIntoView("すべてのアップロードが完了しました");
                     stream.Close();
                     close_button.IsEnabled = true;
                 }
                 else
                 {
                     log_box.Items.Add("ゲームタイトル→" + input_data[0] + "のアップロードを開始しました");
-                    log_box.ScrollIntoView("ゲームタイトル→" + input_data[0] + "のアップロードを開始しました");
                     await CreateFolder(client, "/" + input_data[0]);
                     if (input_data.Length > 1)
                     {
                         if (File.Exists(input_data[1]))//ファイル
                         {
+                            token.ThrowIfCancellationRequested();
                             string names = Path.GetFileName(input_data[1]);
                             await Upload(client, input_data[0], names, input_data[1]);
                         }
@@ -173,6 +176,7 @@ namespace WpfApp1
 
                             foreach (String f in files)
                             {
+                                token.ThrowIfCancellationRequested();
                                 string names = Path.GetFileName(f);
                                 int index1 = Array.IndexOf(s[0], names);
                                 if (0 <= index1)
@@ -229,14 +233,12 @@ namespace WpfApp1
                             string fors = Path.GetDirectoryName(input_data[1]);
                             //MessageBox.Show(fors+"のアップロードを完了しました");
                             log_box.Items.Add("ゲームタイトル→" + input_data[0] + "のアップロードを完了しました");
-                            log_box.ScrollIntoView("ゲームタイトル→" + input_data[0] + "のアップロードを完了しました");
 
                         }
 
 
                     }
                     log_box.Items.Add("すべてのアップロードが完了しました");
-                    log_box.ScrollIntoView("すべてのアップロードが完了しました");
                     close_button.IsEnabled = true;
                 }
             }
@@ -260,6 +262,11 @@ namespace WpfApp1
                 MessageBoxImage.Error);
                 close_button.IsEnabled = true;
             }
+            catch (OperationCanceledException)
+            {
+                log_box.Items.Add("アップロード処理はユーザによってキャンセルされました。");
+                close_button.IsEnabled = true;
+            }
             catch (Exception es)
             {
                 log_box.Items.Add("問題が発生しました。詳細はメッセージウィンドウを確認してください。");
@@ -273,7 +280,7 @@ namespace WpfApp1
         }
 
 
-        private async Task Downloadse(DropboxClient client, string[] input_data)
+        private async Task Downloadse(DropboxClient client, string[] input_data, CancellationToken token)
         {
             close_button.IsEnabled = false;
             try
@@ -287,12 +294,12 @@ namespace WpfApp1
                         String[] lins = line.Split(',');
 
                         log_box.Items.Add("ゲームタイトル→" + lins[0] + "のダウンロードを開始しました");
-                        log_box.ScrollIntoView("ゲームタイトル→" + lins[0] + "のダウンロードを開始しました");
 
                         if (lins.Length > 1)
                         {
                             if (File.Exists(lins[1]))//ファイル
                             {
+                                token.ThrowIfCancellationRequested();
                                 string names = Path.GetFileName(lins[1]);
                                 Console.WriteLine(lins[0] + " " + names + " " + lins[1]);
                                 await Download(client, lins[0], names, lins[1]);
@@ -306,6 +313,7 @@ namespace WpfApp1
 
                                 for (int i = 0; s[0].Length > i; i++)//s の二次配列
                                 {
+                                    token.ThrowIfCancellationRequested();
                                     Console.WriteLine(s[0][i] + "更新日：" + s[1][i]);
                                     System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ja-JP");
                                     String file_location = input_data[1] + @"\" + s[0][i];
@@ -360,7 +368,6 @@ namespace WpfApp1
                                 string fors = Path.GetDirectoryName(lins[1]);
                                 //MessageBox.Show(fors + "のダウンロードを完了しました");
                                 log_box.Items.Add("ゲームタイトル→" + lins[0] + "のダウンロードを完了しました");
-                                log_box.ScrollIntoView("ゲームタイトル→" + lins[0] + "のダウンロードを完了しました");
                             }
                             else
                             {
@@ -369,7 +376,6 @@ namespace WpfApp1
                         }
                     }
                     log_box.Items.Add("すべてのダウンロードが完了しました");
-                    log_box.ScrollIntoView("すべてのダウンロードが完了しました");
                     stream.Close();
                     close_button.IsEnabled = true;
                 }
@@ -378,9 +384,9 @@ namespace WpfApp1
                     if (input_data.Length > 1)
                     {
                         log_box.Items.Add("ゲームタイトル→" + input_data[0] + "のダウンロードを開始しました");
-                        log_box.ScrollIntoView("ゲームタイトル→" + input_data[0] + "のダウンロードを開始しました");
                         if (File.Exists(input_data[1]))//ファイル
                         {
+                            token.ThrowIfCancellationRequested();
                             string names = Path.GetFileName(input_data[1]);
                             Console.WriteLine(input_data[0] + " " + names + " " + input_data[1]);
                             await Download(client, input_data[0], names, input_data[1]);
@@ -394,6 +400,7 @@ namespace WpfApp1
 
                             for (int i = 1;s[0].Length > i;i++)//s の二次配列
                             {
+                                token.ThrowIfCancellationRequested();
                                 Console.WriteLine(s[0][i] + "更新日：" +s[1][i]);
                                 System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ja-JP");
 
@@ -424,7 +431,7 @@ namespace WpfApp1
                                 else
                                 {
                                     result = MessageBoxResult.Yes;
-                                    MessageBox.Show("DropBox上のセーブデータがPC上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？");
+                                    //MessageBox.Show("DropBox上のセーブデータがPC上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？");
                                 }
 
                                 if (result == MessageBoxResult.Yes)
@@ -448,14 +455,12 @@ namespace WpfApp1
                             string fors = Path.GetDirectoryName(input_data[1]);
                             //MessageBox.Show(fors + "のダウンロードを完了しました");
                             log_box.Items.Add("ゲームタイトル→" + input_data[0] + "のダウンロードを完了しました");
-                            log_box.ScrollIntoView("ゲームタイトル→" + input_data[0] + "のダウンロードを完了しました");
                         }
                         else
                         {
                             log_box.Items.Add("保存先ディレクトリ(" + input_data[1] + ")が見つからないためダウンロード処理を中断しました");
                         }
                         log_box.Items.Add("すべてのダウンロードが完了しました");
-                        log_box.ScrollIntoView("すべてのダウンロードが完了しました");
                         close_button.IsEnabled = true;
                     }
                 }
@@ -486,6 +491,11 @@ namespace WpfApp1
                 "無効なHTTPリクエスト",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
+                close_button.IsEnabled = true;
+            }
+            catch (OperationCanceledException)
+            {
+                log_box.Items.Add("ダウンロード処理はユーザによってキャンセルされました。");
                 close_button.IsEnabled = true;
             }
             catch (Exception es)
@@ -541,12 +551,11 @@ namespace WpfApp1
                 //MessageBoxButton.OK,
                 //MessageBoxImage.Information);
                 log_box.Items.Add("フォルダ" + path + "を作成しました");
-                log_box.ScrollIntoView("フォルダ" + path + "を作成しました");
             }
             catch (ApiException<CreateFolderError> ex)
             {
                 string a = ex.Message;
-                log_box.Items.Add(path + "の作成に問題が発生しました。すでにフォルダが存在している可能性があります");
+                log_box.Items.Add(path + "の作成に問題が発生しました。すでにフォルダが存在している可能性があります\n\n理由："+a);
                 /*
                 log_box.ScrollIntoView(path + "の作成に問題が発生しました。すでにフォルダが存在している可能性があります");
                 MessageBox.Show(path + "の作成に問題が発生しました\n\nすでにフォルダが存在している可能性があります",
@@ -566,7 +575,6 @@ namespace WpfApp1
             //MessageBoxButton.OK,
             //MessageBoxImage.Information);
             log_box.Items.Add(fileName + "のアップロードを開始しました");
-            log_box.ScrollIntoView(fileName + "のアップロードを開始しました");
             try
             {
                 Console.WriteLine("Upload file...");
@@ -578,14 +586,12 @@ namespace WpfApp1
                 //MessageBoxButton.OK,
                 //MessageBoxImage.Information);
                 log_box.Items.Add(fileName + "のアップロードを完了しました");
-                log_box.ScrollIntoView(fileName + "のアップロードを完了しました");
                 fileStream.Close();
             }
             catch (Exception ex2)
             {
                 close_button.IsEnabled = true;
                 log_box.Items.Add(fileName + "のアップロードに問題が発生しました" + ex2.Message);
-                log_box.ScrollIntoView(fileName + "のアップロードに問題が発生しました" + ex2.Message);
                 MessageBox.Show(fileName + "のアップロードに問題が発生しました\n\n" + ex2.Message,
                 "エラー",
                 MessageBoxButton.OK,
@@ -601,7 +607,6 @@ namespace WpfApp1
             //Console.WriteLine("Download file...");
             //MessageBox.Show(file + "のダウンロードを開始しました", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
             log_box.Items.Add(file + "のダウンロードを開始しました");
-            log_box.ScrollIntoView(file + "のダウンロードを開始しました");
 
             try
             {
@@ -615,8 +620,6 @@ namespace WpfApp1
                     x.Close();
                     //MessageBox.Show(file + "のダウンロードが完了しました", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
                     log_box.Items.Add(file + "のダウンロードが完了しました");
-                    log_box.ScrollIntoView(file + "のダウンロードが完了しました");
-
                 }
             }
             catch (ApiException<DownloadError> ex)
@@ -624,14 +627,12 @@ namespace WpfApp1
                 close_button.IsEnabled = true;
                 MessageBox.Show(ex.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                 log_box.Items.Add(ex.Message);
-                log_box.ScrollIntoView(ex.Message);
             }
             catch (Exception ex2)
             {
                 close_button.IsEnabled = true;
                 MessageBox.Show(ex2.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                 log_box.Items.Add(ex2.Message);
-                log_box.ScrollIntoView(ex2.Message);
 
             }
         }
@@ -653,11 +654,13 @@ namespace WpfApp1
                     //se^bubasyo aru baa i
                     if (types == 0)
                     {
-                        await Downloadse(client, texts);
+                        cts = new CancellationTokenSource();
+                        await Downloadse(client, texts, cts.Token);
                     }
                     else
                     {
-                        await Uploades(client, texts);
+                        cts = new CancellationTokenSource();
+                        await Uploades(client, texts, cts.Token);
                     }
 
                 }
@@ -678,11 +681,13 @@ namespace WpfApp1
             //一括
             if (types == 0)
             {
-                await Downloadse(client, null);
+                cts = new CancellationTokenSource();
+                await Downloadse(client, null,cts.Token);
             }
             else
             {
-                await Uploades(client, null);
+                cts = new CancellationTokenSource();
+                await Uploades(client, null, cts.Token);
             }
         }
 
@@ -706,6 +711,40 @@ namespace WpfApp1
             {
                 selct_button.IsEnabled = false;
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBoxResult res = MessageBox.Show("このウィンドウを閉じると実行中のすべての処理は中断されます。\n\nこのウィンドウを閉じますか？","確認メッセージ",MessageBoxButton.YesNo,MessageBoxImage.Question);
+            if (res == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Dispose();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            cts.Cancel();
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                cts.Dispose();
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

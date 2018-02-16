@@ -22,15 +22,16 @@ namespace WpfApp1
             delete.IsEnabled = false;
             try
             {
-                StreamReader stream = new StreamReader(MainWindow.file_path);
-                string line;
-                // Read and display lines from the file until the end of 
-                // the file is reached.
-                while ((line = stream.ReadLine()) != null)
-                {   
-                    game_view.Items.Add(line.Split(','));
+                using (StreamReader stream = new StreamReader(MainWindow.file_path))
+                {
+                    string line;
+                    // Read and display lines from the file until the end of 
+                    // the file is reached.
+                    while ((line = stream.ReadLine()) != null)
+                    {
+                        game_view.Items.Add(line.Split(','));
+                    }
                 }
-                stream.Close();
             }
             catch (Exception es)
             {
@@ -47,10 +48,10 @@ namespace WpfApp1
             // 選択項目がない場合は処理をしない
             if (game_view.SelectedItems.Count == 0)
                 return;
-
             // 選択された項目を削除
-
             game_view.Items.RemoveAt(game_view.SelectedIndex);
+            file_box.Text = "";
+            game_title.Text = "";
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -80,13 +81,14 @@ namespace WpfApp1
             {
                 try
                 {
-                    StreamWriter stream = new StreamWriter(MainWindow.file_path);
-
-                    for (int i = 0; i < counts; i++)
+                    using (StreamWriter stream = new StreamWriter(MainWindow.file_path))
                     {
-                        stream.WriteLine(game_view.Items.GetItemAt(i));
+
+                        for (int i = 0; i < counts; i++)
+                        {
+                            stream.WriteLine(game_view.Items.GetItemAt(i));
+                        }
                     }
-                    stream.Close();
                 }
                 catch (Exception ex)
                 {
@@ -144,6 +146,8 @@ namespace WpfApp1
                     game_view.Items.Add(new string[] { game_title.Text, file_box.Text });
                     game_title.Text = "";
                     file_box.Text = "";
+                    game_view.SelectedItems.Clear();
+
                 }
                 else
                 {
@@ -154,7 +158,7 @@ namespace WpfApp1
                 }
             }
         }
-        
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             int counts = game_view.Items.Count;
@@ -162,14 +166,15 @@ namespace WpfApp1
             {
                 try
                 {
-                    StreamWriter stream = new StreamWriter(MainWindow.file_path);
-
-                    for (int i = 0; i < counts; i++)
+                    using (StreamWriter stream = new StreamWriter(MainWindow.file_path))
                     {
-                        string[] texts = (string[])game_view.Items.GetItemAt(i);
-                        stream.WriteLine(texts[0]+","+texts[1]);
+
+                        for (int i = 0; i < counts; i++)
+                        {
+                            string[] texts = (string[])game_view.Items.GetItemAt(i);
+                            stream.WriteLine(texts[0] + "," + texts[1]);
+                        }
                     }
-                    stream.Close();
 
                 }
                 catch (Exception ex)
@@ -184,8 +189,9 @@ namespace WpfApp1
             {
                 try
                 {
-                    StreamWriter stream = new StreamWriter(MainWindow.file_path);
-                    stream.Close();
+                    using (StreamWriter stream = new StreamWriter(MainWindow.file_path))
+                    {
+                    }
                 }
                 catch (Exception exs)
                 {
@@ -197,7 +203,7 @@ namespace WpfApp1
 
             }
         }
-        
+
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
@@ -212,8 +218,8 @@ namespace WpfApp1
         {
             game_view.Items.Clear();
         }
-        
-        
+
+
 
         private void Game_view_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {

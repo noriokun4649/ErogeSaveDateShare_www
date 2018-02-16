@@ -117,12 +117,6 @@ namespace WpfApp1
                     Properties.Settings.Default.AccessToken = "";
                     Properties.Settings.Default.Uid = "";
                     Properties.Settings.Default.Save();
-                    /*
-                    var win_log = new LoginForm("y56r29wopnmikhs")
-                    {
-                        Title = "DropBoxと連携する"
-                    };
-                    */
                     MessageBox.Show("連携を解除しました", "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Information);
                     if (Properties.Settings.Default.AccessToken == "")
                     {
@@ -156,13 +150,10 @@ namespace WpfApp1
                     };
                     win_log.RefreshEvent += delegate (object senders, EventArgs e2)
                     {
-
-
                         var task = Task.Run((Func<Task>)MainWindow.Run);
                         task.Wait();
                         text_now.Text = users;
                         connect.Content = "連携を解除する";
-
                     };
                     win_log.ShowDialog();
 
@@ -205,20 +196,21 @@ namespace WpfApp1
             }
 
         }
-        private async Task Upload(DropboxClient client,string fileName, string fileContent)
+        private async Task Upload(DropboxClient client, string fileName, string fileContent)
         {
             //MessageBox.Show(fileName + "のアップロードを開始しました",
-                //"メッセージ",
-                //MessageBoxButton.OK,
-                //MessageBoxImage.Information);
+            //"メッセージ",
+            //MessageBoxButton.OK,
+            //MessageBoxImage.Information);
             try
             {
                 //Console.WriteLine("Upload file...");
-                FileStream fileStream = new FileStream(fileContent, FileMode.Open);
-                var response = await client.Files.UploadAsync("/" + fileName, WriteMode.Overwrite.Instance, body: fileStream);
-                //Console.WriteLine("Uploaded Id {0} Rev {1}", response.Id, response.Rev);
-                MessageBox.Show("設定のアップロードが完了しました。\n\nこの設定を引継ぎたいコンピュータで「設定のダウンロード」を押し、表示されるメッセージに従ってください。", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
-                fileStream.Close();
+                using (FileStream fileStream = new FileStream(fileContent, FileMode.Open))
+                {
+                    var response = await client.Files.UploadAsync("/" + fileName, WriteMode.Overwrite.Instance, body: fileStream);
+                    //Console.WriteLine("Uploaded Id {0} Rev {1}", response.Id, response.Rev);
+                    MessageBox.Show("設定のアップロードが完了しました。\n\nこの設定を引継ぎたいコンピュータで「設定のダウンロード」を押し、表示されるメッセージに従ってください。", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
             catch (BadInputException exs)
             {
@@ -228,7 +220,7 @@ namespace WpfApp1
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
             }
-            
+
             catch (Exception ex2)
             {
                 MessageBox.Show(fileName + "のアップロードに問題が発生しました\n\n" + ex2.Message,
@@ -239,7 +231,7 @@ namespace WpfApp1
             }
         }
 
-        
+
         private async Task Download_setting(DropboxClient client, string file)
         {
             //Console.WriteLine("Download file...");
@@ -247,14 +239,11 @@ namespace WpfApp1
             try
             {
                 using (var response = await client.Files.DownloadAsync("/" + file))
+                using (FileStream fileStream = new FileStream(file_path, FileMode.Create))
+                using (StreamWriter sw = new StreamWriter(fileStream))
                 {
-                    FileStream fileStream = new FileStream(file_path, FileMode.Create);
-                    StreamWriter sw = new StreamWriter(fileStream);
                     sw.Write(await response.GetContentAsStringAsync());
-                    sw.Close();
-                    fileStream.Close();
                     MessageBox.Show("設定のダウンロードが完了しました。\n\nゲーム追加・管理にてこのコンピュータに合わせたセーブデータ場所を設定しなおしてください。", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
-
                 }
             }
             catch (BadInputException exs)
@@ -295,7 +284,7 @@ namespace WpfApp1
             {
             }
         }
-        
+
 
 
         private async void Button_Click_4(object sender, RoutedEventArgs e)
@@ -334,7 +323,7 @@ namespace WpfApp1
                 DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
                 FileMetadata fileMetadata = new FileMetadata();
 
-               await Download_setting(client, Path.GetFileName(file_path));
+                await Download_setting(client, Path.GetFileName(file_path));
             }
             else if (result == MessageBoxResult.No)
             {
@@ -350,7 +339,7 @@ namespace WpfApp1
             };
             win.ShowDialog();
         }
-        
+
         private void Checkbox_drop_Click(object sender, RoutedEventArgs e)
         {
             CheckBox c = (CheckBox)sender;
@@ -359,7 +348,7 @@ namespace WpfApp1
             Properties.Settings.Default.Save();
             if (c.IsChecked == true)
             {
-                MessageBox.Show("PC上のファイルは更新日時を、DropBox上のファイルはアップロードされた日時をもとに判断するため、ゲーム内でのセーブ日時と噛み合わない場合がありますがご了承ください。", "注意事項",MessageBoxButton.OK,MessageBoxImage.Information);
+                MessageBox.Show("PC上のファイルは更新日時を、DropBox上のファイルはアップロードされた日時をもとに判断するため、ゲーム内でのセーブ日時と噛み合わない場合がありますがご了承ください。", "注意事項", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -371,7 +360,7 @@ namespace WpfApp1
             Properties.Settings.Default.Save();
             if (c.IsChecked == true)
             {
-                MessageBox.Show("PC上のファイルは更新日時を、DropBox上のファイルはアップロードされた日時をもとに判断するため、ゲーム内でのセーブ日時と噛み合わない場合がありますがご了承ください。","注意事項", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("PC上のファイルは更新日時を、DropBox上のファイルはアップロードされた日時をもとに判断するため、ゲーム内でのセーブ日時と噛み合わない場合がありますがご了承ください。", "注意事項", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }

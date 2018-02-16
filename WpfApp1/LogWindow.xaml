@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="LogWindow" Height="539.337" Width="470.242" WindowStartupLocation="CenterOwner" SizeToContent="Width" ResizeMode="NoResize" Closing="Window_Closing" Closed="Window_Closed">
+        Title="LogWindow" Height="539.337" Width="470.242" WindowStartupLocation="CenterOwner" SizeToContent="Width" ResizeMode="NoResize" Closing="Window_Closing" Closed="Window_Closed" MaxWidth="470.242" MaxHeight="539.337">
     <Grid Margin="0,0,2,0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="457*"/>
-            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="65*"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="68*"/>
@@ -19,7 +19,7 @@
             <RowDefinition Height="49*"/>
         </Grid.RowDefinitions>
         <ListBox x:Name="log_box" Margin="10,10,10,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="3" Height="133" VerticalAlignment="Top"/>
-        <Button x:Name="close_button" Content="完了" Margin="372,10,10,0" Grid.Row="4" VerticalAlignment="Top" Height="22" Click="Close_button_Click"/>
+        <Button x:Name="close_button" Content="完了" Margin="372,10,8,0" Grid.Row="4" VerticalAlignment="Top" Height="22" Click="Close_button_Click"/>
         <TextBlock x:Name="titletext" HorizontalAlignment="Left" Margin="15,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="45" Width="432" FontSize="36"/>
         <ListView x:Name="game_list" Margin="10,0,10,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" SelectionChanged="Game_list_SelectionChanged" Height="188" VerticalAlignment="Bottom" Grid.Row="1">
             <ListView.View>
@@ -35,6 +35,6 @@
         <Button Content="DropBox上のセーブデータ" Margin="0,26,25,0" VerticalAlignment="Top" Click="Button_Click_2" Height="20" HorizontalAlignment="Right" Width="139"/>
         <TextBlock x:Name="type_text" HorizontalAlignment="Right" Margin="0,4,295,0" Grid.Row="2" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="147" TextAlignment="Right" Height="16"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,2,0,0" Grid.Row="4" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Red" Height="30" Width="237"><Run Text="※"/><Run Text="完了ボタンが押"/><Run Text="せな"/><Run Text="い状態で"/><Run Text=""/><Run Text="このウィンドウを閉"/><LineBreak/><Run Text="　"/><Run Text="じると操作中のすべ"/><Run Text="ての処理が中断されます"/><Run Text="。"/></TextBlock>
-        <Button Content="キャンセル" HorizontalAlignment="Left" Margin="285,11,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
+        <Button Content="キャンセル" HorizontalAlignment="Left" Margin="285,11,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75" Click="Button_Click_3" Height="20"/>
     </Grid>
 </Window>

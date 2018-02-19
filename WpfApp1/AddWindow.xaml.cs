@@ -161,10 +161,10 @@ namespace WpfApp1
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            int counts = game_view.Items.Count;
-            if (counts > 0)
+            try
             {
-                try
+                int counts = game_view.Items.Count;
+                if (counts > 0)
                 {
                     using (StreamWriter stream = new StreamWriter(MainWindow.file_path))
                     {
@@ -172,35 +172,32 @@ namespace WpfApp1
                         for (int i = 0; i < counts; i++)
                         {
                             string[] texts = (string[])game_view.Items.GetItemAt(i);
-                            stream.WriteLine(texts[0] + "," + texts[1]);
+                            if (!texts[1].Equals(""))
+                            {
+                                stream.WriteLine(texts[0] + "," + texts[1]);
+                            }
+                            else
+                            {
+                                throw new Exception("不正なデータがあります。\n\n「" + texts[0] + "」にセーブデータ場所が設定されていません。");
+                            }
                         }
                     }
-
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message,
-                    "エラー",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                try
+                else
                 {
                     using (StreamWriter stream = new StreamWriter(MainWindow.file_path))
                     {
                     }
-                }
-                catch (Exception exs)
-                {
-                    MessageBox.Show(exs.Message,
-                    "エラー",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                }
 
+                }
+            }
+            catch (Exception ex)
+            {
+                e.Cancel = true;
+                MessageBox.Show(ex.Message,
+                "エラー",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
             }
         }
 

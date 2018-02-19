@@ -740,7 +740,10 @@ namespace WpfApp1
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            cts.Cancel();
+            if (cts != null)
+            {
+                cts.Cancel();
+            }
         }
         protected virtual void Dispose(bool disposing)
         {

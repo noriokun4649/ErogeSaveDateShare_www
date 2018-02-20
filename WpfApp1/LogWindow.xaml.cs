@@ -81,13 +81,13 @@ namespace WpfApp1
                             {
                                 if (File.Exists(lins[1]))//ファイル
                                 {
-                                    token.ThrowIfCancellationRequested();
+                                   token.ThrowIfCancellationRequested();
                                     string names = Path.GetFileName(lins[1]);
                                     await Upload(client, lins[0], names, lins[1]);
                                 }
                                 else if (Directory.Exists(lins[1]))//フォルダ
                                 {
-                                    var s = await ListFolder(client, "/" + input_data[0]);
+                                    var s = await ListFolder(client, "/" + lins[0]);
                                     System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ja-JP");
                                     string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
                                     foreach (String f in files)
@@ -318,7 +318,7 @@ namespace WpfApp1
                                         token.ThrowIfCancellationRequested();
                                         Console.WriteLine(s[0][i] + "更新日：" + s[1][i]);
                                         System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ja-JP");
-                                        String file_location = input_data[1] + @"\" + s[0][i];
+                                        String file_location = lins[1] + @"\" + s[0][i];
                                         DateTime time_local = File.GetLastWriteTime(file_location);
                                         DateTime times_dro = DateTime.Parse(s[1][i]);
                                         int time_if = time_local.CompareTo(times_dro);//PC上のデータはドロップボックスのデータよりも

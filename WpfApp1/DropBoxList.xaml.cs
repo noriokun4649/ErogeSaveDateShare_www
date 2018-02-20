@@ -35,12 +35,14 @@ namespace WpfApp1
                 //Console.WriteLine("--- Files ---");
                 var list = await client.Files.ListFolderAsync(path);
                 int size_fol = list.Entries.Count;
+                load_file.Maximum = size_fol;
                 int counts_fol = 1;
                 // show folders then files
                 foreach (var item in list.Entries.Where(i => i.IsFolder))
                 {
                     //Console.WriteLine("D  {0}/", item.Name);
                     //ListBox_drop.Items.Add("フォルダ "+ item.Name+"/");
+                    load_file.Value = counts_fol;
 
                     var list2 = await client.Files.ListFolderAsync("/" + item.Name);
 
@@ -83,8 +85,9 @@ namespace WpfApp1
                         counts++;
                     }
                     counts_fol++;
-
                 }
+                load_file.Value = size_fol;
+
                 /*
                 foreach (var item in list.Entries.Where(i => i.IsFile))
                 {

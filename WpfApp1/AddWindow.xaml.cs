@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 using System.Linq;
+using System.Collections;
 
 namespace WpfApp1
 {
@@ -61,8 +62,13 @@ namespace WpfApp1
             {
                 if (!game_title.Text.Contains(","))
                 {
-                    game_view.Items.RemoveAt(indexs);
-                    game_view.Items.Insert(indexs, new string[] { game_title.Text, file_box.Text });
+                    if (IsSpace(game_title.Text,file_box.Text)) { 
+                        game_view.Items.RemoveAt(indexs);
+                        game_view.Items.Insert(indexs, new string[] { game_title.Text, file_box.Text });
+                        game_title.Text = "";
+                        file_box.Text = "";
+
+                    }
                 }
                 else
                 {
@@ -119,6 +125,36 @@ namespace WpfApp1
                 this.file_box.Text = dialog.FileName;
             }
         }
+        private bool IsConflict(string data)
+        {
+            string[][] address = this.game_view.Items.Cast<string[]>().ToArray();
+            var addres =new ArrayList();
+            for (int i = 0; i < address.Length; i++)
+            {
+                addres.Add(address[i][0]);
+            }
+            if (addres.Contains(data))
+            {
+                MessageBox.Show("ゲームタイトルが競合しています。", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                return true;
+            }
+            return false;
+        }
+
+        private bool IsSpace (string data)
+        {
+            return data.Replace(" ", "").Replace("　", "").Equals("");
+        }
+
+        private bool IsSpace(string title,string path)
+        {
+            if (IsSpace(title) || IsSpace(path))
+            {
+                MessageBox.Show("空白は設定できません。", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true; 
+        }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
@@ -139,7 +175,7 @@ namespace WpfApp1
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            if ((game_title.Text != "") & (file_box.Text != ""))
+            if (IsSpace(game_title.Text,file_box.Text) && !IsConflict(game_title.Text))
             {
                 if (!game_title.Text.Contains(","))
                 {

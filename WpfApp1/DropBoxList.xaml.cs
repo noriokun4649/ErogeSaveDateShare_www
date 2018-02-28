@@ -87,6 +87,7 @@ namespace WpfApp1
                     counts_fol++;
                 }
                 load_file.Value = size_fol;
+                loading.Text = "読み込み完了";
 
                 /*
                 foreach (var item in list.Entries.Where(i => i.IsFile))

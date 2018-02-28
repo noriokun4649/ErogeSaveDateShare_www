@@ -309,11 +309,11 @@ namespace WpfApp1
 
                                 else if (Directory.Exists(lins[1]))//フォルダ
                                 {
-                                    var s = await ListFolder(client, "/" + lins[0]);
+                                    string[][] s = await ListFolder(client, "/" + lins[0]);
 
                                     //string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
 
-                                    for (int i = 0; s[0].Length > i; i++)//s の二次配列
+                                    for (int i = 1; s[0].Length > i; i++)//s の二次配列
                                     {
                                         token.ThrowIfCancellationRequested();
                                         Console.WriteLine(s[0][i] + "更新日：" + s[1][i]);
@@ -353,7 +353,7 @@ namespace WpfApp1
 
                                             log_box.Items.Add(s[0][i] + " の上書きをします");
                                             string names = Path.GetFileName(s[0][i]);
-                                            string dire_names = Path.GetFileName(Path.GetDirectoryName(input_data[1]));
+                                            string dire_names = Path.GetFileName(Path.GetDirectoryName(lins[1]));
 
                                             if (names != "")
                                             {
@@ -532,6 +532,7 @@ namespace WpfApp1
 
             string[][] rest = new string[][] { datase.Split(','), datase_time.Split(',') };
             Console.WriteLine(datase_time.Split(',').Length);
+            Console.WriteLine(datase+" : "+datase_time);
             if (list.HasMore)
             {
                 //Console.WriteLine("   ...");

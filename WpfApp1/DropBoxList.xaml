@@ -27,7 +27,7 @@
             </ListView.View>
         </ListView>
         <ProgressBar x:Name="load_file" Height="20" Margin="20,10,10,0" Grid.Row="1" VerticalAlignment="Top"/>
-        <TextBox x:Name="loading" HorizontalAlignment="Center" Height="20" Margin="20,11,10,10" Grid.Row="1" TextWrapping="Wrap" Text="読み込み中" VerticalAlignment="Center" Width="400" TextAlignment="Center" Background="#00000000"/>
+        <TextBlock x:Name="loading" HorizontalAlignment="Center" Height="20" Margin="20,11,10,10" Grid.Row="1" TextWrapping="Wrap" Text="読み込み中" VerticalAlignment="Center" Width="400" TextAlignment="Center" Background="#00000000"/>
 
     </Grid>
 </Window>

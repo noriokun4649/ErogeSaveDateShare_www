@@ -2,8 +2,10 @@ using Dropbox.Api;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 using WpfApp1.Properties;
 
@@ -23,7 +25,9 @@ namespace WpfApp1
         public LoginForm(string appKey)
         {
             InitializeComponent();
-
+            var axIWebBrowser2 = typeof(WebBrowser).GetProperty("AxIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
+            var comObj = axIWebBrowser2.GetValue(Browser, null);
+            comObj.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, comObj, new object[] { true });
             Dispatcher.BeginInvoke(new Action<string>(this.Start), appKey);
         }
 

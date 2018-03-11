@@ -20,7 +20,7 @@
         </Grid.ColumnDefinitions>
         <Button Content="いいえ" Margin="0,10,10,0" HorizontalAlignment="Right" Width="75" Grid.Column="1" Grid.Row="1" Click="Button_Click" Height="20" VerticalAlignment="Top"/>
         <Button Content="はい" HorizontalAlignment="Right" Margin="0,10,99,0" Width="75" Grid.Column="1" Grid.Row="1" Click="Button_Click_1" Height="20" VerticalAlignment="Top"/>
-        <CheckBox x:Name="checks" Grid.Column="1" Margin="10,10,0,10" Checked="checks_Checked" Grid.Row="2" HorizontalAlignment="Left" Width="334">
+        <CheckBox x:Name="checks" Grid.Column="1" Margin="10,10,0,10" Checked="Checks_Checked" Grid.Row="2" HorizontalAlignment="Left" Width="334">
             <TextBlock TextWrapping="WrapWithOverflow" Width="311">の処理で、この選択を記憶する</TextBlock>
         </CheckBox>
         <TextBlock x:Name="Massage" Grid.Column="1" HorizontalAlignment="Left" Margin="10,8,0,5" TextWrapping="Wrap" Text="TextBlock" Width="334"/>

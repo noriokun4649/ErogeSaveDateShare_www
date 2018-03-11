@@ -55,7 +55,7 @@ namespace WpfApp1
 
         }
 
-        private void checks_Checked(object sender, RoutedEventArgs e)
+        private void Checks_Checked(object sender, RoutedEventArgs e)
         {
            CheckBox checks = (CheckBox)sender;
           t.SetCheck((bool)checks.IsChecked);

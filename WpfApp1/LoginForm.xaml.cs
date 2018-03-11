@@ -83,7 +83,7 @@ namespace WpfApp1
             catch (ArgumentException ers)
             {
                 // There was an error in the URI passed to ParseTokenFragment
-                MessageBox.Show("連携に問題が発生しました。\n\n"+ers.Message,"DropBox連携",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("連携に問題が発生しました。\n\n"+ers.Message.Replace("Invalid OAuth 2.0 response, missing access_token and/or uid.", "無効なOAuth 2.0レスポンスです。access_tokenまたはuidがありません。\nリクエストを許可してください。"),"DropBox連携",MessageBoxButton.OK,MessageBoxImage.Error);
             }
             finally
             {

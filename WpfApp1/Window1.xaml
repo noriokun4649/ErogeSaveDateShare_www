@@ -1,0 +1,28 @@
+﻿<Window x:Class="WpfApp1.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="MassageWindow" Width="385.274" Background="White" Height="179.872" SizeToContent="Height" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="8"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="354"/>
+            <ColumnDefinition Width="12"/>
+        </Grid.ColumnDefinitions>
+        <Button Content="いいえ" Margin="0,10,10,0" HorizontalAlignment="Right" Width="75" Grid.Column="1" Grid.Row="1" Click="Button_Click" Height="20" VerticalAlignment="Top"/>
+        <Button Content="はい" HorizontalAlignment="Right" Margin="0,10,99,0" Width="75" Grid.Column="1" Grid.Row="1" Click="Button_Click_1" Height="20" VerticalAlignment="Top"/>
+        <CheckBox x:Name="checks" Grid.Column="1" Margin="10,10,0,10" Checked="checks_Checked" Grid.Row="2" HorizontalAlignment="Left" Width="334">
+            <TextBlock TextWrapping="WrapWithOverflow" Width="311">の処理で、この選択を記憶する</TextBlock>
+        </CheckBox>
+        <TextBlock x:Name="Massage" Grid.Column="1" HorizontalAlignment="Left" Margin="10,8,0,5" TextWrapping="Wrap" Text="TextBlock" Width="334"/>
+    </Grid>
+</Window>

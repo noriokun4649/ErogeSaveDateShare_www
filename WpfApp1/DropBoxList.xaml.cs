@@ -47,13 +47,14 @@ namespace WpfApp1
                 int size_fol = list.Entries.Count;
                 load_file.Maximum = size_fol;
                 int counts_fol = 1;
+                loading.Text = "読み込み中...("+counts_fol + "/" + size_fol+")";
                 // show folders then files
                 foreach (var item in list.Entries.Where(i => i.IsFolder))
                 {
                     //Console.WriteLine("D  {0}/", item.Name);
                     //ListBox_drop.Items.Add("フォルダ "+ item.Name+"/");
                     load_file.Value = counts_fol;
-
+                    loading.Text = "読み込み中...(" + counts_fol + "/" + size_fol + ")";
                     var list2 = await client.Files.ListFolderAsync("/" + item.Name);
 
                     int size = list2.Entries.Count;

@@ -71,11 +71,16 @@ namespace WpfApp1
             {
                 if (input_data == null)
                 {
+                    int line_count = File.ReadAllLines(MainWindow.file_path).Length;
+                    loading.Maximum = line_count;
+                    int count = 1;
                     using (StreamReader stream = new StreamReader(MainWindow.file_path))
                     {
                         string line;
                         while ((line = stream.ReadLine()) != null)
                         {
+                            loading.Value = count++;
+                            load_text.Text = line_count + "タイトル中"+(count-1)+"タイトル処理済み";
                             String[] lins = line.Split(',');
                             log_box.Items.Add("ゲームタイトル→" + lins[0] + "のアップロードを開始しました");
                             await CreateFolder(client, "/" + lins[0]);
@@ -83,17 +88,47 @@ namespace WpfApp1
                             {
                                 if (File.Exists(lins[1]))//ファイル
                                 {
-                                   token.ThrowIfCancellationRequested();
+                                    var fol_list = await ListFolder(client, "/" + lins[0]);
+
+                                    token.ThrowIfCancellationRequested();
                                     string names = Path.GetFileName(lins[1]);
-                                    await Upload(client, lins[0], names, lins[1]);
+                                    int index1 = Array.IndexOf(fol_list[0], names);
+                                    if (0 <= index1)
+                                    {
+                                        DateTime time_local = File.GetLastWriteTime(lins[1]);
+                                        DateTime times_dro = DateTime.Parse(fol_list[1][1]);
+                                        int time_if = times_dro.CompareTo(time_local);//PC上のデータはドロップボックスのデータよりも
+
+                                        bool? result = If_Result(names, lins[0], time_if, true);
+
+                                        if (result == true)
+                                        {
+                                            log_box.Items.Add(names + " をPC上のデータで上書きします");
+                                            await Upload(client, lins[0], names, lins[1]);
+                                        }
+                                        else
+                                        {
+                                            log_box.Items.Add(names + " の上書きはスキップされました");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //Console.WriteLine("クラウドにはこのデータないですね");
+                                        await Upload(client, lins[0], names, lins[1]);
+                                    }
                                 }
                                 else if (Directory.Exists(lins[1]))//フォルダ
                                 {
                                     var s = await ListFolder(client, "/" + lins[0]);
                                     System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ja-JP");
                                     string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
+                                    int child_leng = files.Length;
+                                    loading_chilled.Maximum = child_leng;
+                                    int chile_count = 1;
                                     foreach (String f in files)
                                     {
+                                        loading_chilled.Value = chile_count++;
+                                        load_chil_text.Text = lins[0]+"のファイル"+child_leng+"件中"+(chile_count-1)+"件処理済み";
                                         token.ThrowIfCancellationRequested();
                                         string names = Path.GetFileName(f);
                                         int index1 = Array.IndexOf(s[0], names);
@@ -101,58 +136,20 @@ namespace WpfApp1
                                         {
                                             DateTime time_local = File.GetLastWriteTime(f);
                                             DateTime times_dro = DateTime.Parse(s[1][index1]);
-                                            int time_if = time_local.CompareTo(times_dro);//PC上のデータはドロップボックスのデータよりも
+                                            int time_if = times_dro.CompareTo(time_local);//PC上のデータはドロップボックスのデータよりも
 
                                             //Console.WriteLine("ファイル名" + f + " ローカル更新日:" + time_local + " 泥更新日:" + times_dro + "判定" + time_if);
 
-                                            bool? result;
-                                            if (time_if == 0)
-                                            {
-                                                result = false;
-                                                log_box.Items.Add("ファイル" + f + "は更新されてません＾u＾");
-                                            }
-                                            else if (time_if > 0)
-                                            {
-                                                //MessageBox.Show(f + " はPC上のセーブデータがDropBox上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？", "DropBoxにアップロード");
-                                                result = true;
-                                            }
-                                            else
-                                            {
-                                                if (Properties.Settings.Default.dropbox_snyc)
-                                                {
-                                                    //result = MessageBox.Show(f + " はDropBox上のセーブデータがPC上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？", "DropBoxにアップロード",
-                                                    //MessageBoxButton.YesNo,
-                                                    //MessageBoxImage.Information);
-                                                    if (!Action_check) { 
-                                                        var windpw1 = new Window1();
-                                                        windpw1.SetParent(this);
-                                                        windpw1.SetParameter(lins[0], f + " はDropBox上のセーブデータがPC上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？");
-                                                        windpw1.Title = "DropBoxにアップロード";
-                                                        result = windpw1.ShowDialog();
-                                                        if (Action_check)
-                                                        {
-                                                            Action_check_result = (bool)result;
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        result = Action_check_result;
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    result = true;
-                                                }
-                                            }
+                                            bool? result = If_Result(names, lins[0], time_if, true);
 
                                             if (result == true)
                                             {
-                                                log_box.Items.Add(f + " をPC上のデータで上書きします");
+                                                log_box.Items.Add(names + " をPC上のデータで上書きします");
                                                 await Upload(client, lins[0], names, f);
                                             }
                                             else
                                             {
-                                                log_box.Items.Add(f + " の上書きはスキップされました");
+                                                log_box.Items.Add(names + " の上書きはスキップされました");
                                             }
                                         }
                                         else
@@ -168,7 +165,7 @@ namespace WpfApp1
                                 }
                             }
                         }
-                        log_box.Items.Add("すべてのアップロードが完了しました");
+                    log_box.Items.Add("すべてのアップロードが完了しました");
                     }
                 }
                 else
@@ -179,9 +176,33 @@ namespace WpfApp1
                     {
                         if (File.Exists(input_data[1]))//ファイル
                         {
+                            var fol_list = await ListFolder(client, "/" + input_data[0]);
                             token.ThrowIfCancellationRequested();
                             string names = Path.GetFileName(input_data[1]);
-                            await Upload(client, input_data[0], names, input_data[1]);
+                            int index1 = Array.IndexOf(fol_list[0], names);
+                            if (0 <= index1)
+                            {
+                                DateTime time_local = File.GetLastWriteTime(input_data[1]);
+                                DateTime times_dro = DateTime.Parse(fol_list[1][1]);
+                                int time_if = times_dro.CompareTo(time_local);//PC上のデータはドロップボックスのデータよりも
+
+                                bool? result = If_Result(names, input_data[0], time_if, true);
+
+                                if (result == true)
+                                {
+                                    log_box.Items.Add(names + " をPC上のデータで上書きします");
+                                    await Upload(client, input_data[0], names, input_data[1]);
+                                }
+                                else
+                                {
+                                    log_box.Items.Add(names + " の上書きはスキップされました");
+                                }
+                            }
+                            else
+                            {
+                                //Console.WriteLine("クラウドにはこのデータないですね");
+                                await Upload(client, input_data[0], names, input_data[1]);
+                            }
                         }
                         else if (Directory.Exists(input_data[1]))//フォルダ
                         {
@@ -191,72 +212,35 @@ namespace WpfApp1
                             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ja-JP");
 
                             string[] files = System.IO.Directory.GetFiles(input_data[1], "*", System.IO.SearchOption.AllDirectories);
-
+                            int child_leng = files.Length;
+                            loading_chilled.Maximum = child_leng;
+                            int chile_count = 1;
 
                             foreach (String f in files)
                             {
+                                loading_chilled.Value = chile_count++;
+                                load_chil_text.Text = input_data[0] + "のファイル" + child_leng + "件中" + (chile_count - 1) + "件処理済み";
                                 token.ThrowIfCancellationRequested();
                                 string names = Path.GetFileName(f);
                                 int index1 = Array.IndexOf(s[0], names);
                                 if (0 <= index1)
                                 {
-
                                     DateTime time_local = File.GetLastWriteTime(f);
                                     DateTime times_dro = DateTime.Parse(s[1][index1]);
-                                    int time_if = time_local.CompareTo(times_dro);//PC上のデータはドロップボックスのデータよりも
+                                    int time_if = times_dro.CompareTo(time_local);//PC上のデータはドロップボックスのデータよりも
 
                                     Console.WriteLine("ファイル名"+f+" ローカル更新日:"+time_local+ " 泥更新日:"+times_dro+ "判定"+time_if);
 
-                                    bool? result;
-                                    if (time_if == 0)
-                                    {
-                                        result = false;
-                                        log_box.Items.Add("ファイル" + f + "は更新されてません＾u＾");
-                                    }
-                                    else if (time_if > 0)
-                                    {
-                                        //MessageBox.Show(f + " はPC上のセーブデータがDropBox上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？", "DropBoxにアップロード");
-                                        result = true;
-                                    }
-                                    else
-                                    {
-                                        if (Properties.Settings.Default.dropbox_snyc)
-                                        {
-                                            //result = MessageBox.Show(f + " はDropBox上のセーブデータがPC上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？", "DropBoxにアップロード",
-                                            //MessageBoxButton.YesNo,
-                                            //MessageBoxImage.Information);
-                                            if (!Action_check)
-                                            { 
-                                                var windpw1 = new Window1();
-                                                windpw1.SetParent(this);
-                                                windpw1.SetParameter(input_data[0], f + " はDropBox上のセーブデータがPC上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？");
-                                                windpw1.Title = "DropBoxにアップロード";
-                                                result = windpw1.ShowDialog();
-                                                if (Action_check)
-                                                {
-                                                    Action_check_result = (bool)result;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                result = Action_check_result;
-                                            }
-                                        }
-                                        else
-                                        {
-
-                                            result = true;
-                                        }
-                                    }
+                                    bool? result = If_Result(names, input_data[0], time_if, true);
 
                                     if (result == true)
                                     {
-                                        log_box.Items.Add(f + " をPC上のデータで上書きします");
+                                        log_box.Items.Add(names + " をPC上のデータで上書きします");
                                         await Upload(client, input_data[0], names, f);
                                     }
                                     else
                                     {
-                                        log_box.Items.Add(f + " の上書きはスキップされました");
+                                        log_box.Items.Add(names + " の上書きはスキップされました");
                                     }
                                 }
                                 else
@@ -310,6 +294,10 @@ namespace WpfApp1
                 Action_now = false;
                 close_button.IsEnabled = true;
                 Action_check = false;
+                loading.Value = 0;
+                loading_chilled.Value = 0;
+                load_text.Text = "";
+                load_chil_text.Text = "";
             }
 
         }
@@ -323,11 +311,16 @@ namespace WpfApp1
             {
                 if (input_data == null)
                 {
+                    int line_count = File.ReadAllLines(MainWindow.file_path).Length;
+                    loading.Maximum = line_count;
+                    int count = 1;
                     using (StreamReader stream = new StreamReader(MainWindow.file_path))
                     {
                         string line;
                         while ((line = stream.ReadLine()) != null)
                         {
+                            loading.Value = count++;
+                            load_text.Text = line_count + "タイトル中" + (count - 1) + "タイトル処理済み";
                             String[] lins = line.Split(',');
 
                             log_box.Items.Add("ゲームタイトル→" + lins[0] + "のダウンロードを開始しました");
@@ -336,10 +329,35 @@ namespace WpfApp1
                             {
                                 if (File.Exists(lins[1]))//ファイル
                                 {
+                                    var fol_list = await ListFolder(client, "/" + lins[0]);
+
                                     token.ThrowIfCancellationRequested();
                                     string names = Path.GetFileName(lins[1]);
-                                    Console.WriteLine(lins[0] + " " + names + " " + lins[1]);
-                                    await Download(client, lins[0], names, lins[1]);
+                                    int index1 = Array.IndexOf(fol_list[0], names);
+                                    if (0 <= index1)
+                                    {
+                                        DateTime time_local = File.GetLastWriteTime(lins[1]);
+                                        DateTime times_dro = DateTime.Parse(fol_list[1][1]);
+                                        int time_if = time_local.CompareTo(times_dro);//PC上のデータはドロップボックスのデータよりも
+
+                                        bool? result = If_Result(names, lins[0], time_if, false);
+
+                                        if (result == true)
+                                        {
+                                            log_box.Items.Add(names + " の上書きをします");
+                                            await Download(client, lins[0], names, lins[1]);
+                                            File.SetLastWriteTime(lins[1], times_dro);//ダウンロードしたファイルの更新日時をDropBox上の更新日時に上書き
+                                        }
+                                        else
+                                        {
+                                            log_box.Items.Add(names + " の上書きはスキップされました");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //Console.WriteLine("クラウドにはこのデータないですね");
+                                        await Download(client, lins[0], names, lins[1]);
+                                    }
                                 }
 
                                 else if (Directory.Exists(lins[1]))//フォルダ
@@ -347,9 +365,12 @@ namespace WpfApp1
                                     string[][] s = await ListFolder(client, "/" + lins[0]);
 
                                     //string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
-
+                                    int child_leng = s[0].Length;
+                                    loading_chilled.Maximum = child_leng;
                                     for (int i = 1; s[0].Length > i; i++)//s の二次配列
                                     {
+                                        loading_chilled.Value = i;
+                                        load_chil_text.Text = lins[0] + "のファイル" + child_leng + "件中" + (i - 1) + "件処理済み";
                                         token.ThrowIfCancellationRequested();
                                         Console.WriteLine(s[0][i] + "更新日：" + s[1][i]);
                                         System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ja-JP");
@@ -358,48 +379,7 @@ namespace WpfApp1
                                         DateTime times_dro = DateTime.Parse(s[1][i]);
                                         int time_if = time_local.CompareTo(times_dro);//PC上のデータはドロップボックスのデータよりも
                                         Console.WriteLine(time_if);
-                                        bool? result;
-                                        if (time_if == 0)
-                                        {
-                                            result = false;
-                                            log_box.Items.Add("ファイル:" + s[0][i] + "は更新されてません＾u＾");
-                                        }
-                                        else if (time_if > 0)
-                                        {
-                                            if (Properties.Settings.Default.pc_snyc)
-                                            {
-                                                /*
-                                                result = MessageBox.Show(s[0][i] + " はPC上のセーブデータがDropBox上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？", "DropBoxからダウンロード",
-                                                MessageBoxButton.YesNo,
-                                                MessageBoxImage.Information);
-                                                */
-                                                if (!Action_check)
-                                                {
-                                                    var windpw1 = new Window1();
-                                                    windpw1.SetParent(this);
-                                                    windpw1.SetParameter(lins[0], s[0][i] + " はPC上のセーブデータがDropBox上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？");
-                                                    windpw1.Title = "DropBoxからダウンロード";
-                                                    result = windpw1.ShowDialog();
-                                                    if (Action_check)
-                                                    {
-                                                        Action_check_result = (bool)result;
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    result = Action_check_result;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                result = true;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            result =true;
-                                            //MessageBox.Show("DropBox上のセーブデータがPC上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？");
-                                        }
+                                        bool? result = If_Result(s[0][i], lins[0], time_if, false);
 
                                         if (result == true)
                                         {
@@ -442,10 +422,34 @@ namespace WpfApp1
                         log_box.Items.Add("ゲームタイトル→" + input_data[0] + "のダウンロードを開始しました");
                         if (File.Exists(input_data[1]))//ファイル
                         {
+                            var fol_list = await ListFolder(client, "/" + input_data[0]);
                             token.ThrowIfCancellationRequested();
                             string names = Path.GetFileName(input_data[1]);
-                            Console.WriteLine(input_data[0] + " " + names + " " + input_data[1]);
-                            await Download(client, input_data[0], names, input_data[1]);
+                            int index1 = Array.IndexOf(fol_list[0], names);
+                            if (0 <= index1)
+                            {
+                                DateTime time_local = File.GetLastWriteTime(input_data[1]);
+                                DateTime times_dro = DateTime.Parse(fol_list[1][1]);
+                                int time_if = time_local.CompareTo(times_dro);//PC上のデータはドロップボックスのデータよりも
+
+                                bool? result = If_Result(input_data[1], input_data[0], time_if, false);
+
+                                if (result == true)
+                                {
+                                    log_box.Items.Add(input_data[1] + " の上書きをします");
+                                    await Download(client, input_data[0], names, input_data[1]);
+                                    File.SetLastWriteTime(input_data[1], times_dro);//ダウンロードしたファイルの更新日時をDropBox上の更新日時に上書き
+                                }
+                                else
+                                {
+                                    log_box.Items.Add(input_data[1] + " の上書きはスキップされました");
+                                }
+                            }
+                            else
+                            {
+                                //Console.WriteLine("クラウドにはこのデータないですね");
+                                await Download(client, input_data[0], names, input_data[1]);
+                            }
                         }
 
                         else if (Directory.Exists(input_data[1]))//フォルダ
@@ -453,9 +457,12 @@ namespace WpfApp1
                             string[][] s = await ListFolder(client, "/" + input_data[0]);
 
                             //string[] files = System.IO.Directory.GetFiles(lins[1], "*", System.IO.SearchOption.AllDirectories);
-
+                            int child_leng = s[0].Length;
+                            loading_chilled.Maximum = child_leng;
                             for (int i = 1; s[0].Length > i; i++)//s の二次配列
                             {
+                                loading_chilled.Value = i;
+                                load_chil_text.Text = input_data[0] + "のファイル" + child_leng + "件中" + (i - 1) + "件処理済み";
                                 token.ThrowIfCancellationRequested();
                                 Console.WriteLine(s[0][i] + "更新日：" + s[1][i]);
                                 System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ja-JP");
@@ -466,49 +473,7 @@ namespace WpfApp1
                                 DateTime times_dro = DateTime.Parse(s[1][i]);
                                 int time_if = time_local.CompareTo(times_dro);//PC上のデータはドロップボックスのデータよりも
                                 Console.WriteLine(time_if);
-                                bool? result;
-                                if (time_if == 0)
-                                {
-                                    result = false;
-                                    log_box.Items.Add("ファイル:" + s[0][i] + "は更新されてません＾u＾");
-                                }
-                                else if (time_if > 0)
-                                {
-                                    if (Properties.Settings.Default.pc_snyc)
-                                    {
-                                        /*
-                                        result = MessageBox.Show(s[0][i] + " はPC上のセーブデータがDropBox上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？", "DropBoxからダウンロード",
-                                        MessageBoxButton.YesNo,
-                                        MessageBoxImage.Information);
-                                        */
-                                        if (!Action_check)
-                                        {
-                                            var windpw1 = new Window1();
-                                            windpw1.SetParent(this);
-                                            windpw1.SetParameter(input_data[0], s[0][i] + " はPC上のセーブデータがDropBox上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？");
-                                            windpw1.Title = "DropBoxからダウンロード";
-                                            result = windpw1.ShowDialog();
-                                            if (Action_check)
-                                            {
-                                                Action_check_result = (bool)result;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            result = Action_check_result;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        result = true;
-                                    }
-                                }
-                                else
-                                {
-                                    result = true;
-                                    //MessageBox.Show("DropBox上のセーブデータがPC上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？");
-                                }
-
+                                bool? result = If_Result(s[0][i], input_data[0], time_if, false);
                                 if (result ==true)
                                 {
 
@@ -584,6 +549,10 @@ namespace WpfApp1
                 close_button.IsEnabled = true;
                 Action_now = false;
                 Action_check = false;
+                loading.Value = 0;
+                loading_chilled.Value = 0;
+                load_text.Text = "";
+                load_chil_text.Text = "";
             }
         }
 
@@ -718,40 +687,96 @@ namespace WpfApp1
             }
         }
 
+        private bool? If_Result(string file_name,string folder_name,int if_time,bool if_mode)
+        {
+            bool? result;
+            if (if_time == 0)
+            {
+                result = false;
+                log_box.Items.Add("ファイル:" + file_name + "は更新されてません＾u＾");
+            }
+            else if (if_time > 0)
+            {
+                if (Properties.Settings.Default.pc_snyc)
+                {
+                    log_box.Items.Add(file_name + (!if_mode ? " はPC上のセーブデータがDropBox上" : " はDropBox上のセーブデータがPC上") + "のセーブデータよりも更新日時が新しいようです。");
+                    /*
+                    result = MessageBox.Show(s[0][i] + " はPC上のセーブデータがDropBox上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？", "DropBoxからダウンロード",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Information);
+                    */
+                    if (!Action_check)
+                    {
+                        
+                        var windpw1 = new Window1();
+                        windpw1.SetParent(this);
+                        windpw1.SetParameter(folder_name, file_name + (!if_mode ? " はPC上のセーブデータがDropBox上": " はDropBox上のセーブデータがPC上")+ "のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？");
+                        windpw1.Title = !if_mode ? "DropBoxからダウンロード": "DropBoxへアップロード";
+                        result = windpw1.ShowDialog();
+                        if (Action_check)
+                        {
+                            Action_check_result = (bool)result;
+                        }
+                    }
+                    else
+                    {
+                        result = Action_check_result;
+                    }
+                }
+                else
+                {
+                    result = true;
+                }
+            }
+            else
+            {
+                result = true;
+                //MessageBox.Show("DropBox上のセーブデータがPC上のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？");
+            }
+            return result;
+        }
+
         private void Close_button_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            //選択中
-            int indexs = game_list.SelectedIndex;
-            if (indexs >= 0)
+            if (Action_now != true)
             {
-                string[] texts = (string[])game_list.Items.GetItemAt(indexs);
-                if (texts.Length > 1)
+                //選択中
+                int indexs = game_list.SelectedIndex;
+                if (indexs >= 0)
                 {
-                    //se^bubasyo aru baa i
-                    if (types == 0)
+                    string[] texts = (string[])game_list.Items.GetItemAt(indexs);
+                    if (texts.Length > 1)
                     {
-                        cts = new CancellationTokenSource();
-                        await Downloadse(client, texts, cts.Token);
+                        //se^bubasyo aru baa i
+                        if (types == 0)
+                        {
+                            cts = new CancellationTokenSource();
+                            await Downloadse(client, texts, cts.Token);
+                        }
+                        else
+                        {
+                            cts = new CancellationTokenSource();
+                            await Uploades(client, texts, cts.Token);
+                        }
+
                     }
                     else
                     {
-                        cts = new CancellationTokenSource();
-                        await Uploades(client, texts, cts.Token);
+                        MessageBox.Show("選択中のゲームタイトルが不正です\n\n処理を中断します", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
-
                 }
                 else
                 {
-                    MessageBox.Show("選択中のゲームタイトルが不正です\n\n処理を中断します");
+                    MessageBox.Show("選択中のゲームタイトルが不正です\n\n処理を中断します", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
             {
-                MessageBox.Show("選択中のゲームタイトルが不正です\n\n処理を中断します");
+                MessageBox.Show("現在実行中の処理があります。終了を待つか、キャンセルしてから実行してください。", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
@@ -759,15 +784,22 @@ namespace WpfApp1
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
             //一括
-            if (types == 0)
+            if (Action_now != true)
             {
-                cts = new CancellationTokenSource();
-                await Downloadse(client, null, cts.Token);
+                if (types == 0)
+                {
+                    cts = new CancellationTokenSource();
+                    await Downloadse(client, null, cts.Token);
+                }
+                else
+                {
+                    cts = new CancellationTokenSource();
+                    await Uploades(client, null, cts.Token);
+                }
             }
             else
             {
-                cts = new CancellationTokenSource();
-                await Uploades(client, null, cts.Token);
+                MessageBox.Show("現在実行中の処理があります。終了を待つか、キャンセルしてから実行してください。","エラー",MessageBoxButton.OK,MessageBoxImage.Error);
             }
         }
 
@@ -854,6 +886,6 @@ namespace WpfApp1
         public void SetCheck (Boolean par)
         {
             Action_check = par;
-        }        
+        }
     }
 }

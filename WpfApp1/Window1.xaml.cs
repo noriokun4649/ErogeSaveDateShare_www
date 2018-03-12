@@ -54,11 +54,9 @@ namespace WpfApp1
             //grid.Children.Add(checks);
 
         }
-
-        private void Checks_Checked(object sender, RoutedEventArgs e)
+        private void Window_Closed(object sender, EventArgs e)
         {
-           CheckBox checks = (CheckBox)sender;
-          t.SetCheck((bool)checks.IsChecked);
+            t.SetCheck((bool)checks.IsChecked);
         }
     }
 }

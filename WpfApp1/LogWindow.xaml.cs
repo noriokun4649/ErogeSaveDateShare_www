@@ -7,7 +7,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 
 namespace WpfApp1
@@ -21,6 +20,7 @@ namespace WpfApp1
         int types;//0 はダウンロード 1はアップロード
         DropboxClient client;
         private CancellationTokenSource cts;
+
         bool Action_now = false;
         bool Action_check = false;
         bool Action_check_result;

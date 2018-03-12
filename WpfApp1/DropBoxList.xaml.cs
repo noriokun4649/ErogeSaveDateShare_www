@@ -1,31 +1,41 @@
 ﻿using Dropbox.Api;
 using Dropbox.Api.Files;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace WpfApp1
 {
     /// <summary>
-    /// DropBoxList.xaml の相互作用ロジック
+    /// DropBboxList2.xaml の相互作用ロジック
     /// </summary>
-    public partial class DropBoxList : Window 
+    public partial class DropBoxList : Window
     {
+        List<List<String[]>> folders = new List<List<String[]>>();
         public DropBoxList()
         {
-                InitializeComponent();
-                DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
-                Lists(client, "");
+            InitializeComponent();
+            DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
+            Lists(client, "");
         }
-         
-        private async void Lists(DropboxClient client, string path) 
+        private async void Lists(DropboxClient client, string path)
         {
 
-                await ListFolder(client, path);
+            await ListFolder(client, path);
 
         }
+
 
         private async Task<ListFolderResult> ListFolder(DropboxClient client, string path)
         {
@@ -50,15 +60,9 @@ namespace WpfApp1
                     int counts = 1;
 
 
-                    if (size_fol > counts_fol)
-                    {
-                        listview.Items.Add(new string[] { "ゲームタイトル", "├" + item.Name, "情報なし" });
-                    }
-                    else
-                    {
-                        listview.Items.Add(new string[] { "ゲームタイトル", "└" + item.Name, "情報なし" });
-                    }
+                    folder.Items.Add(new string[] { item.Name });
 
+                    List<String[]> files = new List<string[]>();
                     foreach (var item_file in list2.Entries.Where(i => i.IsFile))
                     {
                         var file = item_file.AsFile;
@@ -74,16 +78,10 @@ namespace WpfApp1
                             item_file.Name);
                         Console.WriteLine("C"+counts + " S"+size);
                         */
-                        if (size > counts)
-                        {
-                            listview.Items.Add(new string[] { "ファイル", "　├" + item_file.Name, now_jst.ToString() });
-                        }
-                        else
-                        {
-                            listview.Items.Add(new string[] { "ファイル", "　└" + item_file.Name, now_jst.ToString() });
-                        }
+                        files.Add(new string[] { item_file.Name, now_jst.ToString() });
                         counts++;
                     }
+                    folders.Add(files);
                     counts_fol++;
                 }
                 load_file.Value = size_fol;
@@ -103,7 +101,7 @@ namespace WpfApp1
                 if (list.HasMore)
                 {
                     Console.WriteLine("   ...");
-                    listview.Items.Add(new string[] { "ERROR", "DropBoxAPIの制限でこれ以上の読み込みができません", "" });
+                    //listview.Items.Add(new string[] { "ERROR", "DropBoxAPIの制限でこれ以上の読み込みができません", "" });
 
                 }
                 return list;
@@ -134,10 +132,19 @@ namespace WpfApp1
                 return null;
             }
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
 
+        private void Folder_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int indexs = folder.SelectedIndex;
+            if (indexs >= 0)
+            {
+                fail.Items.Clear();
+                foreach (var item in folders[indexs])
+                {
+                    fail.Items.Add(item);
+                }
+            }
         }
     }
+
 }

@@ -36,7 +36,6 @@
         <TextBlock HorizontalAlignment="Left" Margin="30,10,0,0" Grid.Row="3" TextWrapping="Wrap" Text="アクションログ" VerticalAlignment="Top" Height="16" Width="71"/>
         <Button Content="DropBox上のセーブデータ" Margin="0,26,25,0" VerticalAlignment="Top" Click="Button_Click_2" Height="20" HorizontalAlignment="Right" Width="139"/>
         <TextBlock x:Name="type_text" HorizontalAlignment="Right" Margin="0,4,295,0" Grid.Row="2" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="147" TextAlignment="Right" Height="16"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,2,0,0" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Red" Height="30" Width="237"><Run Text="※"/><Run Text="完了ボタンが押"/><Run Text="せな"/><Run Text="い状態で"/><Run Text=""/><Run Text="このウィンドウを閉"/><LineBreak/><Run Text="　"/><Run Text="じると操作中のすべ"/><Run Text="ての処理が中断されます"/><Run Text="。"/></TextBlock>
         <Button Content="キャンセル" HorizontalAlignment="Left" Margin="285,11,0,0" Grid.Row="5" VerticalAlignment="Top" Width="75" Click="Button_Click_3" Height="20"/>
         <CheckBox x:Name="action_select" Content="アクションログのスクロール固定" HorizontalAlignment="Left" Margin="299,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="200" Height="16" IsChecked="True"/>
     </Grid>

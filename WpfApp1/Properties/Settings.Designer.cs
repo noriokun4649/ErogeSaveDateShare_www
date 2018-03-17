@@ -106,5 +106,17 @@ namespace WpfApp1.Properties {
                 this["Uid"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool color {
+            get {
+                return ((bool)(this["color"]));
+            }
+            set {
+                this["color"] = value;
+            }
+        }
     }
 }

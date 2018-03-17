@@ -13,7 +13,7 @@ namespace WpfApp1
     /// <summary>
     /// DropBboxList2.xaml の相互作用ロジック
     /// </summary>
-    public partial class DropBoxList : Window
+    public partial class DropBoxList : Window , IDisposable
     {
         List<List<String[]>> folders = new List<List<String[]>>();
         DropboxClient client;
@@ -234,6 +234,24 @@ namespace WpfApp1
             DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
             Lists(client, "");
         }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (client !=null)
+                {
+                    client.Dispose();
+                }
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
     }
 
 }

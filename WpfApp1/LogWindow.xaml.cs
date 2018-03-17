@@ -615,7 +615,6 @@ namespace WpfApp1
             return folder;
         }
 
-
         private async Task Upload(DropboxClient client, string folder, string fileName, string fileContent)
         {
             //MessageBox.Show(fileName + "のアップロードを開始しました",

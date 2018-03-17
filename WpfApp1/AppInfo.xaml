@@ -39,7 +39,5 @@
         <TextBlock TextWrapping="Wrap" Grid.Column="1" Margin="10,0,8,0" Grid.Row="1"><Run Text="Blog"/> <Hyperlink Click="Hyperlink_Click_2"><Run Text="https://noriokun4649.blog.fc2.com"/></Hyperlink></TextBlock>
         <TextBlock TextWrapping="Wrap" Grid.Column="1" Margin="10,0,8,0" Height="33" VerticalAlignment="Center" Grid.Row="2"><Run Text="Twitter"/> <Hyperlink Click="Hyperlink_Click_3"><Run Text="@noriokun_blog"/></Hyperlink></TextBlock>
         <TextBox HorizontalAlignment="Left" Height="31" Margin="10,0,0,0" TextWrapping="Wrap" Text="✉noriokun.official.mail@gmail.com" VerticalAlignment="Top" Width="211" IsReadOnly="True" Grid.Column="1" VerticalContentAlignment="Center" Grid.Row="3"/>
-
-
     </Grid>
 </Window>

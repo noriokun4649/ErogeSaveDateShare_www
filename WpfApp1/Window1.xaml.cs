@@ -40,7 +40,6 @@ namespace WpfApp1
 
             checks.Name = "checkBox";
             checks.Content = tb;
-
             //grid.Children.Add(checks);
 
         }

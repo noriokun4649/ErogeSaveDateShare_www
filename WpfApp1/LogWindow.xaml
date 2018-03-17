@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="LogWindow" Height="650.337" Width="527.242" WindowStartupLocation="CenterOwner" SizeToContent="Width" Closing="Window_Closing" Closed="Window_Closed" MaxWidth="527.242" MaxHeight="650.337" MinWidth="527.242" MinHeight="650.337" ResizeMode="NoResize">
     <Grid Margin="0,0,2,0">

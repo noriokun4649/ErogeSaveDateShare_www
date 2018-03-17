@@ -24,6 +24,8 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+            Main2 window2 = new Main2();
+            window2.ShowDialog();
             checkbox_drop.IsChecked = Properties.Settings.Default.dropbox_snyc;
             checkbox_pc.IsChecked = Properties.Settings.Default.pc_snyc;
             string ac = Properties.Settings.Default.AccessToken;

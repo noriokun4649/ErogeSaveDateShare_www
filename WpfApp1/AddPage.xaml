@@ -1,0 +1,71 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      x:Class="WpfApp1.AddPage"
+      mc:Ignorable="d" d:DesignWidth="800"
+      Title="AddPage" Unloaded="Page_Unloaded">
+    <materialDesign:ColorZone VerticalAlignment="Stretch" Grid.ColumnSpan="6" Margin="0,0,-0.339,0" Grid.RowSpan="4">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="113"/>
+                <ColumnDefinition Width="208*"/>
+                <ColumnDefinition Width="208*"/>
+                <ColumnDefinition Width="208*"/>
+                <ColumnDefinition Width="39*"/>
+                <ColumnDefinition Width="25*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="129"/>
+                <RowDefinition Height="129"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <materialDesign:Card VerticalAlignment="Stretch" Grid.ColumnSpan="6" Margin="10,10,10.661,10" >
+                <ListView x:Name="game_view" Margin="10,10,11,10" DragEnter="Game_view_DragEnter" SelectionChanged="Game_view_SelectionChanged" AllowDrop="True" Drop="Game_view_Drop" Grid.ColumnSpan="6">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="ゲームタイトル" DisplayMemberBinding="{Binding [0]}"/>
+                            <GridViewColumn Header="セーブデータ場所" DisplayMemberBinding="{Binding [1]}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </materialDesign:Card>
+
+            <Button Style="{StaticResource MaterialDesignRaisedButton}" x:Name="add" Content="追加" Margin="10" RenderTransformOrigin="0.9,0.4" Height="Auto" Click="Button_Click_5" Grid.Row="3" Grid.Column="1"/>
+            <Button x:Name="delete" Content="削除" Margin="10,10,9.698,10" RenderTransformOrigin="0.342,0.475" Click="Button_Click" Height="Auto" Grid.Column="3" Grid.Row="3" IsEnabled="False"/>
+            <Button x:Name="save" Content="保存" Margin="10" Click="Button_Click_1" RenderTransformOrigin="0.053,0.625" Height="Auto" Grid.Column="2" Grid.Row="3" IsEnabled="False"/>
+
+            <materialDesign:Card ToolTip="セーブデータはゲームタイトルで区別され、同名のゲームタイトルのものが複数コンピュータ間で共有されます" Margin="10,10,10.661,10" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="6">
+                <Grid>
+                    <materialDesign:PackIcon Kind="LeadPencil" Margin="10,10,0,10" Height="Auto" Width="73" VerticalAlignment="Stretch" />
+                    <TextBox x:Name="game_title"
+            Style="{StaticResource MaterialDesignTextFieldBoxTextBox}"
+            AcceptsReturn="True"
+            TextWrapping="Wrap"
+            materialDesign:HintAssist.Hint="ゲームタイトル" Margin="106,10,10,10" BorderBrush="#89FFFFFF"/>
+                </Grid>
+            </materialDesign:Card>
+            <materialDesign:Card  ToolTip="セーブデータパスを設定してください" Margin="10,10,10.661,10" Grid.Row="2" VerticalAlignment="Stretch" RenderTransformOrigin="1.214,0.654" Grid.ColumnSpan="6">
+                <Grid >
+                    <materialDesign:PackIcon Kind="GamepadVariant" Margin="10,10,0,10" Height="Auto" Width="72" RenderTransformOrigin="0.445,0.235" VerticalAlignment="Stretch" />
+                    <TextBlock x:Name="file_box" Margin="108,10,150,10" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}" ToolTip="ファイル参照" Margin="0,19,95,20" Width="50" Height="50" Click="Button_Click_3" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <materialDesign:PackIcon Kind="File" Height="35" Width="33" />
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}" ToolTip="フォルダ参照" Margin="0,19,21,20" Height="50" Width="50" Click="Button_Click_2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <materialDesign:PackIcon Kind="Folder" Height="35" Width="33" />
+                    </Button>
+                </Grid>
+            </materialDesign:Card>
+            <materialDesign:Snackbar x:Name="snack" Grid.ColumnSpan="6" Margin="10,50,10.661,0" Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.RowSpan="2">
+                <materialDesign:SnackbarMessage x:Name="snack_mes"
+                    Content="津"
+                    ActionContent="OK" ActionClick="snack_mes_ActionClick" />
+            </materialDesign:Snackbar>
+        </Grid>
+    </materialDesign:ColorZone>
+</Page>

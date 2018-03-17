@@ -11,14 +11,14 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock  Grid.Row="0" Text="Dropboxと連携するにはアカウントにログインしてください"
+        <TextBlock  Grid.Row="0"
                     Margin="20,6" FontWeight="SemiBold" FontSize="16"
-                    Foreground="#28E"/>
+                    Foreground="#28E"><Run Text="Dropboxと"/><Run Text="リンク"/><Run Text="するにはアカウントにログインしてください"/></TextBlock>
         <Border Grid.Row="1" BorderThickness="0,1,0,2" SnapsToDevicePixels="True"
                 BorderBrush="#8000">
             <WebBrowser x:Name="Browser" Navigating="BrowserNavigating"/>
         </Border>
-        <Button Grid.Row="2" HorizontalAlignment="Right" Margin="20,6" Width="75"
-                Height="25" Click="CancelClick" Content="Cancel"/>
+        <Button Grid.Row="2" HorizontalAlignment="Right" Margin="0,6,20,6" Width="115"
+                Height="25" Click="CancelClick" Content="キャンセル"/>
     </Grid>
 </Window>

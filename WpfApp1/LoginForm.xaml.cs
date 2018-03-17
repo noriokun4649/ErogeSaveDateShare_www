@@ -76,14 +76,14 @@ namespace WpfApp1
                 Settings.Default.Save();
                 var task = Task.Run((Func<Task>)LoginForm.Run);
                 task.Wait();
-                var task2 = Task.Run((Func<Task>)MainWindow.Run);
+                var task2 = Task.Run((Func<Task>)HomePage.Run);
                 task2.Wait();
                 this.RefreshEvent(this, new EventArgs());
             }
             catch (ArgumentException ers)
             {
                 // There was an error in the URI passed to ParseTokenFragment
-                MessageBox.Show("連携に問題が発生しました。\n\n"+ers.Message.Replace("Invalid OAuth 2.0 response, missing access_token and/or uid.", "無効なOAuth 2.0レスポンスです。access_tokenまたはuidがありません。\nリクエストを許可してください。"),"DropBox連携",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("リンクに問題が発生しました。\n\n"+ers.Message.Replace("Invalid OAuth 2.0 response, missing access_token and/or uid.", "無効なOAuth 2.0レスポンスです。access_tokenまたはuidがありません。\nリクエストを許可してください。"),"DropBoxリンク",MessageBoxButton.OK,MessageBoxImage.Error);
             }
             finally
             {
@@ -100,32 +100,32 @@ namespace WpfApp1
                 try
                 {
                     var full = await dbx.Users.GetCurrentAccountAsync();
-                    MessageBox.Show("連携が正常に完了しました。\n\nアカウント：" + full.Name.DisplayName, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("リンクが正常に完了しました。\n\nアカウント：" + full.Name.DisplayName, "DropBoxリンク", MessageBoxButton.OK, MessageBoxImage.Information);
                     usernameis = full.Name.DisplayName;
                 }
                 catch (WebException exs)
                 {
-                    MessageBox.Show("ネットワークエラーが発生しました。\n\n" + exs.Message, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("ネットワークエラーが発生しました。\n\n" + exs.Message, "DropBoxリンク", MessageBoxButton.OK, MessageBoxImage.Error);
                     usernameis = "DropBox接続エラー";
                 }
                 catch (HttpRequestException exx)
                 {
-                    MessageBox.Show("HTTPリクエストに問題が発生しました。コンピュータがインターネットに接続されているか確認してください。\n\n" + exx.Message, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("HTTPリクエストに問題が発生しました。コンピュータがインターネットに接続されているか確認してください。\n\n" + exx.Message, "DropBoxリンク", MessageBoxButton.OK, MessageBoxImage.Error);
                     usernameis = "DropBox接続エラー";
                 }
                 catch (InvalidOperationException exss)
                 {
-                    MessageBox.Show("無効な呼び出しが発生しました。\n\n" + exss.Message, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("無効な呼び出しが発生しました。\n\n" + exss.Message, "DropBoxリンク", MessageBoxButton.OK, MessageBoxImage.Error);
                     usernameis = "DropBox接続エラー";
                 }
                 catch (ArgumentException ers)
                 {
-                    MessageBox.Show("問題が発生しました。\n\n" + ers.Message, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("問題が発生しました。\n\n" + ers.Message, "DropBoxリンク", MessageBoxButton.OK, MessageBoxImage.Error);
                     usernameis = "DropBox接続エラー";
                 }
                 catch (Exception ext)
                 {
-                    MessageBox.Show("エラーが発生しました。\n\n" + ext.Message, "DropBox連携", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("エラーが発生しました。\n\n" + ext.Message, "DropBoxリンク", MessageBoxButton.OK, MessageBoxImage.Error);
                     usernameis = "DropBox接続エラー";
                 }
             }

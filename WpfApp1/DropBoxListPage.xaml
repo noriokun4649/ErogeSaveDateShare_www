@@ -3,12 +3,51 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local="clr-namespace:WpfApp1"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignWidth="500"
       Title="DropBoxListPage">
 
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="291*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="800"/>
+            <RowDefinition Height="91"/>
+        </Grid.RowDefinitions>
+        <materialDesign:Card Grid.Column="2" Margin="10" VerticalAlignment="Stretch">
+            <ListView x:Name="fail" Margin="10,10,10,7" Grid.Column="2" SelectionChanged="Fail_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="ファイル名前" DisplayMemberBinding="{Binding [0]}" />
+                        <GridViewColumn Header="最終更新日" DisplayMemberBinding="{Binding [1]}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </materialDesign:Card>
+
+        <Grid Margin="10,53,126,10" Grid.Row="1" Grid.ColumnSpan="3">
+            <ProgressBar x:Name="load_file" DockPanel.Dock="Bottom" Padding="0" UseLayoutRounding="False" Height="28" VerticalAlignment="Top"/>
+            <TextBlock x:Name="loading" Text="読み込み中" TextAlignment="Center" Margin="0,6,0,0" Height="16" VerticalAlignment="Top" />
+        </Grid>
+        <materialDesign:Card Margin="10" VerticalAlignment="Stretch">
+            <ListView x:Name="folder" Margin="10,10,10,7" SelectionChanged="Folder_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="フォルダ名前" DisplayMemberBinding="{Binding [0]}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </materialDesign:Card>
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center" Background="#FFD8D8D8"/>
+        <Grid Margin="10" Grid.Row="1" Grid.ColumnSpan="3">
+            <Button x:Name="File_button" Content="選択中のファイルを削除" HorizontalAlignment="Right" Width="183" Height="34" VerticalAlignment="Top" Click="Button_Click_2" IsEnabled="False" Margin="0,0,10,0"/>
+            <Button x:Name="Folder_button" Content="選択中のフォルダを削除" Margin="0,0,287,0" HorizontalAlignment="Right" Width="183" Height="34" VerticalAlignment="Top" Click="Button_Click_1" IsEnabled="False" RenderTransformOrigin="0.595,0.482"/>
+            <Button Content="一覧を更新" HorizontalAlignment="Left" VerticalAlignment="Top" Width="111" Height="27" Click="Button_Click_3" Margin="369,44,0,0"/>
+        </Grid>
     </Grid>
 </Page>

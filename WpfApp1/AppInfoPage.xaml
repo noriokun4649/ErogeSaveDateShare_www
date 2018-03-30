@@ -1,14 +1,89 @@
-﻿<Page x:Class="WpfApp1.AppInfoPage"
+﻿<Page xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      x:Class="WpfApp1.AppInfoPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfApp1"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignWidth="500"
       Title="AppInfoPage">
 
-    <Grid>
-        
-    </Grid>
+    <materialDesign:ColorZone>
+        <Grid Height="500">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="259"/>
+                <RowDefinition Height="214"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <materialDesign:Card Margin="10" VerticalAlignment="Stretch">
+                <Grid>
+                    <Image Source="image/icon.png" Margin="10,10,330,10" />
+                    <TextBlock Margin="135,10,0,0" TextWrapping="Wrap" Text="エロゲのセーブデータ共有したったｗｗｗ" Height="30" FontSize="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="325"/>
+                    <Separator Margin="135,61,10,0" VerticalAlignment="Top" />
+
+                    <Button HorizontalAlignment="Left" Margin="144,71,0,0" VerticalAlignment="Top" Width="146" RenderTransformOrigin="0.362,0.045" Click="Button_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Home" Height="20"/>
+                            <TextBlock Text="Blog"/>
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" Margin="295,71,0,0" VerticalAlignment="Top" Width="146" RenderTransformOrigin="0.362,0.045" Click="Button_Click_1">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Twitter" Height="20"/>
+                            <TextBlock Text="Twitter"/>
+                        </StackPanel>
+                    </Button>
+                    <Separator  Margin="135,113,10,0" VerticalAlignment="Top" />
+                    <Button HorizontalAlignment="Left" Margin="144,124,0,0" VerticalAlignment="Top" Width="146" RenderTransformOrigin="0.362,0.045" Click="Button_Click_2">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Email" Height="20"/>
+                            <TextBlock Text="Mail"/>
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" Margin="295,124,0,0" VerticalAlignment="Top" Width="146" RenderTransformOrigin="0.362,0.045" Click="Button_Click_3">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="GithubBox" Height="20"/>
+                            <TextBlock Text="Github"/>
+                        </StackPanel>
+                    </Button>
+                    <TextBlock HorizontalAlignment="Left" Margin="135,186,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="315" TextAlignment="Right"><Run Text="Copyright ©"/><Run Text=" "/><Run Text="2018"/><Run Text=" noriokun464"/><Run Text="9"/><Run Text=" All Rights Reserved."/></TextBlock>
+                    <TextBlock x:Name="version" HorizontalAlignment="Left" Margin="340,40,0,0" TextWrapping="Wrap" Text="Version." VerticalAlignment="Top" Width="120"/>
+                    <Separator  Margin="135,168,10,0" VerticalAlignment="Top" />
+
+                </Grid>
+            </materialDesign:Card>
+
+            <materialDesign:Card Margin="10" VerticalAlignment="Stretch" Grid.Row="1">
+                <Grid>
+                    <TextBlock Margin="135,10,10,0" TextWrapping="Wrap" Text="Open Source Library" Height="30" FontSize="20" VerticalAlignment="Top" HorizontalAlignment="Center" Width="315" TextAlignment="Center"/>
+                    <Separator Margin="135,45,10,0" VerticalAlignment="Top" RenderTransformOrigin="0.501,-0.542" />
+
+                    <Button HorizontalAlignment="Left" Margin="144,59,0,0" VerticalAlignment="Top" Width="146" RenderTransformOrigin="0.362,0.045" Click="Button_Click_4">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Dropbox" Height="20"/>
+                            <TextBlock Text="DropBox.API"/>
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" Margin="295,59,0,0" VerticalAlignment="Top" Width="146" RenderTransformOrigin="0.362,0.045" Click="Button_Click_5">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Xaml" Height="20"/>
+                            <TextBlock Text="MaterialDesign"/>
+                        </StackPanel>
+                    </Button>
+                    <Separator Margin="135,103,10,0" VerticalAlignment="Top" />
+                    <Button HorizontalAlignment="Left" Margin="144,120,0,0" VerticalAlignment="Top" Width="297" RenderTransformOrigin="0.362,0.045" Click="Button_Click_6">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Windows" Height="20"/>
+                            <TextBlock Text="Windows API Code Pack"/>
+                        </StackPanel>
+                    </Button>
+                    <TextBlock HorizontalAlignment="Left" Margin="135,171,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="315" TextAlignment="Right"><Run Text="Copyright ©"/><Run Text=" "/><Run Text="2018"/><Run Text=" noriokun464"/><Run Text="9"/><Run Text=" All Rights Reserved."/></TextBlock>
+                    <materialDesign:PackIcon HorizontalAlignment="Left" Kind="CodeBraces" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.562,-2.583" Height="151" Width="120"/>
+
+                </Grid>
+            </materialDesign:Card>
+
+        </Grid>
+    </materialDesign:ColorZone>
 </Page>

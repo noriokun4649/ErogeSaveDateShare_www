@@ -4,11 +4,39 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfApp1"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" d:DesignWidth="500"
       Title="DownloadPage">
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="110*" MaxHeight="300"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="63*" MaxHeight="400"/>
+            <RowDefinition Height="83*" />
+        </Grid.RowDefinitions>
+        <materialDesign:Card Margin="10" VerticalAlignment="Stretch">
+            <ListView x:Name="game_list" Margin="10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" SelectionChanged="Game_list_SelectionChanged" Grid.Row="1">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="ゲームタイトル" DisplayMemberBinding="{Binding [0]}"/>
+                        <GridViewColumn Header="セーブデータ場所" DisplayMemberBinding="{Binding [1]}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </materialDesign:Card>
+        <Button x:Name="selct_button" Content="選択中のゲームタイトルのみ実行" Margin="275,10,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.411,0.346" Height="36" HorizontalAlignment="Left" Width="215" Click="Selct_button_Click" IsEnabled="False"/>
+        <Button Content="一括実行" Margin="158,10,0,0" Grid.Row="1" VerticalAlignment="Top" Height="36" HorizontalAlignment="Left" Width="94" Click="Button_Click_1"/>
+        <ToggleButton x:Name="action_select" Margin="398,57,0,0" Grid.Row="1" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70" IsChecked="True"/>
+        <materialDesign:Card Margin="10" Grid.Row="2" VerticalAlignment="Stretch" MaxHeight="400">
+            <ListBox x:Name="log_box" MaxHeight="370" Margin="10,10,0,13" HorizontalAlignment="Left" Width="448" LayoutUpdated="Log_box_LayoutUpdated" />
+        </materialDesign:Card>
+        <TextBlock HorizontalAlignment="Left" Margin="290,57,0,0" Grid.Row="1" TextWrapping="Wrap" Text="ログのスクロール固定" RenderTransformOrigin="0.551,0.712" Width="103" TextAlignment="Right" Height="25" VerticalAlignment="Center"/>
+        <TextBlock HorizontalAlignment="Left" Margin="25,20,0,0" Grid.Row="1" TextWrapping="Wrap" Text="ダウンロードの実行方法" VerticalAlignment="Top" Width="115" TextAlignment="Right" Height="16"/>
+        <ProgressBar x:Name="loading" HorizontalAlignment="Left" Height="26" Margin="10,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="358"/>
+        <ProgressBar x:Name="loading_chilled" HorizontalAlignment="Left" Height="26" Margin="10,47,0,0" Grid.Row="3" VerticalAlignment="Top" Width="358"/>
+        <Button Content="キャンセル" HorizontalAlignment="Left" Margin="384,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="106" Height="63" Click="Button_Click"/>
+        <TextBlock x:Name="load_text" HorizontalAlignment="Left" Margin="10,10,0,37" Grid.Row="3" TextWrapping="Wrap" Text="" Width="358"/>
+        <TextBlock x:Name="load_chil_text" HorizontalAlignment="Left" Margin="10,47,0,0" Grid.Row="3" TextWrapping="Wrap" Text="" Width="358"/>
     </Grid>
 </Page>

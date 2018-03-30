@@ -7,7 +7,7 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
        d:DesignWidth="500"
-      Title="HomePage" Height="821.356">
+      Title="HomePage" Height="1084.356">
 
     <materialDesign:ColorZone VerticalAlignment="Stretch">
         <Grid>
@@ -29,8 +29,8 @@
                     <materialDesign:PackIcon Kind="Dropbox" Height="Auto" Width="84" Margin="10,10,0,19" VerticalAlignment="Stretch" HorizontalAlignment="Left" />
                     <TextBlock Margin="99,10,10,0" FontSize="22" Height="35" VerticalAlignment="Top" ><Run Text="まずはDropBoxと"/><Run Text="リンク"/><Run Text="しましょう！"/></TextBlock>
                     <TextBlock Margin="117,45,10,0" TextWrapping="Wrap" Height="53" VerticalAlignment="Top" ><Run Text="まずはDropBox"/><Run Text="とリンクしないことには"/><Run Text="何も始まりません。"/><LineBreak/><Run/><LineBreak/><Run Text="リンク"/><Run Text="するには下のボタンを押してください。"/><LineBreak/></TextBlock>
-                    <Separator Style="{StaticResource MaterialDesignDarkSeparator}" Margin="99,103,10,0" VerticalAlignment="Top" />
-                    <materialDesign:Chip x:Name="link" Content="DropBoxとリンクをする" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}" Margin="99,125,0,19" Width="273" Height="Auto" Click="link_Click">
+                    <Separator Margin="99,103,10,0" VerticalAlignment="Top" />
+                    <materialDesign:Chip x:Name="link" Content="DropBoxとリンクをする" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}" Margin="99,125,0,19" Width="273" Height="Auto" Click="Link_Click">
                         <materialDesign:Chip.Icon>
                             <materialDesign:PackIcon Kind="DropBox"></materialDesign:PackIcon>
                         </materialDesign:Chip.Icon>
@@ -41,10 +41,10 @@
                 <Grid>
                     <materialDesign:PackIcon Kind="Account" RenderTransformOrigin="1.188,1.438" Margin="10,10,0,10" Height="Auto" Width="84" VerticalAlignment="Stretch" />
                     <TextBlock HorizontalAlignment="Left" Margin="99,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="351" Height="26" FontSize="22"><Run Text="現在"/><Run Text="リンク"/><Run Text="中のDropBoxアカウント"/></TextBlock>
-                    <Separator Style="{StaticResource MaterialDesignDarkSeparator}" Margin="99,41,10,0" VerticalAlignment="Top" />
-                    <TextBlock x:Name="text_now" HorizontalAlignment="Left" Margin="111,62,0,0" TextWrapping="Wrap" Text="接続エラー" VerticalAlignment="Top" Width="339" Height="24"/>
-                    <Separator Style="{StaticResource MaterialDesignDarkSeparator}" Margin="99,91,10,0" VerticalAlignment="Top" />
-                    <materialDesign:Chip x:Name="delete_link" Content="DropBoxとのリンクを解除する" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}" Margin="99,112,0,10" Width="273" Height="Auto" Click="delete_link_Click">
+                    <Separator Margin="99,47,10,0" VerticalAlignment="Top" />
+                    <TextBlock x:Name="text_now" HorizontalAlignment="Left" Margin="111,58,0,0" TextWrapping="Wrap" Text="接続エラー" Width="339" Height="24" VerticalAlignment="Top" FontSize="16"/>
+                    <Separator  Margin="99,92,10,0" VerticalAlignment="Top" />
+                    <materialDesign:Chip x:Name="delete_link" Content="DropBoxとのリンクを解除する" IconBackground="{DynamicResource PrimaryHueDarkBrush}" IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}" Margin="99,98,0,24" Width="273" Height="Auto" Click="Delete_link_Click">
                         <materialDesign:Chip.Icon>
                             <materialDesign:PackIcon Kind="DeleteForever"/>
                         </materialDesign:Chip.Icon>
@@ -53,14 +53,42 @@
                 </Grid>
             </materialDesign:Card>
 
-            <StackPanel Margin="10,10,10,-26" Grid.Row="3">
-                <Expander HorizontalAlignment="Stretch" Header="アラートダイアログ設定">
+            <StackPanel Margin="10,10,10,-295" Grid.Row="3">
+                <Expander HorizontalAlignment="Stretch" Header="ゲーム管理・追加のバックアップ">
+                    <StackPanel Height="50" Orientation="Horizontal" Margin="29,0,45,0">
+                        <materialDesign:Chip
+                          Content="アップロード"
+                          IconBackground="{DynamicResource PrimaryHueDarkBrush}"
+                          IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}" Click="Chip_Click">
+                            <materialDesign:Chip.Icon>
+                                <materialDesign:PackIcon Kind="CloudUpload"></materialDesign:PackIcon>
+                            </materialDesign:Chip.Icon>
+                        </materialDesign:Chip>
+                        <materialDesign:Chip
+                          Content="ダウンロード"
+                          IconBackground="{DynamicResource PrimaryHueDarkBrush}"
+                          IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}" Click="Chip_Click_1">
+                            <materialDesign:Chip.Icon>
+                                <materialDesign:PackIcon Kind="CloudDownload"></materialDesign:PackIcon>
+                            </materialDesign:Chip.Icon>
+                        </materialDesign:Chip>
+                    </StackPanel>
+                </Expander>
+                <Separator Margin="10,2"/>
+                <Expander HorizontalAlignment="Stretch" Header="ページ移動時ダイアログ設定">
+                    <StackPanel Margin="29,0,45,0" Height="25">
+                        <CheckBox x:Name="checkbox_page" Content="ダウンロード・アップロードページから移動時に確認ダイアログを表示する" Margin="0,0,0,10" Click="checkbox_page_Click"/>
+                    </StackPanel>
+                </Expander>
+                <Separator Margin="10,2"/>
+                <Expander HorizontalAlignment="Stretch" Header="上書き確認ダイアログ設定">
                     <StackPanel Margin="29,0,45,0" Height="66">
                         <CheckBox x:Name="checkbox_pc" Content="ダウンロード時PC上のデータのほうが新しい場合に警告する" Margin="0,0,0,10" Click="CheckBox_Click"/>
                         <CheckBox x:Name="checkbox_drop" Content="アップロード時DropBox上のデータのほうがが新しい場合に警告する" Margin="0,0,0,10" Click="CheckBox_Click_1"/>
 
                     </StackPanel>
                 </Expander>
+                <Separator Margin="10,2" />
                 <Expander HorizontalAlignment="Stretch" Header="テーマカラー設定">
                     <StackPanel Height="38" Orientation="Horizontal" Margin="29,0,45,0">
                         <TextBlock TextWrapping="Wrap" Text="Light" VerticalAlignment="Center"/>
@@ -68,6 +96,7 @@
                         <TextBlock TextWrapping="Wrap" Text="Dark" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Expander>
+                <Separator Margin="10,2" />
             </StackPanel>
         </Grid>
     </materialDesign:ColorZone>

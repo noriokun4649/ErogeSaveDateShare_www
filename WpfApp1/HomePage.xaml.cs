@@ -1,4 +1,5 @@
 ﻿using Dropbox.Api;
+using Dropbox.Api.Files;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,14 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 namespace WpfApp1
 {
     /// <summary>
@@ -35,6 +28,7 @@ namespace WpfApp1
             ColorChange();
             checkbox_drop.IsChecked = Properties.Settings.Default.dropbox_snyc;
             checkbox_pc.IsChecked = Properties.Settings.Default.pc_snyc;
+            checkbox_page.IsChecked = Properties.Settings.Default.page;
             string ac = Properties.Settings.Default.AccessToken;
             if (ac != "")
             {
@@ -158,7 +152,7 @@ namespace WpfApp1
             }
         }
 
-        private void link_Click(object sender, RoutedEventArgs e)
+        private void Link_Click(object sender, RoutedEventArgs e)
         {
 
             MessageBoxResult result = MessageBox.Show("DropBoxとリンクを行います。\nリンクには最新のInternetExplorerが\nインストールされている必要があります\n\nリンクをしますか？",
@@ -186,7 +180,7 @@ namespace WpfApp1
             }
         }
 
-        private void delete_link_Click(object sender, RoutedEventArgs e)
+        private void Delete_link_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("本当にリンクを解除しますか？",
             "DropBoxリンク",
@@ -212,6 +206,121 @@ namespace WpfApp1
             {
 
             }
+        }
+
+        private async Task Upload(DropboxClient client, string fileName, string fileContent)
+        {
+            //MessageBox.Show(fileName + "のアップロードを開始しました",
+            //"メッセージ",
+            //MessageBoxButton.OK,
+            //MessageBoxImage.Information);
+            try
+            {
+                //Console.WriteLine("Upload file...");
+                using (FileStream fileStream = new FileStream(fileContent, FileMode.Open))
+                {
+                    var response = await client.Files.UploadAsync("/" + fileName, WriteMode.Overwrite.Instance, body: fileStream);
+                    //Console.WriteLine("Uploaded Id {0} Rev {1}", response.Id, response.Rev);
+                    MessageBox.Show("アップロードが完了しました。\n\nこの設定を引継ぎたいコンピュータで「ダウンロード」を押し、表示されるメッセージに従ってください。", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (BadInputException exs)
+            {
+                string masssge = exs.Message.Replace("Invalid authorization value in HTTP header", "HTTPヘッダーの認証項目が無効です。").Replace("Error in call to API function", "API 関数の呼び出しでエラーが発生しました").Replace("oauth2-access-token", "DropBoxの連携が正常に完了してない可能性があります。確認してください。");
+                MessageBox.Show("無効なHTTPリクエストです。\n" + masssge,
+                "無効なHTTPリクエスト",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            }
+
+            catch (Exception ex2)
+            {
+                MessageBox.Show(fileName + "のアップロードに問題が発生しました\n\n" + ex2.Message,
+                "エラー",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+
+            }
+        }
+
+
+        private async Task Download_setting(DropboxClient client, string file)
+        {
+            //Console.WriteLine("Download file...");
+            //MessageBox.Show(file + "のダウンロードを開始しました", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                using (var response = await client.Files.DownloadAsync("/" + file))
+                using (FileStream fileStream = new FileStream(file_path, FileMode.Create))
+                using (StreamWriter sw = new StreamWriter(fileStream))
+                {
+                    sw.Write(await response.GetContentAsStringAsync());
+                    MessageBox.Show("ダウンロードが完了しました。\n\nゲーム追加・管理にてこのコンピュータに合わせたセーブデータ場所を設定しなおしてください。", "メッセージ", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (BadInputException exs)
+            {
+                string masssge = exs.Message.Replace("Invalid authorization value in HTTP header", "HTTPヘッダーの認証項目が無効です。").Replace("Error in call to API function", "API 関数の呼び出しでエラーが発生しました").Replace("oauth2-access-token", "DropBoxの連携が正常に完了してない可能性があります。確認してください。");
+                MessageBox.Show("無効なHTTPリクエストです。\n" + masssge,
+                "無効なHTTPリクエスト",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            }
+            catch (ApiException<DownloadError> ex)
+            {
+                MessageBox.Show(ex.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private async void Chip_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("DropBox上に現在の「ゲーム管理・追加」の設定をアップロードします。\n\nDropBox上の設定は上書きされます。続行しますか？",
+                "DropBoxへアップロード",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Information);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
+                Console.WriteLine(Path.GetPathRoot(file_path) + Path.GetFileName(file_path) + file_path);
+                await Upload(client, Path.GetFileName(file_path), file_path);
+
+
+            }
+            else if (result == MessageBoxResult.No)
+            {
+
+            }
+        }
+        private async void Chip_Click_1(object sender, RoutedEventArgs e)//だう
+        {
+            MessageBoxResult result = MessageBox.Show("PCにDropBox上の「ゲーム管理・追加」の設定をダウンロードします。\n\nPC上にある現在の設定は上書きされます。続行しますか？",
+           "PCへダウンロード",
+           MessageBoxButton.YesNo,
+           MessageBoxImage.Information);
+
+            if (result == MessageBoxResult.Yes)
+            {
+
+                DropboxClient client = new DropboxClient(Properties.Settings.Default.AccessToken);
+                FileMetadata fileMetadata = new FileMetadata();
+
+                await Download_setting(client, Path.GetFileName(file_path));
+            }
+            else if (result == MessageBoxResult.No)
+            {
+
+            }
+        }
+
+        private void checkbox_page_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox c = (CheckBox)sender;
+            Properties.Settings.Default.page = (bool)c.IsChecked;
+            Properties.Settings.Default.Save();
         }
     }
 }

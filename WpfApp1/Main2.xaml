@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Window2" Height="580" Width="730.3" MinWidth="730.3" MaxWidth="730.3">
+        Title="エロゲのセーブデータ共有したったｗｗｗ" Height="580" Width="730.3" MinWidth="730.3" MaxWidth="730.3" MinHeight="580">
     <materialDesign:ColorZone VerticalAlignment="Stretch">
         <Grid Margin="0,0,10,0">
             <Grid.RowDefinitions>
@@ -28,7 +28,7 @@
             <Button Content="DropBox管理" Margin="10,10,10,8" Height="Auto" Grid.Row="4" Click="Button_Click_4"/>
             <Button Content="このアプリについて" Margin="10,10,10,8" Height="Auto" Grid.Row="5" Click="Button_Click_5"/>
             <ScrollViewer Grid.Column="1" Margin="10,10,-13,10" Grid.RowSpan="6">
-                <Frame x:Name="frame" Content="Frame" Grid.Column="1" Grid.RowSpan="6" Loaded="Frame_Loaded" NavigationUIVisibility="Hidden" Width="498"/>
+                <Frame x:Name="frame" Grid.Column="1" Grid.RowSpan="6" Loaded="Frame_Loaded" NavigationUIVisibility="Hidden" Width="498" HorizontalAlignment="Center" />
             </ScrollViewer>
         </Grid>
     </materialDesign:ColorZone>

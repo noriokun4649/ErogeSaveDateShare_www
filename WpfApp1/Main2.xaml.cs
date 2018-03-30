@@ -34,42 +34,65 @@ namespace WpfApp1
         {
             InitializeComponent();
             _navi = this.frame.NavigationService;
-            
+
         }
 
         private void Frame_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!IsActtionNow()) return;
             _navi.Navigate(_uriList[0]);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (!IsActtionNow()) return;
             _navi.Navigate(_uriList[0]);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            if (!IsActtionNow()) return;
             _navi.Navigate(_uriList[1]);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            if (!IsActtionNow()) return;
             _navi.Navigate(_uriList[2]);
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
+            if (!IsActtionNow()) return;
             _navi.Navigate(_uriList[3]);
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
+            if (!IsActtionNow()) return;
             _navi.Navigate(_uriList[4]);
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
+            if (!IsActtionNow()) return;
             _navi.Navigate(_uriList[5]);
+        }
+        
+
+        private bool IsActtionNow()
+        {
+            if (Properties.Settings.Default.page) { 
+                if ((_navi.CurrentSource == _uriList[2] ) || (_navi.CurrentSource == _uriList[3]))
+                {
+                    MessageBoxResult res = MessageBox.Show("このページから離れると実行中のすべての処理は中断されます。\n\nこのページから離れますか？", "確認メッセージ", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (res == MessageBoxResult.No)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

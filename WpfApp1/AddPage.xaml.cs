@@ -50,6 +50,7 @@ namespace WpfApp1
             game_view.Items.RemoveAt(game_view.SelectedIndex);
             file_box.Text = "";
             game_title.Text = "";
+            DataSave();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -65,7 +66,7 @@ namespace WpfApp1
                         game_view.Items.Insert(indexs, new string[] { game_title.Text, file_box.Text });
                         game_title.Text = "";
                         file_box.Text = "";
-
+                        DataSave();
                     }
                 }
                 else
@@ -125,7 +126,7 @@ namespace WpfApp1
                     game_title.Text = "";
                     file_box.Text = "";
                     game_view.SelectedItems.Clear();
-
+                    DataSave();
                 }
                 else
                 {
@@ -219,6 +220,7 @@ namespace WpfApp1
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
+            /*
             try
             {
                 int counts = game_view.Items.Count;
@@ -256,11 +258,91 @@ namespace WpfApp1
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
             }
+            */
         }
 
         private void snack_mes_ActionClick(object sender, RoutedEventArgs e)
         {
             snack.IsActive = false;
+        }
+
+        private void Grid_Drop(object sender, DragEventArgs e)
+        {
+
+            if (e.Data.GetData(DataFormats.FileDrop) is string[] files)
+            {
+                game_title.Text = Path.GetFileNameWithoutExtension(files[0]);
+            }
+
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, true)) { 
+                e.Effects = DragDropEffects.Copy;
+            }
+            else { 
+                e.Effects = DragDropEffects.None;
+            }
+            e.Handled = true;
+        }
+
+        private void Grid_Drop_1(object sender, DragEventArgs e)
+        {
+
+
+            if (e.Data.GetData(DataFormats.FileDrop) is string[] files)
+            {
+                file_box.Text = Path.GetFullPath(files[0]);
+            }
+
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
+            {
+                e.Effects = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
+            e.Handled = true;
+        }
+        private void DataSave()
+        {
+
+            try
+            {
+                int counts = game_view.Items.Count;
+                if (counts > 0)
+                {
+                    using (StreamWriter stream = new StreamWriter(MainWindow.file_path))
+                    {
+
+                        for (int i = 0; i < counts; i++)
+                        {
+                            string[] texts = (string[])game_view.Items.GetItemAt(i);
+                            if (!texts[1].Equals(""))
+                            {
+                                stream.WriteLine(texts[0] + "," + texts[1]);
+                            }
+                            else
+                            {
+                                throw new Exception("不正なデータがあります。\n\n「" + texts[0] + "」にセーブデータ場所が設定されていません。");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    using (StreamWriter stream = new StreamWriter(MainWindow.file_path))
+                    {
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,
+                "エラー",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            }
         }
     }
 }

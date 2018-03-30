@@ -18,7 +18,7 @@
                 <ColumnDefinition Width="25*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition MaxHeight="300" />
                 <RowDefinition Height="129"/>
                 <RowDefinition Height="129"/>
                 <RowDefinition Height="60"/>
@@ -39,17 +39,17 @@
             <Button x:Name="delete" Content="削除" Margin="10,10,9.698,10" RenderTransformOrigin="0.342,0.475" Click="Button_Click" Height="Auto" Grid.Column="3" Grid.Row="3" IsEnabled="False"/>
             <Button x:Name="save" Content="保存" Margin="10" Click="Button_Click_1" RenderTransformOrigin="0.053,0.625" Height="Auto" Grid.Column="2" Grid.Row="3" IsEnabled="False"/>
 
-            <materialDesign:Card ToolTip="セーブデータはゲームタイトルで区別され、同名のゲームタイトルのものが複数コンピュータ間で共有されます" Margin="10,10,10.661,10" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="6">
+            <materialDesign:Card ToolTip="セーブデータはゲームタイトルで区別され、同名のゲームタイトルのものが複数コンピュータ間で共有されます" Margin="10,10,10.661,10" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="6" AllowDrop="True" Drop="Grid_Drop">
                 <Grid>
                     <materialDesign:PackIcon Kind="LeadPencil" Margin="10,10,0,10" Height="Auto" Width="73" VerticalAlignment="Stretch" />
                     <TextBox x:Name="game_title"
             Style="{StaticResource MaterialDesignTextFieldBoxTextBox}"
             AcceptsReturn="True"
             TextWrapping="Wrap"
-            materialDesign:HintAssist.Hint="ゲームタイトル" Margin="106,10,10,10" BorderBrush="#89FFFFFF"/>
+            materialDesign:HintAssist.Hint="ゲームタイトル" Margin="106,10,10,10" BorderBrush="#89FFFFFF" Drop="Grid_Drop" AllowDrop="True"/>
                 </Grid>
             </materialDesign:Card>
-            <materialDesign:Card  ToolTip="セーブデータパスを設定してください" Margin="10,10,10.661,10" Grid.Row="2" VerticalAlignment="Stretch" RenderTransformOrigin="1.214,0.654" Grid.ColumnSpan="6">
+            <materialDesign:Card  ToolTip="セーブデータパスを設定してください" Margin="10,10,10.661,10" Grid.Row="2" VerticalAlignment="Stretch" RenderTransformOrigin="1.214,0.654" Grid.ColumnSpan="6" Drop="Grid_Drop_1" AllowDrop="True">
                 <Grid >
                     <materialDesign:PackIcon Kind="GamepadVariant" Margin="10,10,0,10" Height="Auto" Width="72" RenderTransformOrigin="0.445,0.235" VerticalAlignment="Stretch" />
                     <TextBlock x:Name="file_box" Margin="108,10,150,10" TextWrapping="Wrap" VerticalAlignment="Center"/>
@@ -64,7 +64,7 @@
             <materialDesign:Snackbar x:Name="snack" Grid.ColumnSpan="6" Margin="10,50,10.661,0" Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.RowSpan="2">
                 <materialDesign:SnackbarMessage x:Name="snack_mes"
                     Content="津"
-                    ActionContent="OK" ActionClick="snack_mes_ActionClick" />
+                    ActionContent="OK" ActionClick="snack_mes_ActionClick"/>
             </materialDesign:Snackbar>
         </Grid>
     </materialDesign:ColorZone>

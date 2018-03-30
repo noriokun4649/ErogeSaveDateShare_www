@@ -23,7 +23,7 @@
             <ListView x:Name="fail" Margin="10,10,10,7" Grid.Column="2" SelectionChanged="Fail_SelectionChanged">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="ファイル名前" DisplayMemberBinding="{Binding [0]}" />
+                        <GridViewColumn Header="ファイル・フォルダ名" DisplayMemberBinding="{Binding [0]}" />
                         <GridViewColumn Header="最終更新日" DisplayMemberBinding="{Binding [1]}" />
                     </GridView>
                 </ListView.View>
@@ -45,7 +45,7 @@
         </materialDesign:Card>
         <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center" Background="#FFD8D8D8"/>
         <Grid Margin="10" Grid.Row="1" Grid.ColumnSpan="3">
-            <Button x:Name="File_button" Content="選択中のファイルを削除" HorizontalAlignment="Right" Width="183" Height="34" VerticalAlignment="Top" Click="Button_Click_2" IsEnabled="False" Margin="0,0,10,0"/>
+            <Button x:Name="File_button" Content="選択中のものを削除" HorizontalAlignment="Right" Width="183" Height="34" VerticalAlignment="Top" Click="Button_Click_2" IsEnabled="False" Margin="0,0,10,0"/>
             <Button x:Name="Folder_button" Content="選択中のフォルダを削除" Margin="0,0,287,0" HorizontalAlignment="Right" Width="183" Height="34" VerticalAlignment="Top" Click="Button_Click_1" IsEnabled="False" RenderTransformOrigin="0.595,0.482"/>
             <Button Content="一覧を更新" HorizontalAlignment="Left" VerticalAlignment="Top" Width="111" Height="27" Click="Button_Click_3" Margin="369,44,0,0"/>
         </Grid>

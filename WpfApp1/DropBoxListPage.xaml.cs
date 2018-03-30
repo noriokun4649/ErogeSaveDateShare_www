@@ -63,6 +63,12 @@ namespace WpfApp1
                         files.Add(new string[] { item_file.Name, now_jst.ToString() });
                         counts++;
                     }
+                    foreach (var item_file2 in list2.Entries.Where(i => i.IsFolder))
+                    {
+                        var file = item_file2.AsFolder;
+                        files.Add(new string[] { item_file2.Name, ""});
+                        counts++;
+                    }
                     folders.Add(files);
                     counts_fol++;
                 }

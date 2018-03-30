@@ -708,7 +708,7 @@ namespace WpfApp1
                     {
                         
                         var windpw1 = new Window1();
-                        windpw1.SetParent(this);
+                        //windpw1.SetParent(this);
                         windpw1.SetParameter(folder_name, file_name + (!if_mode ? " はPC上のセーブデータがDropBox上": " はDropBox上のセーブデータがPC上")+ "のセーブデータよりも更新日時が新しいようです。本当に上書きしますか？");
                         windpw1.Title = !if_mode ? "DropBoxからダウンロード": "DropBoxへアップロード";
                         result = windpw1.ShowDialog();

@@ -40,10 +40,10 @@
         </ListView>
         <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center" Background="#FFD8D8D8"/>
         <Grid Margin="10" Grid.Row="1" Grid.ColumnSpan="3">
-            <Button x:Name="File_button" Content="選択中のファイルを削除" HorizontalAlignment="Right" Width="132" Height="24" VerticalAlignment="Top" Click="Button_Click_2" IsEnabled="False"/>
-            <Button x:Name="Folder_button" Content="選択中のフォルダを削除" Margin="0,0,150,0" HorizontalAlignment="Right" Width="131" Height="24" VerticalAlignment="Top" Click="Button_Click_1" IsEnabled="False"/>
+            <Button x:Name="File_button" Content="選択中のファイルを削除" HorizontalAlignment="Right" Width="175" Height="34" VerticalAlignment="Top" Click="Button_Click_2" IsEnabled="False"/>
+            <Button x:Name="Folder_button" Content="選択中のフォルダを削除" Margin="0,0,196,0" HorizontalAlignment="Right" Width="181" Height="34" VerticalAlignment="Top" Click="Button_Click_1" IsEnabled="False"/>
             <Button Content="閉じる" Margin="0,43,0,0" RenderTransformOrigin="0.455,0.419" Click="Button_Click" HorizontalAlignment="Right" Width="100" Height="28" VerticalAlignment="Top"/>
-            <Button Content="一覧を更新" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Height="24" Click="Button_Click_3"/>
+            <Button Content="一覧を更新" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Height="34" Click="Button_Click_3"/>
         </Grid>
 
     </Grid>

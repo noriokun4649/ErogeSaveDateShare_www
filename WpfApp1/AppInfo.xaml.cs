@@ -66,5 +66,11 @@ namespace WpfApp1
             }
             catch { }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Main2 window2 = new Main2();
+            window2.Show();
+        }
     }
 }

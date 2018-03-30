@@ -6,10 +6,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="pc_snyc" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="dropbox_snyc" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="dropbox_user_token" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -25,6 +25,9 @@
     </Setting>
     <Setting Name="color" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="page" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

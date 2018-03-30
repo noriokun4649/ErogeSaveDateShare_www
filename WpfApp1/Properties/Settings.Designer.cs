@@ -37,7 +37,7 @@ namespace WpfApp1.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool pc_snyc {
             get {
                 return ((bool)(this["pc_snyc"]));
@@ -49,7 +49,7 @@ namespace WpfApp1.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool dropbox_snyc {
             get {
                 return ((bool)(this["dropbox_snyc"]));
@@ -116,6 +116,18 @@ namespace WpfApp1.Properties {
             }
             set {
                 this["color"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool page {
+            get {
+                return ((bool)(this["page"]));
+            }
+            set {
+                this["page"] = value;
             }
         }
     }

@@ -9,7 +9,8 @@ namespace WpfApp1
     /// </summary>
     public partial class Window1 : Window
     {
-        LogWindow t;
+        UploadPage u;
+        DownloadPage d;
         public Window1()
         {
             InitializeComponent();
@@ -26,17 +27,23 @@ namespace WpfApp1
             this.DialogResult = true;
             this.Close();
         }
-        public void SetParent(LogWindow parent)
+        public void SetUpParent(UploadPage parent)
         {
-            t = parent;
+            u = parent;
+        }
+        public void SetDownParent(DownloadPage parent)
+        {
+            d = parent;
         }
         public void SetParameter(string game_title,string message)
         {
             Massage.Text = message;
             //checks.Content = ;
-            TextBlock tb = new TextBlock();
-            tb.Text = game_title + "の処理で、この選択を記憶する";
-            tb.TextWrapping = TextWrapping.WrapWithOverflow;
+            TextBlock tb = new TextBlock
+            {
+                Text = game_title + "の処理で、この選択を記憶する",
+                TextWrapping = TextWrapping.WrapWithOverflow
+            };
 
             checks.Name = "checkBox";
             checks.Content = tb;
@@ -45,7 +52,15 @@ namespace WpfApp1
         }
         private void Window_Closed(object sender, EventArgs e)
         {
-            t.SetCheck((bool)checks.IsChecked);
+            if (u != null)
+            {
+                u.SetCheck((bool)checks.IsChecked);
+            }
+            if (d != null)
+            {
+                d.SetCheck((bool)checks.IsChecked);
+            }
+            
         }
     }
 }
